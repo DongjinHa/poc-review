@@ -31,7 +31,7 @@ public class ReviewServiceImpl implements ReviewService {
     
 	public List<ReviewDTO> getReviewList() {
 		Query query = new Query()
-				.addCriteria(Criteria.where("name").is("DongjinHa2"))
+				.addCriteria(Criteria.where("name").is("yulimkang"))
 				.with(Sort.by(Sort.Order.desc("hp")))
 				.limit(2);
 		return mongoTemplate.find(query, ReviewDTO.class);
@@ -40,6 +40,14 @@ public class ReviewServiceImpl implements ReviewService {
     public List<ReviewDTO> getReviewList2() {
         return reviewRepository.findAll();
     } 
+    
+	public List<ReviewDTO> getReviewList3(String name) {
+		Query query = new Query()
+				.addCriteria(Criteria.where("name").is(name))
+				.with(Sort.by(Sort.Order.desc("hp")))
+				.limit(2);
+		return mongoTemplate.find(query, ReviewDTO.class);
+	}
 	
     public Optional<ReviewDTO> getReview(String id) {
         return reviewRepository.findById(id);
@@ -48,5 +56,7 @@ public class ReviewServiceImpl implements ReviewService {
     public void delReview(String id) {
     	reviewRepository.deleteById(id);
     }
+
+
     
 }
