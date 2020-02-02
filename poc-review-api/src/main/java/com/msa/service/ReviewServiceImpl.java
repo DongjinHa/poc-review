@@ -40,6 +40,14 @@ public class ReviewServiceImpl implements ReviewService {
     public List<ReviewDTO> getReviewList2() {
         return reviewRepository.findAll();
     } 
+    
+	public List<ReviewDTO> getReviewList3(String title) {
+		Query query = new Query()
+				.addCriteria(Criteria.where("title").is("DongjinHa2"))
+				.with(Sort.by(Sort.Order.desc("revrSeq")))
+				.limit(2);
+		return mongoTemplate.find(query, ReviewDTO.class);
+	}
 	
     public Optional<ReviewDTO> getReview(String id) {
         return reviewRepository.findById(id);

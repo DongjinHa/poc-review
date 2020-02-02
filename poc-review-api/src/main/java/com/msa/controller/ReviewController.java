@@ -36,7 +36,12 @@ public class ReviewController {
     @GetMapping("/getReviewList2")
     public List<ReviewDTO> getReviewList2() {
         return reviewService.getReviewList2();
-    }    
+    }   
+    
+    @GetMapping("/getReviewList3/{name}")
+    public List<ReviewDTO> getReviewList3(@PathVariable String name) {
+        return reviewService.getReviewList3(name);
+    }  
     
     @GetMapping("/getReview/{id}")
     public Optional<ReviewDTO> getReview(@PathVariable String id) {
