@@ -12,7 +12,12 @@ public class ReviewController {
     @GetMapping("/getReviewList")
     public String getReviewList(Model model) {
     	model.addAttribute("user", null);
-        return "test";
-    }    
+        return "/review/review";
+    }
+
+	@GetMapping("/productList") 
+	public String productList(Model model){
+		return "/product/productList";
+	}
     
 }

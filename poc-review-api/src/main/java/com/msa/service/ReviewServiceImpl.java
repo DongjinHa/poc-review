@@ -31,8 +31,8 @@ public class ReviewServiceImpl implements ReviewService {
     
 	public List<ReviewDTO> getReviewList() {
 		Query query = new Query()
-				.addCriteria(Criteria.where("name").is("DongjinHa2"))
-				.with(Sort.by(Sort.Order.desc("hp")))
+				.addCriteria(Criteria.where("title").is("DongjinHa2"))
+				.with(Sort.by(Sort.Order.desc("revrSeq")))
 				.limit(2);
 		return mongoTemplate.find(query, ReviewDTO.class);
 	}

@@ -25,19 +25,14 @@ public class ReviewRepositoryTest {
 		reviewRepository.deleteAll();
 		
 		ReviewDTO dto = new ReviewDTO();
-		dto.setName("DongjinHa2");
-		dto.setHp("01049952222");
+		dto.setTitle("test1");
+//		dto.setHp("01049952222");
 		reviewRepository.save(dto);
 		
 		ReviewDTO dto2 = new ReviewDTO();
-		dto2.setName("DongjinHa1");
-		dto2.setHp("01049951111");
+		dto2.setTitle("test2");
+//		dto2.setHp("01049951111");
 		reviewRepository.save(dto2);
-		
-		ReviewDTO dto3 = new ReviewDTO();
-		dto3.setName("DongjinHa3");
-		dto3.setHp("01049953333");
-		reviewRepository.save(dto3);
 		
 		reviewRepository.findAll().forEach(System.out::println);
 		

@@ -25,7 +25,7 @@ public class ReviewController {
     @PostMapping("/addReview")
     public String addReview(@RequestBody ReviewDTO _reviewDTO) {
     	ReviewDTO reviewDTO = reviewService.addReview(_reviewDTO);
-        return "added id:" + reviewDTO.getId();
+        return "added id:" + reviewDTO.get_id();
     }
 
     @GetMapping("/getReviewList")

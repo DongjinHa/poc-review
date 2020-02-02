@@ -8,6 +8,6 @@ import com.msa.dto.ReviewDTO;
 
 public interface ReviewRepository extends MongoRepository<ReviewDTO, String> {
 
-	List<ReviewDTO> findByName(String name);
+	List<ReviewDTO> findByTitle(String name);
 	
 }
