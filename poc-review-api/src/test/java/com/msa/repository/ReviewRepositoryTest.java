@@ -25,12 +25,10 @@ public class ReviewRepositoryTest {
 		reviewRepository.deleteAll();
 		
 		ReviewDTO dto = new ReviewDTO();
-		dto.setTitle("test1");
 //		dto.setHp("01049952222");
 		reviewRepository.save(dto);
 		
 		ReviewDTO dto2 = new ReviewDTO();
-		dto2.setTitle("test2");
 //		dto2.setHp("01049951111");
 		reviewRepository.save(dto2);
 		
