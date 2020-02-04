@@ -33,6 +33,7 @@ class ReviewerRepositoryTest {
 	public void createRows() {
 		reviewerRepository.deleteAll();
 		reviewRepository.deleteAll();
+		commentRepository.deleteAll();
 
 		String pattern = "yyyyMMddHHmmss";
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
