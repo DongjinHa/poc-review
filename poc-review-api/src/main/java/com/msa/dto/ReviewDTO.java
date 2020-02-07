@@ -9,8 +9,7 @@ import lombok.Data;
 @Data
 @Document(collection = "reviews")
 public class ReviewDTO {
-	@Id
-	private ObjectId _id;
+	private String _id;
 	private ObjectId reviewer_id;
 	private String reviewCl;
 	private String prdSeq;

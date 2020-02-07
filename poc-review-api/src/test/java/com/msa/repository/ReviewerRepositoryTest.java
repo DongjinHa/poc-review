@@ -145,13 +145,15 @@ class ReviewerRepositoryTest {
 						flag = false;
 						num = (ran.nextInt(10)+1);
 						for(int y = 0; y < _tpList.length; y++) {
-							if (_tpList[y] != null && _tpList[y].equals("/img/reviewer/"+num+".jpg")) {
+							//실제 경로에 맞춰 수정(reviews -> review)
+							if (_tpList[y] != null && _tpList[y].equals("/img/review/"+num+".jpg")) {
 								flag = true;
 							}
 						}
 						
 						if (!flag) {
-							_tpList[idx++] = "/img/reviewer/"+num+".jpg";
+							//실제 경로에 맞춰 수정(reviews -> review)
+							_tpList[idx++] = "/img/review/"+num+".jpg";
 							
 							if (idx == _tpList.length) {
 								break;
@@ -161,7 +163,8 @@ class ReviewerRepositoryTest {
 				} else {
 					num = (ran.nextInt(10)+1);
 					_tpList = new String[1];
-					_tpList[0] = "/img/reviewer/"+num+".jpg";
+					//실제 경로에 맞춰 수정(reviews -> review)
+					_tpList[0] = "/img/review/"+num+".jpg";
 				}
 				
 				dto.setTplList(_tpList);

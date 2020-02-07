@@ -3,6 +3,7 @@ package com.msa.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -49,8 +50,10 @@ public class ReviewServiceImpl implements ReviewService {
 		return mongoTemplate.find(query, ReviewDTO.class);
 	}
 	
-    public Optional<ReviewDTO> getReview(String id) {
-        return reviewRepository.findById(id);
+    public ReviewDTO getReview(String id) {
+//    	ReviewDTO review = mongoTemplate.findById(new ObjectId("5e3c27f099a991312ca22243"), ReviewDTO.class,"reviews");
+    	ReviewDTO review = mongoTemplate.findById(new ObjectId(id), ReviewDTO.class,"reviews");
+    	return review;
     }
     
     public void delReview(String id) {

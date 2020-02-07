@@ -7,13 +7,18 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.Data;
 
 @Data
-@Document(collection = "comments")
-public class CommentDTO {
+public class ReviewerDTO {
 	@Id
 	private ObjectId _id;
-	private String review_id;
-	private ObjectId reviewer_id;
-	private String cnts;
+	private String nickNm;
+	private String lvl;
+	private String sex;
+	private String birthDay;
+	private String skinToneCd;
+	private String skinTypeCd;
+	private String[] skinTrublList;
+	private String skinEtcInfo;
+	private String profileImg;
 	private String regDate;
 	private String updDate;
 }

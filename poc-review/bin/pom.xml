@@ -21,10 +21,6 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-mongodb</artifactId>	<!-- dto에서 ObjectId사용을 위한 의존성 추가 -->
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
 		<dependency>
@@ -51,11 +47,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
-		<dependency>
-	        <groupId>org.springframework.boot</groupId>
-	        <artifactId>spring-boot-starter-webflux</artifactId>	<!-- webClient 사용위한 의존성 추가 -->
-	    </dependency>
 	</dependencies>
 
 	<build>

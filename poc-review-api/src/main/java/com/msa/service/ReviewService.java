@@ -11,7 +11,8 @@ public interface ReviewService {
 	public List<ReviewDTO> getReviewList();
 	public List<ReviewDTO> getReviewList2();
 	public List<ReviewDTO> getReviewList3(String name);
-    public Optional<ReviewDTO> getReview(String id);
+    //public Optional<ReviewDTO> getReview(String id);
+	public ReviewDTO getReview(String id);
     public void delReview(String id);
     
 }

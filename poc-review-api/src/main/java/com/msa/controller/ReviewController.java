@@ -3,6 +3,7 @@ package com.msa.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.msa.dto.ReviewDTO;
+import com.msa.dto.ReviewerDTO;
 import com.msa.service.ReviewService;
  
 @RestController
@@ -44,7 +46,7 @@ public class ReviewController {
     }  
     
     @GetMapping("/getReview/{id}")
-    public Optional<ReviewDTO> getReview(@PathVariable String id) {
+    public ReviewDTO getReview(@PathVariable String id) {	
         return reviewService.getReview(id);
     }
 
@@ -54,4 +56,8 @@ public class ReviewController {
         return "deleted id:" + id;
     }
     
+   /* @GetMapping("/Reviewer/{id}")
+    public ReviewerDTO getReviewer(@PathVariable String id) {
+    	
+    } */
 }
