@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 @Document(collection = "reviews")
 public class ReviewDTO {
-	private String _id;
+	private String _id;	//ObjectId로 설정할 경우 DB상의 _id값과 차이 발생하여 변경
 	private ObjectId reviewer_id;
 	private String reviewCl;
 	private String prdSeq;
