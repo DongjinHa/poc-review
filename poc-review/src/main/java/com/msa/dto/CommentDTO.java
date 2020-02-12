@@ -9,9 +9,9 @@ import lombok.Data;
 @Data
 public class CommentDTO {
 	@Id
-	private String _id;	//ObjectId로 설정할 경우 DB상의 _id값과 차이 발생하여 변경
+	private ObjectId _id;
 	private String review_id;	//ObjectId로 설정할 경우 DB상의 _id값과 차이 발생하여 변경
-	private String reviewer_id;	//ObjectId로 설정할 경우 DB상의 _id값과 차이 발생하여 변경
+	private ObjectId reviewer_id;
 	private String cnts;
 	private String regDate;
 	private String updDate;
