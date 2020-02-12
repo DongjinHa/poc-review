@@ -5,7 +5,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
-import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -184,7 +183,7 @@ class ReviewerRepositoryTest {
 			
 		}
 		
-		ObjectId reviewer_id;
+		String reviewer_id;
 		List<ReviewDTO> reviewList = reviewRepository.findAll();
 		for (ReviewDTO reviewDTO : reviewList) {
 			
