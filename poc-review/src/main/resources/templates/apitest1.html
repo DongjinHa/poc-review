@@ -6,7 +6,6 @@
 </head>
 <body>
 <h1>REST API 예제</h1>
-<th:block th:each="ReviewData : ${Review}">
 	<span th:text="'_id : ' + ${ReviewData._id}"></span>
 	<span th:text="'reviewer_id : ' + ${ReviewData.reviewer_id}"></span><br/>
 	<span th:text="'reviewCl : ' + ${ReviewData.reviewCl}"></span><br/>
@@ -26,9 +25,8 @@
 	
 	<span th:text="'regDate : ' + ${ReviewData.regDate}"></span><br/>
 	<span th:text="'updDate : ' + ${ReviewData.updDate}"></span><br/><br/>
-</th:block>
 
-</th:block>
+<th:block>
 	<script type="text/javascript">
 		
     </script>

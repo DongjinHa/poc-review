@@ -38,6 +38,13 @@ public class ReviewServiceImpl implements ReviewService {
 		return mongoTemplate.find(query, ReviewDTO.class);
 	}
 	
+	public List<ReviewDTO> getReviewList1() {		//20개 출력을 위한 서비스
+		Query query = new Query()
+				.with(Sort.by(Sort.Order.desc("revrSeq")))
+				.limit(20);
+		return mongoTemplate.find(query, ReviewDTO.class);    
+	} 
+	
     public List<ReviewDTO> getReviewList2() {
         return reviewRepository.findAll();
     } 

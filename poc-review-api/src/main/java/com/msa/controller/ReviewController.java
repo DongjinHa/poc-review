@@ -34,6 +34,11 @@ public class ReviewController {
     public List<ReviewDTO> getReviewList() {
         return reviewService.getReviewList();
     }    
+
+    @GetMapping("/getReviewList1")
+    public List<ReviewDTO> getReviewList1() {
+        return reviewService.getReviewList1();
+    }   
     
     @GetMapping("/getReviewList2")
     public List<ReviewDTO> getReviewList2() {
