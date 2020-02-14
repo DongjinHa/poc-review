@@ -63,13 +63,8 @@ public class ReviewController {
         return "deleted id:" + id;
     }
     
-<<<<<<< HEAD
 
-    
-   /* @GetMapping("/Reviewer/{id}")
-=======
     @GetMapping("/Reviewer/{id}")
->>>>>>> 8925b31b7cb5d839634ac6752f1e60db30aea6ca
     public ReviewerDTO getReviewer(@PathVariable String id) {
     	return reviewService.getReviewer(id);
     	

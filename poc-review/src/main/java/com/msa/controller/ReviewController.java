@@ -17,14 +17,11 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import com.msa.dto.CommentDTO;
 import com.msa.dto.ReviewDTO;
-<<<<<<< HEAD
 import com.msa.dto.ProductDTO;
-=======
 import com.msa.dto.ReviewerDTO;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
->>>>>>> 8925b31b7cb5d839634ac6752f1e60db30aea6ca
 
 @Controller
 @RequestMapping("/review")
@@ -92,10 +89,6 @@ public class ReviewController {
     		//RestTemplate ver.
         ResponseEntity<List<ReviewDTO>> reviewResponse = restTemplate.exchange("/getReviewList2", HttpMethod.GET, null, new ParameterizedTypeReference<List<ReviewDTO>>() {});
         List<ReviewDTO> result= reviewResponse.getBody();
-<<<<<<< HEAD
-     
-=======
->>>>>>> 8925b31b7cb5d839634ac6752f1e60db30aea6ca
         
         model.addAttribute("Review", result);
         return "apitest";
@@ -114,30 +107,9 @@ public class ReviewController {
         model.addAttribute("Review", result);
         return "apitest";
     }    
-    
-<<<<<<< HEAD
-    //review detail 구현 테스트용
-    @GetMapping("/reviewDetail/{id}")
-    public String productDetailTest(Model model,@PathVariable("id") String _id) {
-    	/* PocReviewApplication.java에 rootUri 설정과 함께 Bean으로 등록하면서 주석 및 수정
-    	RestTemplate restTemplate = new RestTemplate();
-    	review = restTemplate.getForObject(BASE_sURL+"/getReview/"+_id, ReviewDTO.class);
-    	*/
-    	ReviewDTO review = restTemplate.getForObject("/getReview/"+_id, ReviewDTO.class);
-    	model.addAttribute("Review", review);
-    	
-    	
-    	//ProductDTO product = restTemplate.getForObject("/getProductListByPrdSeq/"+review.getPrdSeq(), ProductDTO.class);
-    	
-    	ProductDTO product = restTemplate.getForObject("http://localhost:9092/getProductListByPrdSeq/"+review.getPrdSeq(), ProductDTO.class);
-    	
-    	model.addAttribute("Product", product);
-        
-    	
-    	return "apitest1";
-=======
+
     @GetMapping("/reviewDetail/{id}")	//1개 리뷰에 대한 출력
-    public String productDetailTest(Model model,@PathVariable("id") String _id) throws Exception { 	
+    public String reviewDetail(Model model,@PathVariable("id") String _id) throws Exception { 	
     	/* //WebClient ver.
 	   	WebClient webClient = builder.build();
 	   	ReviewDTO result = webClient.get().uri("/getReview/"+_id)
@@ -164,9 +136,11 @@ public class ReviewController {
     	}catch(Exception e){
     		e.printStackTrace();
     	}
+
+    	ProductDTO product = restTemplate.getForObject("http://localhost:9092/getProductListByPrdSeq/"+review.getPrdSeq(), ProductDTO.class);
+    	
+    	model.addAttribute("Product", product);
+        
     	return "apitest1";		  
-    	
-    	
->>>>>>> 8925b31b7cb5d839634ac6752f1e60db30aea6ca
     }
 }

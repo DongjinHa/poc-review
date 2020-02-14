@@ -5,42 +5,7 @@
 <title>REST API ¿¹Á¦</title>
 </head>
 <body>
-<<<<<<< HEAD
-<h1>REST API ¿¹Á¦</h1>
-<th:block th:each="ReviewData : ${Review}">
-   <span th:text="'_id : ' + ${ReviewData._id}"></span>
-   <span th:text="'reviewer_id : ' + ${ReviewData.reviewer_id}"></span><br/>
-   <span th:text="'reviewCl : ' + ${ReviewData.reviewCl}"></span><br/>
-   <span th:text="'prdSeq : ' + ${ReviewData.prdSeq}"></span><br/>
-   <span th:text="'bestFl : ' + ${ReviewData.bestFl}"></span><br/>
-   <span th:text="'evalScore : ' + ${ReviewData.evalScore}"></span><br/>
-   <span th:text="'hit : ' + ${ReviewData.hit}"></span><br/>
-   <span th:text="'recomCnt : ' + ${ReviewData.recomCnt}"></span><br/>
-   <span th:text="'recbScore : ' + ${ReviewData.recbScore}"></span><br/>
-   <span th:text="'goodCnts : ' + ${ReviewData.goodCnts}"></span><br/>
-   <span th:text="'etcCnts : ' + ${ReviewData.etcCnts}"></span><br/>
-   
-   <th:block th:each="ReviewImg : ${ReviewData.tplList}">
-      <span th:text="${'ReviewImg'+ReviewImgStat.index+' : '+ReviewImg}"></span><br/>
-      <img class="ReviewImg" th:src="@{'http://localhost:9091'+${ReviewImg}}" alt="Img" height="20%" width="20%" /><br/>
-   </th:block>
-   
-   <span th:text="'regDate : ' + ${ReviewData.regDate}"></span><br/>
-   <span th:text="'updDate : ' + ${ReviewData.updDate}"></span><br/><br/>
-</th:block>
-
-<th:block th:each="ProductData : ${Product}">
-	<span th:text="'prdSeq: ' + ${ProductData.prdSeq}"></span>
-	<span th:text="'prdNm: ' + ${ProductData.prdNm}"></span>
-	<span th:text="'salPrc: ' + ${ProductData.salPrc}"></span>
-
-</th:block>
-
-
-   <script type="text/javascript">
-      
-=======
-<h1>REST API ì˜ˆì œ</h1>
+<h1>REST API</h1>
 	<span th:text="'_id : ' + ${ReviewData._id}"></span>
 	<span th:text="'reviewer_id : ' + ${ReviewData.reviewer_id}"></span><br/>
 	<span th:text="'nickNm : ' + ${ReviewerData.nickNm}"></span><br/>
@@ -71,12 +36,15 @@
 		<span th:text="'regDate : ' + ${Comment.regDate}"></span><br/>
 	</th:block>
 	
+	<th:block th:each="ProductData : ${Product}">
+    <span th:text="'prdSeq: ' + ${ProductData.prdSeq}"></span>
+    <span th:text="'prdNm: ' + ${ProductData.prdNm}"></span>
+    <span th:text="'salPrc: ' + ${ProductData.salPrc}"></span>
+	</th:block>
+	
 <th:block>
 	<script type="text/javascript">
-		
->>>>>>> 8925b31b7cb5d839634ac6752f1e60db30aea6ca
     </script>
-</th:block>
 
 
 </body>
