@@ -184,7 +184,7 @@ class ReviewerRepositoryTest {
 			
 		}
 		
-		ObjectId reviewer_id;
+		String reviewer_id;
 		List<ReviewDTO> reviewList = reviewRepository.findAll();
 		for (ReviewDTO reviewDTO : reviewList) {
 			

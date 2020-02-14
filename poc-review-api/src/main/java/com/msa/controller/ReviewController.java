@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.msa.dto.CommentDTO;
 import com.msa.dto.ReviewDTO;
+import com.msa.dto.ReviewDetailDTO;
 import com.msa.dto.ReviewerDTO;
 import com.msa.service.ReviewService;
  
@@ -34,6 +36,11 @@ public class ReviewController {
     public List<ReviewDTO> getReviewList() {
         return reviewService.getReviewList();
     }    
+
+    @GetMapping("/getReviewList1")
+    public List<ReviewDTO> getReviewList1() {
+        return reviewService.getReviewList1();
+    }   
     
     @GetMapping("/getReviewList2")
     public List<ReviewDTO> getReviewList2() {
@@ -56,10 +63,39 @@ public class ReviewController {
         return "deleted id:" + id;
     }
     
+<<<<<<< HEAD
 
     
    /* @GetMapping("/Reviewer/{id}")
+=======
+    @GetMapping("/Reviewer/{id}")
+>>>>>>> 8925b31b7cb5d839634ac6752f1e60db30aea6ca
     public ReviewerDTO getReviewer(@PathVariable String id) {
+    	return reviewService.getReviewer(id);
     	
-    } */
+    }
+    
+    @GetMapping("/Comments/{id}")
+    public List<CommentDTO> getComments(@PathVariable String id) {
+    	return reviewService.getComments(id);
+    	
+    }
+    
+    @GetMapping("/getReview1/{id}")
+    public ReviewDetailDTO getReview1(@PathVariable String id) {	
+    	
+        return reviewService.getReview1(id);
+    }
+
+    @GetMapping("/Reviewer1/{id}")
+    public ReviewDetailDTO getReviewer1(@PathVariable String id) {
+    	return reviewService.getReviewer1(id);
+    	
+    }
+    
+    @GetMapping("/Comments1/{id}")
+    public List<ReviewDetailDTO> getComments1(@PathVariable String id) {
+    	return reviewService.getComments1(id);
+    	
+    }
 }

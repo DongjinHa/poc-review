@@ -7,6 +7,8 @@
 <body>
 <h1>REST API 예제</h1>
 <th:block th:each="ReviewData : ${Review}">
+	<span th:text="${ReviewDataStat.index+'번째 리뷰'}"></span><br/>
+	
 	<span th:text="'_id : ' + ${ReviewData._id}"></span>
 	<button th:target="_blank"
 	  th:data-url="@{'/review/reviewDetail/'+${ReviewData._id}}"
@@ -33,7 +35,7 @@
 	<span th:text="'updDate : ' + ${ReviewData.updDate}"></span><br/><br/>
 </th:block>
 
-</th:block>
+<th:block>
 	<script type="text/javascript">
 		function openWin(url){
 			ReviewDetailView = window.open("about:blank", "ReviewDetail", "width=550,height=600,left=400,top=50,dependent=yes,menubar=no,status=no,resizable=yes,toolbar=no,scrollbars=yes");
