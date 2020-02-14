@@ -1,9 +1,6 @@
 package com.msa.controller;
 
 import java.util.List;
-import java.util.Optional;
-
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.msa.dto.ReviewDTO;
@@ -43,6 +41,40 @@ public class ReviewController {
     @GetMapping("/getReviewList3/{name}")
     public List<ReviewDTO> getReviewList3(@PathVariable String name) {
         return reviewService.getReviewList3(name);
+    }  
+    
+    @GetMapping("/getReviewList4")
+    public List<ReviewDTO> reviews(@RequestParam String mode
+    							 , @RequestParam String reviewCl
+    							 , @RequestParam int pageNo
+    							 , @RequestParam int sort
+    							 , @RequestParam String key
+    							 , @RequestParam String uage
+    							 , @RequestParam String skintypecd1
+    							 , @RequestParam String skintypecd2
+    							 , @RequestParam String skintypecd3
+    							 , @RequestParam String skintypecd4
+    							 , @RequestParam String skintypecd5
+    							 , @RequestParam String skintypecd6
+    							 , @RequestParam String skintypecd7
+    							 , @RequestParam String skintypecdyn
+    							 , @RequestParam String skinetcinfo1
+    							 , @RequestParam String skinetcinfo2
+    							 , @RequestParam String skinetcinfo3
+    							 , @RequestParam String skinetcinfoyn
+    							 , @RequestParam String skintonecd1
+    							 , @RequestParam String skintonecd2
+    							 , @RequestParam String skintonecd3
+    							 , @RequestParam String skintonecdyn
+    							 ) {
+    	ReviewDTO reviewdto = new ReviewDTO();
+    	reviewdto.setReviewCl(reviewCl);
+    	reviewdto.setPageNo(pageNo);
+    	reviewdto.setSort(sort);
+    	reviewdto.setKey(key);
+    	reviewdto.setUage(uage);
+    	
+        return reviewService.getReviewList4(reviewdto);
     }  
     
     @GetMapping("/getReview/{id}")

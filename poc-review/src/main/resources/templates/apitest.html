@@ -2,10 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>REST API 예제</title>
+<title>리뷰</title>
 </head>
 <body>
-<h1>REST API 예제</h1>
+
 <th:block th:each="ReviewData : ${Review}">
 	<span th:text="'_id : ' + ${ReviewData._id}"></span>
 	<button th:target="_blank"
@@ -41,6 +41,7 @@
 			ReviewDetailView.focus();
 		    return false;	
 		}
+	
     </script>
 </th:block>
 
