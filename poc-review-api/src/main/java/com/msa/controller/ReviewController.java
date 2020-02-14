@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.msa.dto.ProductDTO;
 import com.msa.dto.ReviewDTO;
 import com.msa.dto.ReviewerDTO;
+import com.msa.service.ProductService;
 import com.msa.service.ReviewService;
  
 @RestController
@@ -23,6 +25,9 @@ public class ReviewController {
 	
 	@Autowired
 	ReviewService reviewService;
+	
+	@Autowired
+	ProductService productService;
     
     @PostMapping("/addReview")
     public String addReview(@RequestBody ReviewDTO _reviewDTO) {
@@ -54,6 +59,13 @@ public class ReviewController {
     public String delReview(@PathVariable String id) {
     	reviewService.delReview(id);
         return "deleted id:" + id;
+    }
+    
+  
+    
+    @GetMapping("/getProductListByPrdSeq/{prdSeq}")
+    public ProductDTO getProductListByPrdSeq(@PathVariable String prdSeq) {	
+        return productService.getProductListByPrdSeq(prdSeq);
     }
     
    /* @GetMapping("/Reviewer/{id}")

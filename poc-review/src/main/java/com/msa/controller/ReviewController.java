@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
 
 import com.msa.dto.ReviewDTO;
+import com.msa.dto.ProductDTO;
 
 @Controller
 @RequestMapping("/review")
@@ -34,7 +35,12 @@ public class ReviewController {
 
 	@GetMapping("/productList") 
 	public String productList(Model model){
-		return "/product/productList";
+		
+		ResponseEntity<List<ProductDTO>> productList = restTemplate.exchange("/getProductList", HttpMethod.GET, null, new ParameterizedTypeReference<List<ProductDTO>>() {});
+        List<ProductDTO> result= productList.getBody();
+		
+        model.addAttribute("Product", result);
+		return "/product/productListMD";
 	}
     
     @GetMapping("/getReviewList2")
@@ -45,7 +51,7 @@ public class ReviewController {
         */
         ResponseEntity<List<ReviewDTO>> reviewResponse = restTemplate.exchange("/getReviewList2", HttpMethod.GET, null, new ParameterizedTypeReference<List<ReviewDTO>>() {});
         List<ReviewDTO> result= reviewResponse.getBody();
-        
+     
         
         model.addAttribute("Review", result);
         return "apitest";
@@ -69,10 +75,19 @@ public class ReviewController {
     public String productDetailTest(Model model,@PathVariable("id") String _id) {
     	/* PocReviewApplication.java에 rootUri 설정과 함께 Bean으로 등록하면서 주석 및 수정
     	RestTemplate restTemplate = new RestTemplate();
-    	review = restTemplate.getForObject(BASE_URL+"/getReview/"+_id, ReviewDTO.class);
+    	review = restTemplate.getForObject(BASE_sURL+"/getReview/"+_id, ReviewDTO.class);
     	*/
     	ReviewDTO review = restTemplate.getForObject("/getReview/"+_id, ReviewDTO.class);
     	model.addAttribute("Review", review);
+    	
+    	
+    	//ProductDTO product = restTemplate.getForObject("/getProductListByPrdSeq/"+review.getPrdSeq(), ProductDTO.class);
+    	
+    	ProductDTO product = restTemplate.getForObject("http://localhost:9092/getProductListByPrdSeq/"+review.getPrdSeq(), ProductDTO.class);
+    	
+    	model.addAttribute("Product", product);
+        
+    	
     	return "apitest1";
     }
 }
