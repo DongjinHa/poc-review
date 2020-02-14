@@ -7,6 +7,7 @@
 <body>
 <div class="thumbnails">							
 <th:block th:each="ReviewData : ${Review}">
+
 	<div class="box">
 		<span th:text="'_id : ' + ${ReviewData._id}"></span>
 		
@@ -40,6 +41,7 @@
 </th:block>
 </div>
 </th:block>
+
 	<script type="text/javascript">
 		function openWin(url){
 			ReviewDetailView = window.open("about:blank", "ReviewDetail", "width=550,height=600,left=400,top=50,dependent=yes,menubar=no,status=no,resizable=yes,toolbar=no,scrollbars=yes");
