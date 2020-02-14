@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>MD 리스트</title>
+</head>
+<body>
+<th:block th:each="ProductData : ${Product}">
+	<span th:text="'prdSeq: ' + ${ProductData.prdSeq}"></span>
+	<span th:text="'prdNm: ' + ${ProductData.prdNm}"></span>
+	<span th:text="'salPrc: ' + ${ProductData.salPrd}"></span>
+
+</th:block>
+</body>
+</html>
