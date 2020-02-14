@@ -5,34 +5,40 @@
 <title>리뷰</title>
 </head>
 <body>
-
+<div class="thumbnails">							
 <th:block th:each="ReviewData : ${Review}">
-	<span th:text="'_id : ' + ${ReviewData._id}"></span>
-	<button th:target="_blank"
-	  th:data-url="@{'/review/reviewDetail/'+${ReviewData._id}}"
-	  onclick="openWin(this.getAttribute('data-url'))">click here:)
-	</button><br/>
-	
-	<span th:text="'reviewer_id : ' + ${ReviewData.reviewer_id}"></span><br/>
-	<span th:text="'reviewCl : ' + ${ReviewData.reviewCl}"></span><br/>
-	<span th:text="'prdSeq : ' + ${ReviewData.prdSeq}"></span><br/>
-	<span th:text="'bestFl : ' + ${ReviewData.bestFl}"></span><br/>
-	<span th:text="'evalScore : ' + ${ReviewData.evalScore}"></span><br/>
-	<span th:text="'hit : ' + ${ReviewData.hit}"></span><br/>
-	<span th:text="'recomCnt : ' + ${ReviewData.recomCnt}"></span><br/>
-	<span th:text="'recbScore : ' + ${ReviewData.recbScore}"></span><br/>
-	<span th:text="'goodCnts : ' + ${ReviewData.goodCnts}"></span><br/>
-	<span th:text="'etcCnts : ' + ${ReviewData.etcCnts}"></span><br/>
-	
-	<th:block th:each="ReviewImg : ${ReviewData.tplList}">
-		<span th:text="${'ReviewImg'+ReviewImgStat.index+' : '+ReviewImg}"></span><br/>
-		<img class="ReviewImg" th:src="@{'http://localhost:9091'+${ReviewImg}}" alt="Img" height="20%" width="20%" /><br/>
-	</th:block>
-	
-	<span th:text="'regDate : ' + ${ReviewData.regDate}"></span><br/>
-	<span th:text="'updDate : ' + ${ReviewData.updDate}"></span><br/><br/>
+	<div class="box">
+		<span th:text="'_id : ' + ${ReviewData._id}"></span>
+		
+		<button th:target="_blank"
+		  th:data-url="@{'/review/reviewDetail/'+${ReviewData._id}}"
+		  onclick="openWin(this.getAttribute('data-url'))">click here:)
+		</button><br/>
+		
+		<div class = "image fit">
+		<th:block th:each="ReviewImg : ${ReviewData.tplList}" th:if="${ReviewImgStat.index} == 0">
+			<img class="ReviewImg" th:src="@{'http://localhost:9091'+${ReviewImg}}" alt="Img"  /><br/>
+		</th:block>
+		</div>
+		<div class="inner">
+			<span th:text="'reviewer_id : ' + ${ReviewData.reviewer_id}"></span><br/>
+			<span th:text="'reviewCl : ' + ${ReviewData.reviewCl}"></span><br/>
+			<span th:text="'prdSeq : ' + ${ReviewData.prdSeq}"></span><br/>
+			<span th:text="'bestFl : ' + ${ReviewData.bestFl}"></span><br/>
+			<span th:text="'evalScore : ' + ${ReviewData.evalScore}"></span><br/>
+			<span th:text="'hit : ' + ${ReviewData.hit}"></span><br/>
+			<span th:text="'recomCnt : ' + ${ReviewData.recomCnt}"></span><br/>
+			<span th:text="'recbScore : ' + ${ReviewData.recbScore}"></span><br/>
+			<div th:with="max_length=50">
+			<p th:if="${#strings.length(ReviewData.goodCnts)} gt ${max_length}" th:text="'goodCnts : ' + ${#strings.substring(ReviewData.goodCnts,0,max_length) + '…'}"></p>
+			<p th:unless="${#strings.length(ReviewData.goodCnts)} gt ${max_length}" th:text="'goodCnts : ' + ${ReviewData.goodCnts}"></p>
+			</div>		
+			<span th:text="'regDate : ' + ${ReviewData.regDate}"></span><br/>
+			<span th:text="'updDate : ' + ${ReviewData.updDate}"></span><br/><br/>
+		</div>
+	</div>
 </th:block>
-
+</div>
 </th:block>
 	<script type="text/javascript">
 		function openWin(url){

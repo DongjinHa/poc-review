@@ -123,7 +123,7 @@ public class ReviewController {
         model.addAttribute("Review", result);
         
         String mode = reviewDTO.getMode();
-        System.out.println(reviewDTO.getKey());
+        
         if(StringUtils.isEmpty(mode)) { // mode 0: 리뷰 리스트 조회, 1: 리뷰 필터 검색, 2: 페이징
         	return "apitest2";
         } else {
