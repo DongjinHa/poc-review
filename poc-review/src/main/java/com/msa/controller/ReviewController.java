@@ -201,7 +201,7 @@ public class ReviewController {
     								, HttpMethod.GET, null, new ParameterizedTypeReference<List<CommentDTO>>() {});
         List<CommentDTO> comments= commentsResponse.getBody();
     	model.addAttribute("CommentData",comments);
-    	System.out.println(comments);
+    	
     	}catch(Exception e){
     		e.printStackTrace();
     	}
@@ -210,6 +210,7 @@ public class ReviewController {
     	
     	model.addAttribute("Product", product);
         
-    	return "apitest1";		  
+    	//return "apitest1";	(AC921691, UI TEST로 경로 수정)	
+    	return "detailTest";
     }
 }
