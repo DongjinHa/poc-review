@@ -15,7 +15,9 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.msa.dto.CommentDTO;
 import com.msa.dto.ReviewDTO;
+import com.msa.dto.ReviewerDTO;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -29,10 +31,10 @@ public class ReviewController {
 	 */
 	
 	@Autowired
-	RestTemplate restTemplate;	//PocReviewApplication.java에서 Bean 등록
+	RestTemplate restTemplate;	//PocReviewApplication.java에서 Bean 등록 및 rootUri 설정
 	
 	@Autowired 
-	WebClient.Builder builder;
+	WebClient.Builder builder;	//PocReviewApplication.java에서 Bean 등록 및 baseUrl 설정
 
 	
     @GetMapping("/getReviewList")
@@ -48,38 +50,27 @@ public class ReviewController {
   
 	@GetMapping("/getReviewList1") //전체가 아닌 20개만 출력하도록 getReviewList2 수정
 	public String getReviewList1(Model model) {
-		
-		/*	//RestTemplate ver.
-		ResponseEntity<List<ReviewDTO>> reviewResponse = restTemplate.exchange("/getReviewList1", HttpMethod.GET, null, new ParameterizedTypeReference<List<ReviewDTO>>() {});
-        List<ReviewDTO> result= reviewResponse.getBody();
-		
-        model.addAttribute("Review",result);
-		return "apitest";
-		*/
-		
-			//WebClient ver.
+		/*	//WebClient ver.
 		WebClient webClient = builder.build();
 	    List<ReviewDTO> result = webClient.get().uri("/getReviewList1")
 				.retrieve() // 응답값을 가져옴 
 				.bodyToFlux(ReviewDTO.class)
 				.collectList().block();
 	    model.addAttribute("Review",result);
+		return "apitest";	*/
+		
+			//RestTemplate ver.
+		ResponseEntity<List<ReviewDTO>> reviewResponse = restTemplate.exchange("/getReviewList1", HttpMethod.GET, null, new ParameterizedTypeReference<List<ReviewDTO>>() {});
+        List<ReviewDTO> result= reviewResponse.getBody();
+        model.addAttribute("Review",result);
 		return "apitest";
+		
 	}
 	
 	
     @GetMapping("/getReviewList2")	//리뷰 전체 출력
     public String getReviewList2(Model model) {
-        
-    	/*	//RestTemplate ver.
-        ResponseEntity<List<ReviewDTO>> reviewResponse = restTemplate.exchange("/getReviewList2", HttpMethod.GET, null, new ParameterizedTypeReference<List<ReviewDTO>>() {});
-        List<ReviewDTO> result= reviewResponse.getBody();
-        
-        model.addAttribute("Review", result);
-        return "apitest";
-        */
-    	
-    		//WebClient ver.
+    	/*	//WebClient ver.
     	WebClient webClient = builder.build();
 		List<ReviewDTO> result = webClient.get().uri("/getReviewList2")
 				.retrieve() // 응답값을 가져옴 
@@ -87,7 +78,15 @@ public class ReviewController {
 				.collectList().block();
 		
 	    model.addAttribute("Review",result);
-		return "apitest";
+		return "apitest";	*/
+    	
+    		//RestTemplate ver.
+        ResponseEntity<List<ReviewDTO>> reviewResponse = restTemplate.exchange("/getReviewList2", HttpMethod.GET, null, new ParameterizedTypeReference<List<ReviewDTO>>() {});
+        List<ReviewDTO> result= reviewResponse.getBody();
+        
+        model.addAttribute("Review", result);
+        return "apitest";
+        		
     }    
     
     @GetMapping("/getReviewList3")
@@ -104,22 +103,35 @@ public class ReviewController {
     }    
     
     @GetMapping("/reviewDetail/{id}")	//1개 리뷰에 대한 출력
-    public String productDetailTest(Model model,@PathVariable("id") String _id) {
- 
-    	/*	
+    public String productDetailTest(Model model,@PathVariable("id") String _id) throws Exception { 	
+    	/* //WebClient ver.
+	   	WebClient webClient = builder.build();
+	   	ReviewDTO result = webClient.get().uri("/getReview/"+_id)
+					.retrieve() // 응답값을 가져옴 
+					.bodyToMono(ReviewDTO.class)
+					.block();  
+		model.addAttribute("ReviewData",result);
+		return "apitest1";	*/
+		
     	 //RestTemplate ver.
     	ReviewDTO review = restTemplate.getForObject("/getReview/"+_id, ReviewDTO.class);
     	model.addAttribute("ReviewData", review);
-    	*/
     	
-    	//WebClient ver.
-    	WebClient webClient = builder.build();
-    	ReviewDTO result = webClient.get().uri("/getReview/"+_id)
-				.retrieve() // 응답값을 가져옴 
-				.bodyToMono(ReviewDTO.class)
-				.block();
-    		
-		  model.addAttribute("ReviewData",result);
-		  return "apitest1";
+    	try {
+    	ReviewerDTO reviewer = restTemplate.getForObject("/Reviewer/"+review.getReviewer_id(),ReviewerDTO.class);
+    	model.addAttribute("ReviewerData",reviewer);
+    	
+    	
+    	ResponseEntity<List<CommentDTO>> commentsResponse = restTemplate.exchange("/Comments/"+review.get_id()
+    								, HttpMethod.GET, null, new ParameterizedTypeReference<List<CommentDTO>>() {});
+        List<CommentDTO> comments= commentsResponse.getBody();
+    	model.addAttribute("CommentData",comments);
+    	System.out.println(comments);
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}
+    	return "apitest1";		  
+    	
+    	
     }
 }

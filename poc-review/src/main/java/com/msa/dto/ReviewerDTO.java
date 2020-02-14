@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class ReviewerDTO {
 	@Id
-	private ObjectId _id;
+	private String _id;
 	private String nickNm;
 	private String lvl;
 	private String sex;
