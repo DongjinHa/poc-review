@@ -62,7 +62,7 @@ public class ReviewController {
 		return "/product/productListMD";
 	}
   
-	@GetMapping("/getReviewList1") //전체가 아닌 20개만 출력하도록 getReviewList2 수정
+	@GetMapping("/getReviewList1") //파워리뷰 - bestFL=Y & hit count desc로 15건 출력하도록 임시 api 사용
 	public String getReviewList1(Model model) {
 		/*	//WebClient ver.
 		WebClient webClient = builder.build();
@@ -77,7 +77,7 @@ public class ReviewController {
 		ResponseEntity<List<ReviewDTO>> reviewResponse = restTemplate.exchange("/getReviewList1", HttpMethod.GET, null, new ParameterizedTypeReference<List<ReviewDTO>>() {});
         List<ReviewDTO> result= reviewResponse.getBody();
         model.addAttribute("Review",result);
-		return "apitest";
+		return "powerReview";
 		
 	}
 	
@@ -212,4 +212,5 @@ public class ReviewController {
         
     	return "apitest1";		  
     }
+    
 }

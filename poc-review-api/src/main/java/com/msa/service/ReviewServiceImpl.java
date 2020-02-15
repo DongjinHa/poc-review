@@ -43,10 +43,11 @@ public class ReviewServiceImpl implements ReviewService {
 		return mongoTemplate.find(query, ReviewDTO.class);
 	}
 	
-	public List<ReviewDTO> getReviewList1() {		//20개 출력을 위한 서비스
+	public List<ReviewDTO> getReviewList1() {		//파워리뷰 출력을 위한 서비스
 		Query query = new Query()
-				.with(Sort.by(Sort.Order.desc("revrSeq")))
-				.limit(20);
+				.addCriteria(Criteria.where("bestFl").is("Y"))
+				.with(Sort.by(Sort.Order.desc("hit")))
+				.limit(15);
 		return mongoTemplate.find(query, ReviewDTO.class);    
 	} 
 	
@@ -99,7 +100,6 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 	
     public ReviewDTO getReview(String id) {
-//    	ReviewDTO review = mongoTemplate.findById(new ObjectId("5e3c27f099a991312ca22243"), ReviewDTO.class,"reviews");
     	ReviewDTO review = mongoTemplate.findById(new ObjectId(id), ReviewDTO.class,"reviews");
     	return review;
     }
@@ -121,6 +121,7 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	
+	//DBRef test용
 	public ReviewDetailDTO getReview1(String id) {
 		//ReviewDetailDTO reviewDetail = mongoTemplate.findById(new ObjectId(id), ReviewDetailDTO.class,"reviews");
 		Query query = new Query()
