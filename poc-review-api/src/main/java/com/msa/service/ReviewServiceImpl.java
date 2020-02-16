@@ -79,22 +79,29 @@ public class ReviewServiceImpl implements ReviewService {
 		}
 		*/
 		
-		query.addCriteria(Criteria.where("goodCnts").regex(reviewDTO.getKey()));
+		// 검색어
+		query.addCriteria(Criteria.where("goodCnts").regex(reviewDTO.getKey()));   
 		
-		if(StringUtils.isEmpty(reviewDTO.getReviewCl())==true) {
+		// A:포토리뷰, B:간단리뷰 
+		if(StringUtils.isEmpty(reviewDTO.getReviewCl())==true) {  
 			query.addCriteria(Criteria.where("reviewCl").is("A"));
 		}else {
 			query.addCriteria(Criteria.where("reviewCl").is(reviewDTO.getReviewCl()));
 		}
 		
-		if(reviewDTO.getSort()==2) { // 조회순
+		// 1:최신순, 2:조회순
+		if(reviewDTO.getSort()==2) {
 			query.with(Sort.by(Sort.Order.desc("hit")));
-		} else { // 최신순
+		} else { 
 			query.with(Sort.by(Sort.Order.desc("regDate")));
 		} 
-			
-		query.skip((reviewDTO.getPageNo()-1)*20)  // 페이징
-		 	 .limit(20);						  // 페이징
+		
+		// 연령  
+		query.addCriteria(Criteria.where("uage").is(reviewDTO.getUage()));	
+		
+		// 페이징
+		query.skip((reviewDTO.getPageNo()-1)*20)  
+		 	 .limit(20);						 
 		
 		return mongoTemplate.find(query, ReviewDTO.class);
 	}

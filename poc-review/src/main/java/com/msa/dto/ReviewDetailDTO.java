@@ -16,4 +16,7 @@ public class ReviewDetailDTO {
 	
 	@DBRef
 	private CommentDTO comment;
+	
+	@DBRef
+	private ProductDTO product;
 }

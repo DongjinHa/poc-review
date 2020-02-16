@@ -2,6 +2,7 @@ package com.msa.controller;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -25,6 +26,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import com.msa.dto.CommentDTO;
 import com.msa.dto.ReviewDTO;
+import com.msa.dto.ReviewDetailDTO;
 import com.msa.dto.ProductDTO;
 import com.msa.dto.ReviewerDTO;
 
@@ -163,8 +165,23 @@ public class ReviewController {
     	restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
     	ResponseEntity<List<ReviewDTO>> reviewResponse = restTemplate.exchange(builder.build().encode().toUri(), HttpMethod.GET, entity, new ParameterizedTypeReference<List<ReviewDTO>>() {});
         List<ReviewDTO> result= reviewResponse.getBody();
+        List<ReviewDetailDTO> detailresult = new ArrayList<ReviewDetailDTO>();
         
-        model.addAttribute("Review", result);
+        for(int i=0;i<result.size();i++) {
+  
+        	ReviewerDTO reviewer = restTemplate.getForObject("/Reviewer/"+result.get(i).getReviewer_id(),ReviewerDTO.class);
+        	ProductDTO product = restTemplate.getForObject("http://localhost:9092/getProductListByPrdSeq/"+result.get(i).getPrdSeq(), ProductDTO.class);
+
+        	ReviewDetailDTO reviewdetail = new ReviewDetailDTO();
+        	
+        	reviewdetail.setReview(result.get(i));
+        	reviewdetail.setReviewer(reviewer);
+        	reviewdetail.setProduct(product);
+        	
+        	detailresult.add(reviewdetail);
+        }
+        
+        model.addAttribute("Review", detailresult);
         
         String mode = reviewDTO.getMode();
         
