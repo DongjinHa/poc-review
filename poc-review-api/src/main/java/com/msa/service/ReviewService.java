@@ -23,6 +23,5 @@ public interface ReviewService {
     
 	//DBRef test용
 	public ReviewDetailDTO getReview1(String id);
-	public ReviewDetailDTO getReviewer1(String id);
-	public List<ReviewDetailDTO> getComments1(String id);
+	//public List<CommentDTO> getComments1(ReviewDetailDTO Review);
 }

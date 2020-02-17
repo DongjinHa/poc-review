@@ -79,7 +79,10 @@ integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9If
                </span>
               </div>
 	<th:block th:each="Comment : ${CommentData}">
-	 	<span th:text="'reviewer_id : ' + ${Comment.reviewer_id}"></span><br/>
+	 	<!-- 코멘트 단 유저 정보 출력을 위하여 추가 -->
+	 	<img class="profileImg" th:src="@{'http://localhost:9091'+${Comment.reviewer.profileImg}}" alt="Img" height="10%" width="10%" />
+		<span th:text="'lvl.' + ${Comment.reviewer.lvl}"></span><br/>
+		<span th:text="${Comment.reviewer.nickNm}"></span><br/>
 		<span th:text="'cnts : ' + ${Comment.cnts}"></span><br/>
 		<span th:text="'regDate : ' + ${Comment.regDate}"></span><br/>
 	</th:block>

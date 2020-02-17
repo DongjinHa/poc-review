@@ -108,21 +108,14 @@ public class ReviewController {
     	
     }
     
+    /*
     @GetMapping("/getReview1/{id}")
     public ReviewDetailDTO getReview1(@PathVariable String id) {	
-    	
-        return reviewService.getReview1(id);
+        ReviewDetailDTO review = reviewService.getReview1(id);
+        List<CommentDTO> comments = reviewService.getComments1(review);
+        review.setComment(comments);
+        return review;
     }
+    */
 
-    @GetMapping("/Reviewer1/{id}")
-    public ReviewDetailDTO getReviewer1(@PathVariable String id) {
-    	return reviewService.getReviewer1(id);
-    	
-    }
-    
-    @GetMapping("/Comments1/{id}")
-    public List<ReviewDetailDTO> getComments1(@PathVariable String id) {
-    	return reviewService.getComments1(id);
-    	
-    }
 }
