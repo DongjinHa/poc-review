@@ -81,3 +81,30 @@
 			border-radius: 0;
 			padding: 0;
 		}
+		
+		<!-- powerReview Css 추가 -->	
+		.box .powerReviewInner {
+			padding: 0.5em;
+			border: 1px solid #dcdcdc;
+		}
+
+			@media screen and (max-width: 480px) {
+
+				.box .powerReviewInner {
+					padding: 1em;
+				}
+
+			}
+		
+		.box .powerReviewOuter {
+			padding: 0.5em;
+			border: 1px solid #dcdcdc;
+		}
+
+			@media screen and (max-width: 480px) {
+
+				.box .powerReviewOuter {
+					padding: 1em;
+				}
+
+			}

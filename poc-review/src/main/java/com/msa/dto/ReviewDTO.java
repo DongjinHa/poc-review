@@ -46,4 +46,7 @@ public class ReviewDTO {
 	private String skintonecd3;
 	private String skintonecdyn;
 	private String mode;
+
+	//상품정보
+	private ProductDTO product;
 }
