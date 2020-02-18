@@ -12,8 +12,8 @@
 </head>
 
 <body>
-<div class="thumbnails">					
-<th:block th:each="ReviewData : ${Review}">
+<div class="thumbnails" id="PowerReview">	<!--apitest.html 영역까지 slick 적용되는 것을 막기 위해 선택자 처리-->	
+<th:block th:each="ReviewData : ${powerReview}">
 
 	<div class="box">
 		  
@@ -54,7 +54,8 @@
 	<script type="text/javascript">
 	
 		$(document).ready(function () {
-			$('.thumbnails').slick({
+			
+			$('#PowerReview').slick({	//apitest.html 영역까지 slick 적용되는 것을 막기 위해 선택자 처리
 				  infinite: true,
 				  slidesToShow: 3,
 				  slidesToScroll: 3,

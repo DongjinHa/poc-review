@@ -76,7 +76,7 @@ public class ReviewController {
 			//RestTemplate ver.
 		ResponseEntity<List<ReviewDTO>> reviewResponse = restTemplate.exchange("/getReviewList1", HttpMethod.GET, null, new ParameterizedTypeReference<List<ReviewDTO>>() {});
         List<ReviewDTO> result= reviewResponse.getBody();
-        model.addAttribute("Review",result);
+        model.addAttribute("powerReview",result);
 		return "powerReview";
 		
 	}
@@ -165,6 +165,12 @@ public class ReviewController {
         List<ReviewDTO> result= reviewResponse.getBody();
         
         model.addAttribute("Review", result);
+        
+        //파워리뷰 출력을 위한 호출 S - getReviewList1 구현부 그대로 사용
+        ResponseEntity<List<ReviewDTO>> powerReviewResponse = restTemplate.exchange("/getReviewList1", HttpMethod.GET, null, new ParameterizedTypeReference<List<ReviewDTO>>() {});
+        List<ReviewDTO> powerReview= powerReviewResponse.getBody();
+        model.addAttribute("powerReview",powerReview);
+        //파워리뷰 출력을 위한 호출 E
         
         String mode = reviewDTO.getMode();
         

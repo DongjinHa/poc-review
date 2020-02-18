@@ -8,6 +8,12 @@
 <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
 <body>
 	<h1>리뷰</h1>
+	
+	<h2>믿고 보는 파워 리뷰</h2>
+	<div class="powerReviewList" id="powerReviewList">
+		<th:block th:include="powerReview"></th:block>
+	</div>
+	
 	<h2>맞춤 필터</h2>
 	<div style="height: 200px;">
 		<form action="/review/reviewList" method="post" id="reviewSrchFrm" onsubmit="return false;">
