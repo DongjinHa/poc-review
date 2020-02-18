@@ -1,11 +1,15 @@
 package com.msa.service;
 
+import java.util.HashMap;
 import java.util.List;
 import javax.annotation.Resource;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.LookupOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.TextCriteria;
@@ -97,13 +101,32 @@ public class ReviewServiceImpl implements ReviewService {
 		} 
 		
 		// 연령  
-		query.addCriteria(Criteria.where("uage").is(reviewDTO.getUage()));	
+		// query.addCriteria(Criteria.where("uage").is(reviewDTO.getUage()));	
 		
 		// 페이징
 		query.skip((reviewDTO.getPageNo()-1)*20)  
 		 	 .limit(20);						 
 		
 		return mongoTemplate.find(query, ReviewDTO.class);
+	}
+	
+	// 룩업 테스트
+	public List<ReviewDTO> lookupReviewer() {
+		
+		LookupOperation lookUp = LookupOperation.newLookup()
+				.from("reviewers")   // 묶이는 컬렉션 이름 reviewers
+				.localField("reviewer_id")   // reviewers에서의 묶일 도큐먼트  
+				.foreignField("_id")  // 묶는 review의 도큐먼트
+				.as("ref");  // 별명은 ref
+		Aggregation agg = Aggregation.newAggregation(
+				Aggregation.match(Criteria.where("reviewCl").is("B")), // 조건
+				lookUp) ;
+			
+		 List<ReviewDTO> results = mongoTemplate.aggregate(agg, "reviews", ReviewDTO.class).getMappedResults();
+		 
+		 System.out.println(results);
+		 
+		 return results;  
 	}
 	
     public ReviewDTO getReview(String id) {

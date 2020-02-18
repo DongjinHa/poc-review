@@ -1,5 +1,7 @@
 package com.msa.dto;
 
+import java.util.List;
+
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -17,4 +19,6 @@ public class ReviewDetailDTO {
 	
 	@DBRef
 	private CommentDTO comment;
+	
+	
 }

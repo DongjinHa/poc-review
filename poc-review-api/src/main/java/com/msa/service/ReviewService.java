@@ -25,4 +25,5 @@ public interface ReviewService {
 	public ReviewDetailDTO getReview1(String id);
 	public ReviewDetailDTO getReviewer1(String id);
 	public List<ReviewDetailDTO> getComments1(String id);
+	public List<ReviewDTO> lookupReviewer();
 }

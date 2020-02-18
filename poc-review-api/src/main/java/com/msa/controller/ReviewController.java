@@ -125,4 +125,10 @@ public class ReviewController {
     	return reviewService.getComments1(id);
     	
     }
+    
+    @GetMapping("/lookupReviewer")
+    public List<ReviewDTO> lookupReviewer() {
+    	return reviewService.lookupReviewer();
+    	
+    }
 }

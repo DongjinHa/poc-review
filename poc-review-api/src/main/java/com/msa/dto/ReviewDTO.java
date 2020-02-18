@@ -1,5 +1,7 @@
 package com.msa.dto;
 
+import java.util.List;
+
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -48,5 +50,7 @@ public class ReviewDTO {
 	private String skintonecd3;
 	private String skintonecdyn;
 	private String mode;
+	
+	private List<Object> ref;
 	
 }
