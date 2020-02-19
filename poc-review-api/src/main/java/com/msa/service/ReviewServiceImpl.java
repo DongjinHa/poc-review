@@ -133,6 +133,23 @@ public class ReviewServiceImpl implements ReviewService {
 		
 		return comments;
 	}
+	
+	//댓글 페이징 기능 TEST
+	public List<CommentDTO> getComments2(String id, int pageNo) {
+		Query query = new Query()
+				.addCriteria(Criteria.where("review_id").is(id)) // 해당하는 리뷰의 글을
+				.with(Sort.by(Sort.Order.asc("regDate"))) // 등록 오름차순으로
+				.skip((pageNo-1)*3) // 페이지-1개 * 3건씩 건너 뛰고 
+				.limit(3); // 3개만 조회
+		List<CommentDTO> comments =  mongoTemplate.find(query, CommentDTO.class);    
+		
+		for(CommentDTO comment : comments) {
+			ReviewerDTO commenter = mongoTemplate.findById(new ObjectId(comment.getReviewer_id()), ReviewerDTO.class,"reviewers");
+			comment.setReviewer(commenter);
+		}
+		
+		return comments;
+	}
 
 	
 	//DBRef test용

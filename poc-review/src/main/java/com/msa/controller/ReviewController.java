@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
@@ -226,8 +227,24 @@ public class ReviewController {
     	
     	model.addAttribute("Product", product);
         
-    	//return "apitest1";	(AC921691, UI TEST로 경로 수정)	
+    	//return "apitest1";
     	return "detailTest";
     }
+    
+    // 댓글 페이징 기능 TEST
+    @GetMapping("reviewDetail/{id}/getMoreComments/{pageNo}")	//1개 리뷰에 대한 출력
+    public @ResponseBody List<CommentDTO> reviewDetail(Model model,@PathVariable("id") String _id, @PathVariable("pageNo") String pageNo) {	
+    	
+    	ResponseEntity<List<CommentDTO>> commentsResponse = restTemplate.exchange("/Comments/"+ _id 
+    								+"/" + pageNo
+    								, HttpMethod.GET, null, new ParameterizedTypeReference<List<CommentDTO>>() {});
+        List<CommentDTO> comments= commentsResponse.getBody();
+
+        System.out.println(pageNo);
+        
+    	return comments;
+    }
+    
+
     
 }
