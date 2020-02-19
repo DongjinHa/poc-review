@@ -75,11 +75,16 @@ public class ReviewController {
 		return "apitest";	*/
 		
 			//RestTemplate ver.
-		ResponseEntity<List<ReviewDTO>> reviewResponse = restTemplate.exchange("/getReviewList1", HttpMethod.GET, null, new ParameterizedTypeReference<List<ReviewDTO>>() {});
-        List<ReviewDTO> result= reviewResponse.getBody();
-        model.addAttribute("Review",result);
+		ResponseEntity<List<ReviewDTO>> PowerReviewResponse = restTemplate.exchange("/getReviewList1", HttpMethod.GET, null, new ParameterizedTypeReference<List<ReviewDTO>>() {});
+        List<ReviewDTO> powerReviews= PowerReviewResponse.getBody();
+        
+        for(ReviewDTO powerReview : powerReviews) {
+        	ProductDTO product = restTemplate.getForObject("http://localhost:9092/getProductListByPrdSeq/"+powerReview.getPrdSeq(), ProductDTO.class);
+        	powerReview.setProduct(product);
+        }
+        model.addAttribute("powerReview",powerReviews);
+        System.out.println(powerReviews);
 		return "powerReview";
-		
 	}
 	
 	

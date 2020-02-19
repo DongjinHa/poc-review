@@ -8,8 +8,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
-import org.springframework.data.mongodb.core.aggregation.ConvertOperators.ToObjectId;
+import org.springframework.data.mongodb.core.aggregation.LimitOperation;
 import org.springframework.data.mongodb.core.aggregation.LookupOperation;
+import org.springframework.data.mongodb.core.aggregation.MatchOperation;
+import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
+import org.springframework.data.mongodb.core.aggregation.SkipOperation;
+import org.springframework.data.mongodb.core.aggregation.SortOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.TextCriteria;
@@ -17,6 +21,8 @@ import org.springframework.data.mongodb.core.query.TextQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.msa.document.Comment;
+import com.msa.document.Review;
 import com.msa.dto.CommentDTO;
 import com.msa.dto.ReviewDTO;
 import com.msa.dto.ReviewDetailDTO;
@@ -35,16 +41,55 @@ public class ReviewServiceImpl implements ReviewService {
 		this.mongoTemplate = mongoTemplate;
 	}
 	
-    public ReviewDTO addReview(ReviewDTO reviewDTO) {
-        return reviewRepository.save(reviewDTO);
+    public Review addReview(Review review) {
+        return reviewRepository.save(review);
     }
     
 	public List<ReviewDTO> getReviewList() {
+		/*
 		Query query = new Query()
 				.addCriteria(Criteria.where("title").is("DongjinHa2"))
 				.with(Sort.by(Sort.Order.desc("revrSeq")))
 				.limit(2);
 		return mongoTemplate.find(query, ReviewDTO.class);
+		*/
+		
+		int pageNo = 1;
+		
+		Criteria criteria = new Criteria();
+		criteria.andOperator(
+				Criteria.where("bestFl").is("Y")
+		);
+		
+		MatchOperation match = Aggregation.match(criteria);
+		LookupOperation lookUp = LookupOperation.newLookup()
+				.from("reviewers").localField("reviewer_id")   	//1. 묶을 컬렉션 이름은 reviewers, 대상 도큐먼트는 같은 이름인 reviewer_id
+				.foreignField("_id").as("reviewer");  			//2. 조회할 컬렉션에서 해당 reviews 컬렉션이 묶일 도큐먼트 이름은 _id, 별명은 reviewer
+
+		ProjectionOperation project = Aggregation.project().andExclude("reviewer_id");
+		
+		SortOperation sort = Aggregation.sort(Sort.Direction.DESC, "regDate");
+
+		SkipOperation skip = Aggregation.skip((pageNo - 1) * 18);
+		
+		LimitOperation limit = Aggregation.limit(18);
+
+		Aggregation aggregation = Aggregation.newAggregation(match, lookUp, project, sort, skip, limit);
+
+//				cmtCnt
+//				tplRegCnt
+//				prevImg
+				
+		//		Aggregation.replaceRoot().withValueOf(ArrayOperators.ArrayElemAt.arrayOf("cs").elementAt(0));
+//				Aggregation.replaceRoot().wi,
+//				Aggregation.limit(15)
+		
+	    AggregationResults<ReviewDTO> result = mongoTemplate.aggregate(aggregation, Review.class, ReviewDTO.class);
+	    System.out.println(result.getMappedResults());
+	    
+		return result.getMappedResults();   
+		
+//		return mongoTemplate.find(query, ReviewDTO.class);    
 	}
 	
 	public List<ReviewDTO> getReviewList1() {		//파워리뷰 출력을 위한 서비스
@@ -55,7 +100,7 @@ public class ReviewServiceImpl implements ReviewService {
 		return mongoTemplate.find(query, ReviewDTO.class);    
 	} 
 	
-    public List<ReviewDTO> getReviewList2() {
+    public List<Review> getReviewList2() {
         return reviewRepository.findAll();
     } 
     

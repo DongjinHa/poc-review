@@ -2,8 +2,8 @@ package com.msa.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.msa.dto.ReviewerDTO;
+import com.msa.document.Reviewer;
 
-public interface ReviewerRepository extends MongoRepository<ReviewerDTO, String> {
+public interface ReviewerRepository extends MongoRepository<Reviewer, String> {
 	
 }
