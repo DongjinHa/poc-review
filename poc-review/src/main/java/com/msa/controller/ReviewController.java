@@ -172,17 +172,6 @@ public class ReviewController {
         
         model.addAttribute("Review", result);
         
-        //파워리뷰 출력을 위한 호출 S - getReviewList1 구현부 그대로 사용
-        ResponseEntity<List<ReviewDTO>> PowerReviewResponse = restTemplate.exchange("/getReviewList1", HttpMethod.GET, null, new ParameterizedTypeReference<List<ReviewDTO>>() {});
-        List<ReviewDTO> powerReviews= PowerReviewResponse.getBody();
-        
-        for(ReviewDTO powerReview : powerReviews) {
-        	ProductDTO product = restTemplate.getForObject("http://localhost:9092/getProductListByPrdSeq/"+powerReview.getPrdSeq(), ProductDTO.class);
-        	powerReview.setProduct(product);
-        }
-        model.addAttribute("powerReview",powerReviews);
-        //파워리뷰 출력을 위한 호출 E
-        
         String mode = reviewDTO.getMode();
         
         if(StringUtils.isEmpty(mode)) { // mode 0: 리뷰 리스트 조회, 1: 리뷰 필터 검색, 2: 페이징

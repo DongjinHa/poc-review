@@ -11,7 +11,7 @@
 	
 	<h2>믿고 보는 파워 리뷰</h2>
 	<div class="powerReviewList" id="powerReviewList">
-		<th:block th:include="powerReview"></th:block>
+		<!--th:block th:include="powerReview"></th:block-->
 	</div>
 	
 	<h2>맞춤 필터</h2>
@@ -110,6 +110,17 @@
 
 
 	<script type="text/javascript">
+		$(document).ready(function () {
+			$.ajax({
+				url : '/review/getReviewList1',
+				type : 'GET',
+				success : function(data) {
+					$('#powerReviewList').html(data);
+				}
+			});
+		});
+		
+	
 		function openWin(url) {
 			ReviewDetailView = window
 					.open(
