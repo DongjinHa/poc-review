@@ -20,9 +20,9 @@ public interface ReviewService {
     public void delReview(String id);
 	public ReviewerDTO getReviewer(String id);
 	public List<CommentDTO> getComments(String id);
+	public List<CommentDTO> getComments2(String id, int PageNo);
     
 	//DBRef test용
 	public ReviewDetailDTO getReview1(String id);
-	public ReviewDetailDTO getReviewer1(String id);
-	public List<ReviewDetailDTO> getComments1(String id);
+	//public List<CommentDTO> getComments1(ReviewDetailDTO Review);
 }

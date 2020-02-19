@@ -6,6 +6,10 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.ConvertOperators.ToObjectId;
+import org.springframework.data.mongodb.core.aggregation.LookupOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.TextCriteria;
@@ -43,10 +47,11 @@ public class ReviewServiceImpl implements ReviewService {
 		return mongoTemplate.find(query, ReviewDTO.class);
 	}
 	
-	public List<ReviewDTO> getReviewList1() {		//20개 출력을 위한 서비스
+	public List<ReviewDTO> getReviewList1() {		//파워리뷰 출력을 위한 서비스
 		Query query = new Query()
-				.with(Sort.by(Sort.Order.desc("revrSeq")))
-				.limit(20);
+				.addCriteria(Criteria.where("bestFl").is("Y"))
+				.with(Sort.by(Sort.Order.desc("hit")))
+				.limit(15);
 		return mongoTemplate.find(query, ReviewDTO.class);    
 	} 
 	
@@ -99,7 +104,6 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 	
     public ReviewDTO getReview(String id) {
-//    	ReviewDTO review = mongoTemplate.findById(new ObjectId("5e3c27f099a991312ca22243"), ReviewDTO.class,"reviews");
     	ReviewDTO review = mongoTemplate.findById(new ObjectId(id), ReviewDTO.class,"reviews");
     	return review;
     }
@@ -115,31 +119,69 @@ public class ReviewServiceImpl implements ReviewService {
     
 	public List<CommentDTO> getComments(String id) {
 		Query query = new Query()
+				.addCriteria(Criteria.where("review_id").is(id))	//조건 추가
 				.with(Sort.by(Sort.Order.asc("regDate")))
 				.limit(3);
-		return mongoTemplate.find(query, CommentDTO.class);    
+		List<CommentDTO> comments =  mongoTemplate.find(query, CommentDTO.class);    
+		
+		//코멘트를 단 유저의 정보 출력을 위하여 로직 추가
+		for(CommentDTO comment : comments) {
+			ReviewerDTO commenter = mongoTemplate.findById(new ObjectId(comment.getReviewer_id()), ReviewerDTO.class,"reviewers");
+			comment.setReviewer(commenter);
+		}
+		System.out.print(comments);
+		
+		return comments;
+	}
+	
+	//댓글 페이징 기능 TEST
+	public List<CommentDTO> getComments2(String id, int pageNo) {
+		Query query = new Query()
+				.addCriteria(Criteria.where("review_id").is(id)) // 해당하는 리뷰의 글을
+				.with(Sort.by(Sort.Order.asc("regDate"))) // 등록 오름차순으로
+				.skip((pageNo-1)*3) // 페이지-1개 * 3건씩 건너 뛰고 
+				.limit(3); // 3개만 조회
+		List<CommentDTO> comments =  mongoTemplate.find(query, CommentDTO.class);    
+		
+		for(CommentDTO comment : comments) {
+			ReviewerDTO commenter = mongoTemplate.findById(new ObjectId(comment.getReviewer_id()), ReviewerDTO.class,"reviewers");
+			comment.setReviewer(commenter);
+		}
+		
+		return comments;
 	}
 
 	
-	public ReviewDetailDTO getReview1(String id) {
-		//ReviewDetailDTO reviewDetail = mongoTemplate.findById(new ObjectId(id), ReviewDetailDTO.class,"reviews");
-		Query query = new Query()
-				.addCriteria(Criteria.where("review.$id").is(id)).limit(1);
-		ReviewDetailDTO reviewDetail = (ReviewDetailDTO) mongoTemplate.find(query, ReviewDetailDTO.class);
-		System.out.println(reviewDetail);
-    	return reviewDetail;
+	//DBRef test용
+	public ReviewDetailDTO getReview1(String id) {	//review+reviewer 정보
+		LookupOperation lookup = LookupOperation.newLookup()
+				.from("reviewers").localField("reviewer_id")
+				.foreignField("_id").as("reviewer");
+		Aggregation aggregation = Aggregation.newAggregation(
+				lookup,
+				Aggregation.match(
+						Criteria.where("_id").is(id)
+				)
+		);
+		AggregationResults<ReviewDetailDTO> groupResults = mongoTemplate.aggregate(aggregation,"reviews", ReviewDetailDTO.class);
+    	return groupResults.getUniqueMappedResult();
 	}
-	public ReviewDetailDTO getReviewer1(String id) {
-		ReviewDetailDTO reviewDetail = mongoTemplate.findById(new ObjectId(id), ReviewDetailDTO.class,"reviewers");
-    	return reviewDetail;
+	
+	/*
+	public List<CommentDTO> getComments1(ReviewDetailDTO Review){	//review에 대한 comment 정보
+		LookupOperation lookup = LookupOperation.newLookup()
+				.from("reviewers").localField("reviewer_id")
+				.foreignField(("_id")).as("commenter");
+		Aggregation aggregation = Aggregation.newAggregation(
+				Aggregation.match(
+						Criteria.where("review_id").is(Review.get_id())
+				)
+				,lookup
+		);
+		AggregationResults<CommentDTO> groupResults = mongoTemplate.aggregate(aggregation,"comments", CommentDTO.class);
+		System.out.println(groupResults.getMappedResults());
+    	return groupResults.getMappedResults();
 	}
-	public List<ReviewDetailDTO> getComments1(String id){
-		Query query = new Query()
-				.with(Sort.by(Sort.Order.asc("regDate")))
-				.limit(3);
-		return mongoTemplate.find(query, ReviewDetailDTO.class);    
-				
-			//	find(query, ReviewDetailDTO.class);    
-	}
+	*/
     
 }
