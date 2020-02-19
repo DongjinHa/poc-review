@@ -2,6 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="http://localhost:8081/css/reviewDetail.css" />
+
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 <title>Review Detail</title>
 </head>
@@ -17,13 +19,13 @@
 	<span th:text="'조회수 : ' + ${ReviewData.hit}"></span><br/>
 	<span th:text="'별점 : ' + ${ReviewData.evalScore}"></span>
 	<hr>
-	<img class="profileImg" th:src="@{'http://localhost:9091'+${ReviewerData.profileImg}}" alt="Img" height="10%" width="10%" />
+	<img class="profileImg" th:src="@{'http://localhost:9091'+${ReviewerData.profileImg}}" alt="Img"/>
 	<span class = "badge badge-success" th:text="'lvl.' + ${ReviewerData.lvl}"></span><br/>
 	<span th:text="'작성자 : ' + ${ReviewData.reviewer_id}"></span>
 	(<span th:text="${ReviewerData.nickNm}"></span>)<br/><br/>
 
 	<!-- 리뷰 이미지 슬라이드 -->
-	<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+	<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel"  data-interval="2000">
 	  	  <!-- 슬라이드 콘텐츠 -->
  		  <div class="carousel-inner" style="width: auto; height: 300px; overflow: hidden">
  		  	<th:block th:each="ReviewImg : ${ReviewData.tplList}">
@@ -42,7 +44,7 @@
 			</th:block>
 		  </div>
 		  <!-- 슬라이드 화살표, 이미지가 2개 이상일 때만 노출  -->	
-		  <div class = "carousel-control" >
+		  <div class = "carousel-control">
 			  <th:block th:each="ReviewImg :  ${ReviewData.tplList} " >
 				  <th:block th:if="${ReviewImgStat.count} >= 2">
 					<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -81,21 +83,22 @@
       <br>
         
        <!-- 코멘트 출력 -->
-        <table id = "commentTbl">      
-		<th:block th:each="Comment : ${CommentData}">
-	 	<tr><td>
-	 	<img class="profileImg" th:src="@{'http://localhost:9091'+${Comment.reviewer.profileImg}}" alt="Img" height="10%" width="10%" />
-		<span class = "badge badge-success" th:text="'lvl.' + ${Comment.reviewer.lvl}"></span>
-		</td>
-		<td><span th:text="${Comment.reviewer.nickNm}"></span></td>
-		<td><span th:text="${Comment.regDate}"></span></td>
-		</tr>
-		<tr><td>
-		<span th:text="'댓글 내용 : ' + ${Comment.cnts}"></span><br/>
-		</td></tr>
-		</th:block>
-		</table>
-	
+       <div class="commentTblDiv">
+	        <table id = "commentTbl">      
+			<th:block th:each="Comment : ${CommentData}">
+		 	<tr><td>
+		 	<img class="profileImg" th:src="@{'http://localhost:9091'+${Comment.reviewer.profileImg}}" alt="Img" height="10%" width="10%" />
+			<span class = "badge badge-success" th:text="'lvl.' + ${Comment.reviewer.lvl}"></span>
+			</td>
+			<td><span th:text="${Comment.reviewer.nickNm}"></span></td>
+			<td><span th:text="${Comment.regDate}"></span></td>
+			</tr>
+			<tr><td>
+			<span th:text="'댓글 내용 : ' + ${Comment.cnts}"></span><br/>
+			</td></tr>
+			</th:block>
+			</table>
+		</div>
 	<!-- 코멘트 더보기 페이징 -->
 	<button class="btn btn-secondary" id ="moreCmtBtn"> more </button>
 	</div>
@@ -115,7 +118,7 @@
 	<script th:inline="javascript" type="text/javascript">
 	
 $(document).ready(function(){	
-	
+
 		var id = [[${ReviewData._id}]] 
 		var pageNo = 2;
 		var url = document.location.href;

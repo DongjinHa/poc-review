@@ -18,6 +18,6 @@ public class CommentDTO {
 	private String regDate;
 	private String updDate;
 	
-	@DBRef
+	//@DBRef
 	private ReviewerDTO reviewer;	//코멘트를 단 유저 정보 출력을 위하여 추가
 }
