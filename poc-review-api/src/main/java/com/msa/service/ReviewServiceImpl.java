@@ -150,6 +150,17 @@ public class ReviewServiceImpl implements ReviewService {
 		
 		return comments;
 	}
+	
+	// 댓글 더보기 버튼 제어를 위한 댓글 전체 수 구하기 TEST
+	public int getCommentsTotalCount(String id) {
+		Query query = new Query()
+				.addCriteria(Criteria.where("review_id").is(id));
+		int count = mongoTemplate.find(query, CommentDTO.class).size();
+		
+		System.out.println(count);
+				
+		return count;
+	}
 
 	
 	//DBRef test용
@@ -184,4 +195,6 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 	*/
     
+	
+	
 }

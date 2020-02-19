@@ -208,15 +208,16 @@ public class ReviewController {
     	}
 
     	ProductDTO product = restTemplate.getForObject("http://localhost:9092/getProductListByPrdSeq/"+review.getPrdSeq(), ProductDTO.class);
-    	
     	model.addAttribute("Product", product);
+    	
+    	String count = restTemplate.exchange("/CommentsCount/"+ _id, HttpMethod.GET, null, responseType);
         
     	//return "apitest1";
     	return "detailTest";
     }
     
     // 댓글 페이징 기능 TEST
-    @GetMapping("reviewDetail/{id}/getMoreComments/{pageNo}")	//1개 리뷰에 대한 출력
+    @GetMapping("reviewDetail/{id}/getMoreComments/{pageNo}")
     public @ResponseBody List<CommentDTO> reviewDetail(Model model,@PathVariable("id") String _id, @PathVariable("pageNo") String pageNo) {	
     	
     	ResponseEntity<List<CommentDTO>> commentsResponse = restTemplate.exchange("/Comments/"+ _id 
@@ -224,11 +225,7 @@ public class ReviewController {
     								, HttpMethod.GET, null, new ParameterizedTypeReference<List<CommentDTO>>() {});
         List<CommentDTO> comments= commentsResponse.getBody();
 
-        System.out.println(pageNo);
-        
     	return comments;
     }
-    
-
     
 }

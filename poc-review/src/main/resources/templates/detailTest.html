@@ -91,7 +91,7 @@
 		<td><span th:text="${Comment.regDate}"></span></td>
 		</tr>
 		<tr><td>
-		<span th:text="'댓글 내용 : ' + ${Comment.cnts}"></span><br/>
+		<span th:text="'댓글 내용 : ' + ${Comment.cnts}"></span>
 		</td></tr>
 		</th:block>
 		</table>
@@ -125,17 +125,28 @@ $(document).ready(function(){
 			type: 'GET',
 			url : url + '/getMoreComments/' + pageNo,
 			success: function (data) { 
-		            var str = '<TR>';
+		            var str = "<tr>";
 		            $.each(data , function(i){
-		                str += '<TD>' + data[i].reviewer.profileImg + '</TD><TD>' 
-		                			  + 'lvl.' + data[i].reviewer.lvl + '</TD><TD>' 
-		                			  + data[i].reviewer.nickNm + '</TD><TD>'
+		                 str += "<TD>"+ data[i].reviewer.profileImg + "</TD><TD>" 
+		                			  + 'lvl.' + data[i].reviewer.lvl + "</TD><TD>" 
+		                			  + data[i].reviewer.nickNm + "</TD><TD>"
 		                			  + data[i].regDate + '</TD><TR><TD>'
-		                			  + data[i].cnts+ '</TD></TR>';
-		                str += '</TR>';
+		                			  + data[i].cnts+ '</TD></TR>';  		
+ 						/* str += "<td>" 
+		            		+  "<img class=\"profileImg\" th:src=\"@{'http://localhost:9091"+ data[i].reviewer.profileImg + "'}\" alt=\"Img\"/>" 
+		            		+  "<span class = \"badge badge-success\" th:text=\"'lvl.' + " + data[i].reviewer.lvl + "\"></span>" 
+		            		+  "</td>" 
+		            		+  "<td><span th:text=\""+ data[i].reviewer.nickNm + "\"></span></td>" 
+		            		+  "<td><span th:text=\"" + data[i].regDate + "\"></span></td>" 
+		            		+  "</tr>" 
+		            		+  "<tr><td>" 
+		            		+  "<span th:text=\"'댓글 내용 : ' + " + data[i].cnts + "\"></span>" 
+		            		+ "</td>";  */
+		                str += "</tr>";
 		           });
 		           $("#commentTbl").append(str); 
 		           pageNo += 1;
+					console.log(str);
                       },		//ajax-success
 			error: function (e) {
 			console.log(e);

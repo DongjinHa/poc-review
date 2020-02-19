@@ -21,6 +21,7 @@ public interface ReviewService {
 	public ReviewerDTO getReviewer(String id);
 	public List<CommentDTO> getComments(String id);
 	public List<CommentDTO> getComments2(String id, int PageNo);
+	public int getCommentsTotalCount(String id);
     
 	//DBRef test용
 	public ReviewDetailDTO getReview1(String id);

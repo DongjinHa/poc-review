@@ -113,6 +113,12 @@ public class ReviewController {
     	return reviewService.getComments2(id, pageNo);
     	
     }
+    
+    @GetMapping("/CommentsCount/{id}")
+    public int getCommentsTotalCount(@PathVariable String id) {
+    	return reviewService.getCommentsTotalCount(id);
+    }
+    
     /*
     @GetMapping("/getReview1/{id}")
     public ReviewDetailDTO getReview1(@PathVariable String id) {	
