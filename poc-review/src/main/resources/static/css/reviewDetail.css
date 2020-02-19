@@ -1,0 +1,14 @@
+@charset "utf-8";
+	.commentTblDiv #commentTbl{
+	    margin: 0px 20px;
+	}
+	
+	.commentTblDiv #commentTbl .profileImg{
+		height: 10%;
+		width : 10% 
+	}
+	
+	.profileImg{
+		height: 10%;
+		width : 10% 
+	}
