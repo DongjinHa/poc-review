@@ -2,6 +2,8 @@ package com.msa.service;
 
 import java.util.List;
 import org.bson.types.ObjectId;
+
+import com.msa.document.Review;
 import com.msa.dto.CommentDTO;
 import com.msa.dto.ReviewDTO;
 import com.msa.dto.ReviewerDTO;
@@ -9,10 +11,10 @@ import com.msa.dto.ReviewDetailDTO;
 
 public interface ReviewService {
 
-    public ReviewDTO addReview(ReviewDTO reviewDTO);
+    public Review addReview(Review review);
 	public List<ReviewDTO> getReviewList();
 	public List<ReviewDTO> getReviewList1();
-	public List<ReviewDTO> getReviewList2();
+	public List<Review> getReviewList2();
 	public List<ReviewDTO> getReviewList3(String name);
     //public Optional<ReviewDTO> getReview(String id);
 	public List<ReviewDTO> getReviewList4(ReviewDTO reviewdto);

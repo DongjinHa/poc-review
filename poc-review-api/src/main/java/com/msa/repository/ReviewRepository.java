@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.msa.dto.ReviewDTO;
+import com.msa.document.Review;
 
-public interface ReviewRepository extends MongoRepository<ReviewDTO, String> {
+public interface ReviewRepository extends MongoRepository<Review, String> {
 
-	List<ReviewDTO> findByPrdSeq(String prdSeq);
+	List<Review> findByPrdSeq(String prdSeq);
 	
 }
