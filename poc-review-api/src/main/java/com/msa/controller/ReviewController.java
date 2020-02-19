@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.msa.document.Review;
 import com.msa.dto.CommentDTO;
 import com.msa.dto.ReviewDTO;
 import com.msa.dto.ReviewDetailDTO;
@@ -25,9 +26,9 @@ public class ReviewController {
 	ReviewService reviewService;
     
     @PostMapping("/addReview")
-    public String addReview(@RequestBody ReviewDTO _reviewDTO) {
-    	ReviewDTO reviewDTO = reviewService.addReview(_reviewDTO);
-        return "added id:" + reviewDTO.get_id();
+    public String addReview(@RequestBody Review _review) {
+    	Review review = reviewService.addReview(_review);
+        return "added id:" + review.get_id();
     }
 
     @GetMapping("/getReviewList")
@@ -41,7 +42,7 @@ public class ReviewController {
     }   
     
     @GetMapping("/getReviewList2")
-    public List<ReviewDTO> getReviewList2() {
+    public List<Review> getReviewList2() {
         return reviewService.getReviewList2();
     }   
     
