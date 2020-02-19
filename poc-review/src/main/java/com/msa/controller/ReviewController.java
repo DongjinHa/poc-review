@@ -210,13 +210,16 @@ public class ReviewController {
     	ProductDTO product = restTemplate.getForObject("http://localhost:9092/getProductListByPrdSeq/"+review.getPrdSeq(), ProductDTO.class);
     	model.addAttribute("Product", product);
     	
-    	String count = restTemplate.exchange("/CommentsCount/"+ _id, HttpMethod.GET, null, responseType);
-        
-    	//return "apitest1";
+    	// 댓글 페이징 버튼 컨트롤 
+    	ResponseEntity<String> countResponse = restTemplate.exchange("/CommentsCount/"+ _id, HttpMethod.GET, null, 
+    											new ParameterizedTypeReference<String>() {}); 
+    	String count = countResponse.getBody(); 
+    	model.addAttribute("Count", count);
+    	
     	return "detailTest";
     }
     
-    // 댓글 페이징 기능 TEST
+    // 댓글 페이징 
     @GetMapping("reviewDetail/{id}/getMoreComments/{pageNo}")
     public @ResponseBody List<CommentDTO> reviewDetail(Model model,@PathVariable("id") String _id, @PathVariable("pageNo") String pageNo) {	
     	
@@ -227,5 +230,18 @@ public class ReviewController {
 
     	return comments;
     }
+    
+	/*
+	 * @GetMapping("reviewDetail/{id}/getCommentsCount") public @ResponseBody String
+	 * getCommentsCount(Model model, @PathVariable("id") String _id) {
+	 * 
+	 * ResponseEntity<String> countResponse =
+	 * restTemplate.exchange("/CommentsCount/"+ _id, HttpMethod.GET, null, new
+	 * ParameterizedTypeReference<String>() {}); String count =
+	 * countResponse.getBody(); model.addAttribute("Count", count);
+	 * System.out.println(count);
+	 * 
+	 * return count; }
+	 */
     
 }
