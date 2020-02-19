@@ -25,7 +25,7 @@
 	(<span th:text="${ReviewerData.nickNm}"></span>)<br/><br/>
 
 	<!-- 리뷰 이미지 슬라이드 -->
-	<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+	<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel"  data-interval="2000">
 	  	  <!-- 슬라이드 콘텐츠 -->
  		  <div class="carousel-inner" style="width: auto; height: 300px; overflow: hidden">
  		  	<th:block th:each="ReviewImg : ${ReviewData.tplList}">
@@ -44,7 +44,7 @@
 			</th:block>
 		  </div>
 		  <!-- 슬라이드 화살표, 이미지가 2개 이상일 때만 노출  -->	
-		  <div class = "carousel-control" >
+		  <div class = "carousel-control">
 			  <th:block th:each="ReviewImg :  ${ReviewData.tplList} " >
 				  <th:block th:if="${ReviewImgStat.count} >= 2">
 					<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -118,7 +118,7 @@
 	<script th:inline="javascript" type="text/javascript">
 	
 $(document).ready(function(){	
-	
+
 		var id = [[${ReviewData._id}]] 
 		var pageNo = 2;
 		var url = document.location.href;
