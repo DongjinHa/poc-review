@@ -213,15 +213,19 @@ public class ReviewController {
     	}
 
     	ProductDTO product = restTemplate.getForObject("http://localhost:9092/getProductListByPrdSeq/"+review.getPrdSeq(), ProductDTO.class);
-    	
     	model.addAttribute("Product", product);
-        
-    	//return "apitest1";
+    	
+    	// 댓글 페이징 버튼 컨트롤 
+    	ResponseEntity<String> countResponse = restTemplate.exchange("/CommentsCount/"+ _id, HttpMethod.GET, null, 
+    											new ParameterizedTypeReference<String>() {}); 
+    	String count = countResponse.getBody(); 
+    	model.addAttribute("Count", count);
+    	
     	return "detailTest";
     }
     
-    // 댓글 페이징 기능 TEST
-    @GetMapping("reviewDetail/{id}/getMoreComments/{pageNo}")	//1개 리뷰에 대한 출력
+    // 댓글 페이징 
+    @GetMapping("reviewDetail/{id}/getMoreComments/{pageNo}")
     public @ResponseBody List<CommentDTO> reviewDetail(Model model,@PathVariable("id") String _id, @PathVariable("pageNo") String pageNo) {	
     	
     	ResponseEntity<List<CommentDTO>> commentsResponse = restTemplate.exchange("/Comments/"+ _id 
@@ -229,11 +233,20 @@ public class ReviewController {
     								, HttpMethod.GET, null, new ParameterizedTypeReference<List<CommentDTO>>() {});
         List<CommentDTO> comments= commentsResponse.getBody();
 
-        System.out.println(pageNo);
-        
     	return comments;
     }
     
-
+	/*
+	 * @GetMapping("reviewDetail/{id}/getCommentsCount") public @ResponseBody String
+	 * getCommentsCount(Model model, @PathVariable("id") String _id) {
+	 * 
+	 * ResponseEntity<String> countResponse =
+	 * restTemplate.exchange("/CommentsCount/"+ _id, HttpMethod.GET, null, new
+	 * ParameterizedTypeReference<String>() {}); String count =
+	 * countResponse.getBody(); model.addAttribute("Count", count);
+	 * System.out.println(count);
+	 * 
+	 * return count; }
+	 */
     
 }

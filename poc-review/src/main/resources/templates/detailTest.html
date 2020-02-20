@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <link rel="stylesheet" href="http://localhost:8081/css/reviewDetail.css" />
 <link rel="stylesheet" href="http://localhost:8081/css/customBootstrap.css"/>
-
 <!--link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"-->
+
 <title>Review Detail</title>
 </head>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -44,6 +44,7 @@
 				      style="width: auto; height: 300px;">
 				    </div>
 				</th:block> 
+				</th:block>
 			</th:block>
 		  </div>
 		  <!-- 슬라이드 화살표, 이미지가 2개 이상일 때만 노출  -->	
@@ -61,6 +62,16 @@
 				  </th:block>
 			  </th:block>
 		  </div>
+		  <!-- 슬라이드 언더바 -->
+		    <ol class="carousel-indicators">
+			    <th:block th:each="ReviewImg :  ${ReviewData.tplList}">
+				    <li data-target="#carouselExampleIndicators" 
+				    	th:attr="data-slide-to=${ReviewImgStat.index}"></li>
+				    
+				    <!--  li data-target="#carouselExampleIndicators" data-slide-to="1" ></li>
+				    <li data-target="#carouselExampleIndicators" data-slide-to="2" ></li-->
+			    </th:block>
+  			</ol>
 	</div>
 
 	<!-- 리뷰 내용 -->
@@ -89,19 +100,22 @@
        <div class="commentTblDiv">
 	        <table id = "commentTbl">      
 			<th:block th:each="Comment : ${CommentData}">
-		 	<tr><td>
-		 	<img class="profileImg" th:src="@{'http://localhost:9091'+${Comment.reviewer.profileImg}}" alt="Img" height="10%" width="10%" />
-			<span class = "badge badge-success" th:text="'lvl.' + ${Comment.reviewer.lvl}"></span>
-			</td>
-			<td><span th:text="${Comment.reviewer.nickNm}"></span></td>
-			<td><span th:text="${Comment.regDate}"></span></td>
-			</tr>
-			<tr><td>
-			<span th:text="'댓글 내용 : ' + ${Comment.cnts}"></span><br/>
-			</td></tr>
+				<th:block th:each="ReviewerInfo : ${Comment.reviewer}" th:if="${ReviewerInfoStat.index}==0">
+			 	<tr><td>
+			 	<img class="profileImg" th:src="@{'http://localhost:9091'+${ReviewerInfo.profileImg}}" alt="Img" height="10%" width="10%" />
+				<span class = "badge badge-success" th:text="'lvl.' + ${ReviewerInfo.lvl}"></span>
+				</td>
+				<td><span th:text="${ReviewerInfo.nickNm}"></span></td>
+				<td><span th:text="${Comment.regDate}"></span></td>
+				</tr>
+				<tr><td>
+				<span th:text="'댓글 내용 : ' + ${Comment.cnts}"></span><br/>
+				</td></tr>
+				</th:block>
 			</th:block>
 			</table>
 		</div>
+
 	<!-- 코멘트 더보기 페이징 -->
 	<button class="btn btn-secondary" id ="moreCmtBtn"> more </button>
 	</div>
@@ -122,34 +136,54 @@
 	
 $(document).ready(function(){	
 
+		//페이징
 		var id = [[${ReviewData._id}]] 
 		var pageNo = 2;
 		var url = document.location.href;
+		var totalCmtNo = [[${Count}]] 
+		var totalPgNo = Math.floor(totalCmtNo/3);
 		
-		$("#moreCmtBtn").click(function (){
+		//슬라이드  
+		var imgArray = [[${ReviewData.tplList}]]
+		
+ 		if(imgArray == null){
+			$("#carouselExampleIndicators").hide(); //이미지가 없을 때는 슬라이드 div 자체를 hide
+		} 
+		if(totalPgNo <= 1){ // 총 댓글이 3개 이하일 때는 첫 페이지부터 버튼 hide
+			$("#moreCmtBtn").hide();
+		}
+		else{				// 총 댓글이 4개 이상일 때 버튼 이벤트
+			$("#moreCmtBtn").click(function (){
 	  		 $.ajax({
-			type: 'GET',
-			url : url + '/getMoreComments/' + pageNo,
-			success: function (data) { 
-		            var str = '<TR>';
-		            $.each(data , function(i){
-		                str += '<TD>' + data[i].reviewer.profileImg + '</TD><TD>' 
-		                			  + 'lvl.' + data[i].reviewer.lvl + '</TD><TD>' 
-		                			  + data[i].reviewer.nickNm + '</TD><TD>'
-		                			  + data[i].regDate + '</TD><TR><TD>'
-		                			  + data[i].cnts+ '</TD></TR>';
-		                str += '</TR>';
-		           });
-		           $("#commentTbl").append(str); 
-		           pageNo += 1;
-                      },		//ajax-success
-			error: function (e) {
-			console.log(e);
-			alert('댓글 읽기에 실패했습니다.');
-			} 					//ajax-error
-			});  				//ajax 
-	});							//Btn-Event
-});								//document-ready
+						type: 'GET',
+						url : url + '/getMoreComments/' + pageNo,
+						success: function (data) { 
+							$('#commentTbl').append(data);
+					             var str = "<tr>";
+					            $.each(data , function(i){
+					                 str += "<TD>"+ data[i].reviewer[0].profileImg + "</TD><TD>" 
+					                			  + 'lvl.' + data[i].reviewer[0].lvl + "</TD><TD>" 
+					                			  + data[i].reviewer[0].nickNm + "</TD><TD>"
+					                			  + data[i].regDate + '</TD><TR><TD>'
+					                			  + data[i].cnts+ '</TD></TR>';  		
+					                str += "</tr>";
+					           });
+					           $("#commentTbl").append(str);
+					           if(pageNo == totalPgNo){ //마지막페이지이면 버튼 hide
+					        	   $("#moreCmtBtn").hide();
+					           }
+					           else {
+					           pageNo += 1; //페이지 더 있으면 pageNo ++
+					           }
+			                  },			//ajax-success
+						error: function (e) {
+						console.log(e);
+						alert('댓글 읽기에 실패했습니다.');
+						} 					//ajax-error
+						});  				//ajax 
+	});										//Btn-Event
+		}									//else
+});											//document-ready
     </script>
 </th:block>
 

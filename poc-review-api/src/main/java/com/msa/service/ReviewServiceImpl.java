@@ -85,7 +85,6 @@ public class ReviewServiceImpl implements ReviewService {
 //				Aggregation.limit(15)
 		
 	    AggregationResults<ReviewDTO> result = mongoTemplate.aggregate(aggregation, Review.class, ReviewDTO.class);
-	    System.out.println(result.getMappedResults());
 	    
 		return result.getMappedResults();   
 		
@@ -184,25 +183,65 @@ public class ReviewServiceImpl implements ReviewService {
     	return reviewer;
     }
     
-	public List<CommentDTO> getComments(String id) {
-		Query query = new Query()
-				.addCriteria(Criteria.where("review_id").is(id))	//조건 추가
-				.with(Sort.by(Sort.Order.asc("regDate")))
-				.limit(3);
-		List<CommentDTO> comments =  mongoTemplate.find(query, CommentDTO.class);    
-		
-		//코멘트를 단 유저의 정보 출력을 위하여 로직 추가
-		for(CommentDTO comment : comments) {
-			ReviewerDTO commenter = mongoTemplate.findById(new ObjectId(comment.getReviewer_id()), ReviewerDTO.class,"reviewers");
-			comment.setReviewer(commenter);
-		}
-		System.out.print(comments);
-		
+    //댓글 가져오기 (old)
+//	public List<CommentDTO> getComments(String id) {
+//		Query query = new Query()
+//				.addCriteria(Criteria.where("review_id").is(id))	//조건 추가
+//				.with(Sort.by(Sort.Order.asc("regDate")))
+//				.limit(3);
+//		List<CommentDTO> comments =  mongoTemplate.find(query, CommentDTO.class);    
+//		
+//		//코멘트를 단 유저의 정보 출력을 위하여 로직 추가
+//		for(CommentDTO comment : comments) {
+//			ReviewerDTO commenter = mongoTemplate.findById(new ObjectId(comment.getReviewer_id()), ReviewerDTO.class,"reviewers");
+//			comment.setReviewer(commenter);
+//		}
+//		System.out.print(comments);
+//		
+//		return comments;
+//	}
+	
+	//댓글 가져오기 (new, ObjectId)
+	public List<CommentDTO> getComments2(String id) {
+
+		LookupOperation lookUp = LookupOperation.newLookup()
+				.from("reviewers").localField("reviewer_id")  
+				.foreignField("_id").as("reviewer");	
+
+		//ProjectionOperation project = Aggregation.project().andExclude("review_id");
+		SortOperation sort = Aggregation.sort(Sort.Direction.ASC, "regDate");
+		LimitOperation limit = Aggregation.limit(3);
+		Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(
+																		Criteria.where("review_id").is(new ObjectId(id))
+																		), lookUp, sort, limit);
+	    AggregationResults<CommentDTO> result = mongoTemplate.aggregate(aggregation, Comment.class, CommentDTO.class);
+	    
+	    List<CommentDTO> comments = result.getMappedResults(); 
 		return comments;
 	}
 	
-	//댓글 페이징 기능 TEST
-	public List<CommentDTO> getComments2(String id, int pageNo) {
+	//댓글 페이징 (new)
+	public List<CommentDTO> getMoreComments(String id, int pageNo) {
+		
+		LookupOperation lookUp = LookupOperation.newLookup()
+				.from("reviewers").localField("reviewer_id")  
+				.foreignField("_id").as("reviewer");  	
+
+		SortOperation sort = Aggregation.sort(Sort.Direction.ASC, "regDate");
+		SkipOperation skip = Aggregation.skip((pageNo - 1) * 3);
+		LimitOperation limit = Aggregation.limit(3);
+		Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(
+																	Criteria.where("review_id").is(new ObjectId(id))
+																	),lookUp, sort, skip, limit);
+	    AggregationResults<CommentDTO> result = mongoTemplate.aggregate(aggregation, Comment.class, CommentDTO.class);
+	    
+	    List<CommentDTO> comments = result.getMappedResults();
+	    
+		return comments;
+	}
+	
+	/* 댓글 페이징 (old)
+	public List<CommentDTO> getMoreComments2(String id, int pageNo) {
 		Query query = new Query()
 				.addCriteria(Criteria.where("review_id").is(id)) // 해당하는 리뷰의 글을
 				.with(Sort.by(Sort.Order.asc("regDate"))) // 등록 오름차순으로
@@ -216,6 +255,14 @@ public class ReviewServiceImpl implements ReviewService {
 		}
 		
 		return comments;
+	} */
+	
+	// 댓글 더보기 버튼 제어를 위한 댓글 전체 수 구하기 
+	public int getCommentsTotalCount(String id) {
+		Query query = new Query()
+				.addCriteria(Criteria.where("review_id").is(new ObjectId(id)));
+		int count = mongoTemplate.find(query, CommentDTO.class).size();
+		return count;
 	}
 
 	
@@ -251,4 +298,6 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 	*/
     
+	
+	
 }

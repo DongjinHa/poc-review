@@ -23,7 +23,7 @@ public class ReviewRepositoryTest {
 	@Test
 	public void createRows() {
 		reviewRepository.deleteAll();
-		
+		/*
 		ReviewDTO dto = new ReviewDTO();
 //		dto.setHp("01049952222");
 		//reviewRepository.save(dto);	//error로 인한 주석처리
@@ -33,7 +33,7 @@ public class ReviewRepositoryTest {
 		//reviewRepository.save(dto2); //error로 인한 주석처리
 		
 		reviewRepository.findAll().forEach(System.out::println);
-		
+		*/
 		//reviewService.getReviewList().forEach(System.out::println);
 	}
 
