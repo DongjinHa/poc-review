@@ -15,6 +15,7 @@
 </h1>
 	<hr>
 	<span th:text="'작성일 : ' + ${ReviewData.regDate}"></span><br/>
+	
 	<span th:text="'조회수 : ' + ${ReviewData.hit}"></span><br/>
 	<span th:text="'별점 : ' + ${ReviewData.evalScore}"></span>
 	<hr>
@@ -58,6 +59,16 @@
 				  </th:block>
 			  </th:block>
 		  </div>
+		  <!-- 슬라이드 언더바 -->
+		    <ol class="carousel-indicators">
+			    <th:block th:each="ReviewImg :  ${ReviewData.tplList}">
+				    <li data-target="#carouselExampleIndicators" 
+				    	th:attr="data-slide-to=${ReviewImgStat.index}"></li>
+				    
+				    <!--  li data-target="#carouselExampleIndicators" data-slide-to="1" ></li>
+				    <li data-target="#carouselExampleIndicators" data-slide-to="2" ></li-->
+			    </th:block>
+  			</ol>
 	</div>
 
 	<!-- 리뷰 내용 -->
