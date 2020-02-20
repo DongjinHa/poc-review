@@ -147,7 +147,7 @@ public class ReviewServiceImpl implements ReviewService {
 			query.addCriteria(Criteria.where("goodCnts").regex(reviewDTO.getKey()));
 		}
 		*/
-		
+		/* old 
 		// 검색어
 		query.addCriteria(Criteria.where("goodCnts").regex(reviewDTO.getKey()));   
 		
@@ -173,23 +173,50 @@ public class ReviewServiceImpl implements ReviewService {
 		 	 .limit(20);						 
 		
 		return mongoTemplate.find(query, ReviewDTO.class);
+		*/
+		
+		// lookup 방식
+		Criteria criteria = new Criteria();
+		criteria.andOperator(
+				Criteria.where("reviewCl").is("A")
+				,Criteria.where("reviewer.sex").is("F")
+		);
+		
+		MatchOperation match = Aggregation.match(criteria);
+		LookupOperation lookUp = LookupOperation.newLookup()
+				.from("reviewers").localField("reviewer_id")   	//1. 묶을 컬렉션 이름은 reviewers, 대상 도큐먼트는 같은 이름인 reviewer_id
+				.foreignField("_id").as("reviewer");  			//2. 조회할 컬렉션에서 해당 reviews 컬렉션이 묶일 도큐먼트 이름은 _id, 별명은 reviewer
+
+		ProjectionOperation project = Aggregation.project().andExclude("reviewer_id");
+		
+		SortOperation sort = Aggregation.sort(Sort.Direction.DESC, "regDate");
+
+	//	SkipOperation skip = Aggregation.skip((reviewDTO.getPageNo()-1)*20);
+		SkipOperation skip = Aggregation.skip(1*20);
+		
+		LimitOperation limit = Aggregation.limit(20);
+
+		Aggregation aggregation = Aggregation.newAggregation(lookUp, match, project, sort, skip, limit);
+	
+	    AggregationResults<ReviewDTO> result = mongoTemplate.aggregate(aggregation, Review.class, ReviewDTO.class);
+	    
+		return result.getMappedResults();  
 	}
 	
 	// 룩업 테스트
 	public List<ReviewDTO> lookupReviewer() {
 		
 		LookupOperation lookUp = LookupOperation.newLookup()
-				.from("reviewers")   // 묶이는 컬렉션 이름 reviewers
-				.localField("reviewer_id")   // reviewers에서의 묶일 도큐먼트  
-				.foreignField("_id")  // 묶는 review의 도큐먼트
-				.as("ref");  // 별명은 ref
+				.from("reviewers")  
+				.localField("reviewer_id")   
+				.foreignField("_id")  
+				.as("reviewer");  
+		
 		Aggregation agg = Aggregation.newAggregation(
 				Aggregation.match(Criteria.where("reviewCl").is("B")), // 조건
 				lookUp) ;
 			
 		 List<ReviewDTO> results = mongoTemplate.aggregate(agg, "reviews", ReviewDTO.class).getMappedResults();
-		 
-		 System.out.println(results);
 		 
 		 return results;  
 	}

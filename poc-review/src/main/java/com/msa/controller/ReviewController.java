@@ -27,7 +27,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import com.msa.dto.CommentDTO;
 import com.msa.dto.ReviewDTO;
-import com.msa.dto.ReviewDetailDTO;
 import com.msa.dto.ProductDTO;
 import com.msa.dto.ReviewerDTO;
 
@@ -166,27 +165,17 @@ public class ReviewController {
     	        .encode(StandardCharsets.UTF_8);
 
     	HttpEntity<?> entity = new HttpEntity<>(headers);
-    	
+    	System.out.println(builder.build().encode().toUri());
     	restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
     	ResponseEntity<List<ReviewDTO>> reviewResponse = restTemplate.exchange(builder.build().encode().toUri(), HttpMethod.GET, entity, new ParameterizedTypeReference<List<ReviewDTO>>() {});
-        List<ReviewDTO> result= reviewResponse.getBody();
-        List<ReviewDetailDTO> detailresult = new ArrayList<ReviewDetailDTO>();
+        List<ReviewDTO> reviews = reviewResponse.getBody();
         
-        for(int i=0;i<result.size();i++) {
-  
-        	ReviewerDTO reviewer = restTemplate.getForObject("/Reviewer/"+result.get(i).getReviewer_id(),ReviewerDTO.class);
-        	ProductDTO product = restTemplate.getForObject("http://localhost:9092/getProductListByPrdSeq/"+result.get(i).getPrdSeq(), ProductDTO.class);
-
-        	ReviewDetailDTO reviewdetail = new ReviewDetailDTO();
-        	
-        	reviewdetail.setReview(result.get(i));
-        	reviewdetail.setReviewer(reviewer);
-        	reviewdetail.setProduct(product);
-        	
-        	detailresult.add(reviewdetail);
+        for(ReviewDTO review : reviews) {
+        	ProductDTO product = restTemplate.getForObject("http://localhost:9092/getProductListByPrdSeq/"+review.getPrdSeq(), ProductDTO.class);
+        	review.setProduct(product);
         }
         
-        model.addAttribute("Review", detailresult);
+        model.addAttribute("Review", reviews);
         
         String mode = reviewDTO.getMode();
         

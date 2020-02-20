@@ -9,43 +9,47 @@
 <th:block th:each="ReviewData : ${Review}">
 
 	<div class="box">
-		<span th:text="'_id : ' + ${ReviewData.review._id}"></span>
+		<span th:text="'_id : ' + ${ReviewData._id}"></span>
 		
 		<button th:target="_blank"
-		  th:data-url="@{'/review/reviewDetail/'+${ReviewData.review._id}}"
+		  th:data-url="@{'/review/reviewDetail/'+${ReviewData._id}}"
 		  onclick="openWin(this.getAttribute('data-url'))">click here:)
 		</button><br/>
 		
 		<div class = "image fit">
-		<th:block th:each="ReviewImg : ${ReviewData.review.tplList}" th:if="${ReviewImgStat.index} == 0">
+		<th:block th:each="ReviewImg : ${ReviewData.tplList}" th:if="${ReviewImgStat.index} == 0">
 			<img class="ReviewImg" th:src="@{'http://localhost:9091'+${ReviewImg}}" alt="Img"  /><br/>
 		</th:block>
 		</div>
 		<div class="inner">
-			<span th:text="'reviewer_id : ' + ${ReviewData.review.reviewer_id}"></span><br/>
-			<span th:text="'reviewCl : ' + ${ReviewData.review.reviewCl}"></span><br/>
-			<span th:text="'prdSeq : ' + ${ReviewData.review.prdSeq}"></span><br/>
-			<span th:text="'bestFl : ' + ${ReviewData.review.bestFl}"></span><br/>
-			<span th:text="'evalScore : ' + ${ReviewData.review.evalScore}"></span><br/>
-			<span th:text="'hit : ' + ${ReviewData.review.hit}"></span><br/>
-			<span th:text="'recomCnt : ' + ${ReviewData.review.recomCnt}"></span><br/>
-			<span th:text="'recbScore : ' + ${ReviewData.review.recbScore}"></span><br/>
+			<span th:text="'reviewer_id : ' + ${ReviewData.reviewer_id}"></span><br/>
+			<span th:text="'reviewCl : ' + ${ReviewData.reviewCl}"></span><br/>
+			<span th:text="'prdSeq : ' + ${ReviewData.prdSeq}"></span><br/>
+			<span th:text="'bestFl : ' + ${ReviewData.bestFl}"></span><br/>
+			<span th:text="'evalScore : ' + ${ReviewData.evalScore}"></span><br/>
+			<span th:text="'hit : ' + ${ReviewData.hit}"></span><br/>
+			<span th:text="'recomCnt : ' + ${ReviewData.recomCnt}"></span><br/>
+			<span th:text="'recbScore : ' + ${ReviewData.recbScore}"></span><br/>
 			<div th:with="max_length=50">
-			<p th:if="${#strings.length(ReviewData.review.goodCnts)} gt ${max_length}" th:text="'goodCnts : ' + ${#strings.substring(ReviewData.review.goodCnts,0,max_length) + '…'}"></p>
-			<p th:unless="${#strings.length(ReviewData.review.goodCnts)} gt ${max_length}" th:text="'goodCnts : ' + ${ReviewData.review.goodCnts}"></p>
-			</div>		
-			<span th:text="'regDate : ' + ${ReviewData.review.regDate}"></span><br/>
-			<span th:text="'updDate : ' + ${ReviewData.review.updDate}"></span><br/>
-			
-			<span th:text="'nickNm : ' + ${ReviewData.reviewer.nickNm}"></span><br/>
-			<span th:text="'lvl : ' + ${ReviewData.reviewer.lvl}"></span><br/>
-			<span th:text="'profileImg : ' + ${ReviewData.reviewer.profileImg}"></span><br/>
-			<img class="profileImg" th:src="@{'http://localhost:9091'+${ReviewData.reviewer.profileImg}}" alt="Img" height="20%" width="20%" /><br/>
-			
-		    <span th:text="'prdSeq: ' + ${ReviewData.product.prdSeq}"></span>
-    		<span th:text="'prdNm: ' + ${ReviewData.product.prdNm}"></span>
-    		<span th:text="'salPrc: ' + ${ReviewData.product.salPrc}"></span>
+			<p th:if="${#strings.length(ReviewData.goodCnts)} gt ${max_length}" th:text="'goodCnts : ' + ${#strings.substring(ReviewData.goodCnts,0,max_length) + '…'}"></p>
+			<p th:unless="${#strings.length(ReviewData.goodCnts)} gt ${max_length}" th:text="'goodCnts : ' + ${ReviewData.goodCnts}"></p>
+			</div>	
+			<span th:text="'regDate : ' + ${#dates.format(ReviewData.regDate, 'yyyy.MM.dd HH:mm')}"></span><br/>
+			<span th:text="'updDate : ' + ${#dates.format(ReviewData.updDate, 'yyyy.MM.dd HH:mm')}"></span><br/>	
 			<br/>
+			<th:block th:each="reviewerInfo : ${ReviewData.reviewer}" th:if="${reviewerInfoStat.index} == 0">
+			<span th:text="'nickNm : ' + ${reviewerInfo.nickNm}"></span><br/>
+			<span th:text="'sex : ' + ${reviewerInfo.sex}"></span><br/>
+			<span th:text="'lvl : ' + ${reviewerInfo.lvl}"></span><br/>
+			<span th:text="'profileImg : ' + ${reviewerInfo.profileImg}"></span><br/>
+			<img class="profileImg" th:src="@{'http://localhost:9091'+${reviewerInfo.profileImg}}" alt="Img" height="20%" width="20%" /><br/>
+			</th:block>
+			
+			<div>
+			<span th:text="'prdSeq : ' + ${ReviewData.product.prdSeq}"></span><br/>
+			<span th:text="'prdNm : ' + ${ReviewData.product.prdNm}"></span><br/>
+			<span th:text="'salPrc : ' + ${ReviewData.product.salPrc}"></span><br/>
+			</div>
 		</div>
 	</div>
 </th:block>
