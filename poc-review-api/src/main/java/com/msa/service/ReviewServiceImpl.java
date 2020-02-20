@@ -1,5 +1,6 @@
 package com.msa.service;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import javax.annotation.Resource;
@@ -147,7 +148,8 @@ public class ReviewServiceImpl implements ReviewService {
 			query.addCriteria(Criteria.where("goodCnts").regex(reviewDTO.getKey()));
 		}
 		*/
-		/* old 
+		
+		/* 리뷰리스트 조회  (old) 
 		// 검색어
 		query.addCriteria(Criteria.where("goodCnts").regex(reviewDTO.getKey()));   
 		
@@ -176,11 +178,36 @@ public class ReviewServiceImpl implements ReviewService {
 		*/
 		
 		// lookup 방식
-		Criteria criteria = new Criteria();
-		criteria.andOperator(
-				Criteria.where("reviewCl").is("A")
-				,Criteria.where("reviewer.sex").is("F")
-		);
+		Criteria criteriaReviewCl = new Criteria();
+		Criteria criteriaAge1 = new Criteria();
+		Criteria criteriaAge2 = new Criteria();
+		
+		// A:포토리뷰, B:간단리뷰 
+		if(StringUtils.isEmpty(reviewDTO.getReviewCl())==true) {  
+			criteriaReviewCl = Criteria.where("reviewCl").is("A");
+		}else {
+			criteriaReviewCl = Criteria.where("reviewCl").is(reviewDTO.getReviewCl());
+		}
+		
+		// 연령  
+        int currentYear  = Calendar.getInstance().get(Calendar.YEAR);
+        
+		if(reviewDTO.getUage()=="all") {
+		}else if(reviewDTO.getUage().equals("10")) {
+			criteriaAge1 = Criteria.where("reviewer.birthDay").gte(Integer.toString(currentYear-18)+"0101");
+			criteriaAge2 = Criteria.where("reviewer.birthDay").lte(Integer.toString(currentYear-9)+"1231");
+		}else if(reviewDTO.getUage().equals("20")) {
+			criteriaAge1 = Criteria.where("reviewer.birthDay").gte(Integer.toString(currentYear-28)+"0101");
+			criteriaAge2 = Criteria.where("reviewer.birthDay").lte(Integer.toString(currentYear-19)+"1231");
+		}else if(reviewDTO.getUage().equals("30")) {
+			criteriaAge1 = Criteria.where("reviewer.birthDay").gte(Integer.toString(currentYear-38)+"0101");
+			criteriaAge2 = Criteria.where("reviewer.birthDay").lte(Integer.toString(currentYear-29)+"1231");
+		}else if(reviewDTO.getUage().equals("40")) {
+			criteriaAge1 = Criteria.where("reviewer.birthDay").gte(Integer.toString(currentYear-48)+"0101");
+			criteriaAge2 = Criteria.where("reviewer.birthDay").lte(Integer.toString(currentYear-79)+"1231");
+		}
+		
+		Criteria criteria = new Criteria().andOperator(criteriaReviewCl, criteriaAge1, criteriaAge2);
 		
 		MatchOperation match = Aggregation.match(criteria);
 		LookupOperation lookUp = LookupOperation.newLookup()
@@ -188,11 +215,15 @@ public class ReviewServiceImpl implements ReviewService {
 				.foreignField("_id").as("reviewer");  			//2. 조회할 컬렉션에서 해당 reviews 컬렉션이 묶일 도큐먼트 이름은 _id, 별명은 reviewer
 
 		ProjectionOperation project = Aggregation.project().andExclude("reviewer_id");
-		
+	
+		// 1:최신순, 2:조회순
 		SortOperation sort = Aggregation.sort(Sort.Direction.DESC, "regDate");
-
-	//	SkipOperation skip = Aggregation.skip((reviewDTO.getPageNo()-1)*20);
-		SkipOperation skip = Aggregation.skip(1*20);
+		if(reviewDTO.getSort()==2) {
+			sort = Aggregation.sort(Sort.Direction.DESC, "hit");
+		}
+		
+		SkipOperation skip = Aggregation.skip((reviewDTO.getPageNo())*20);
+	//	SkipOperation skip = Aggregation.skip(1*20);
 		
 		LimitOperation limit = Aggregation.limit(20);
 

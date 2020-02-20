@@ -22,7 +22,6 @@
 		</th:block>
 		</div>
 		<div class="inner">
-			<span th:text="'reviewer_id : ' + ${ReviewData.reviewer_id}"></span><br/>
 			<span th:text="'reviewCl : ' + ${ReviewData.reviewCl}"></span><br/>
 			<span th:text="'prdSeq : ' + ${ReviewData.prdSeq}"></span><br/>
 			<span th:text="'bestFl : ' + ${ReviewData.bestFl}"></span><br/>
@@ -41,6 +40,7 @@
 			<span th:text="'nickNm : ' + ${reviewerInfo.nickNm}"></span><br/>
 			<span th:text="'sex : ' + ${reviewerInfo.sex}"></span><br/>
 			<span th:text="'lvl : ' + ${reviewerInfo.lvl}"></span><br/>
+			<span th:text="'birthDay : ' + ${reviewerInfo.birthDay}"></span><br/>
 			<span th:text="'profileImg : ' + ${reviewerInfo.profileImg}"></span><br/>
 			<img class="profileImg" th:src="@{'http://localhost:9091'+${reviewerInfo.profileImg}}" alt="Img" height="20%" width="20%" /><br/>
 			</th:block>

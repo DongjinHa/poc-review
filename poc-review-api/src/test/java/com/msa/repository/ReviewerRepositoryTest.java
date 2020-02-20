@@ -109,7 +109,7 @@ class ReviewerRepositoryTest {
 				review.setPrdSeq(_prdSeq[ran.nextInt(9)]);
 				review.setBestFl((ran.nextInt(15)+1) > 10? "Y" : "N");
 				review.setEvalScore((ran.nextInt(5)+1)+"");
-				review.setHit((ran.nextInt(100)+1)+"");
+				review.setHit((ran.nextInt(100)+1));
 				review.setRecomCnt((ran.nextInt(15)+1)+"");
 	//			review.setCmtCnt("");
 				review.setRecbScore((ran.nextInt(10)+1)+"");

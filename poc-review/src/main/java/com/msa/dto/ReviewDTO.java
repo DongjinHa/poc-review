@@ -16,7 +16,7 @@ public class ReviewDTO {
 	private String prdSeq;
 	private String bestFl;
 	private String evalScore;
-	private String hit;
+	private int hit;
 	private String recomCnt;
 //	private String cmtCnt;
 	private String recbScore;
