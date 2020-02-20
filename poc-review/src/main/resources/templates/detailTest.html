@@ -40,6 +40,7 @@
 				      style="width: auto; height: 300px;">
 				    </div>
 				</th:block> 
+				</th:block>
 			</th:block>
 		  </div>
 		  <!-- 슬라이드 화살표, 이미지가 2개 이상일 때만 노출  -->	
@@ -119,12 +120,19 @@
 	
 $(document).ready(function(){	
 
+		//페이징
 		var id = [[${ReviewData._id}]] 
 		var pageNo = 2;
 		var url = document.location.href;
 		var totalCmtNo = [[${Count}]] 
 		var totalPgNo = Math.floor(totalCmtNo/3);
 		
+		//슬라이드  
+		var imgArray = [[${ReviewData.tplList}]]
+		
+ 		if(imgArray == null){
+			$("#carouselExampleIndicators").hide(); //이미지가 없을 때는 슬라이드 div 자체를 hide
+		} 
 		if(totalPgNo == 1){ // 총 댓글이 3개 이하일 때는 첫 페이지부터 버튼 hide
 			$("#moreCmtBtn").hide();
 		}
