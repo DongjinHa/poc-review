@@ -86,16 +86,18 @@
        <div class="commentTblDiv">
 	        <table id = "commentTbl">      
 			<th:block th:each="Comment : ${CommentData}">
-		 	<tr><td>
-		 	<img class="profileImg" th:src="@{'http://localhost:9091'+${Comment.reviewer.profileImg}}" alt="Img" height="10%" width="10%" />
-			<span class = "badge badge-success" th:text="'lvl.' + ${Comment.reviewer.lvl}"></span>
-			</td>
-			<td><span th:text="${Comment.reviewer.nickNm}"></span></td>
-			<td><span th:text="${Comment.regDate}"></span></td>
-			</tr>
-			<tr><td>
-			<span th:text="'댓글 내용 : ' + ${Comment.cnts}"></span><br/>
-			</td></tr>
+				<th:block th:each="ReviewerInfo : ${Comment.reviewer}" th:if="${ReviewerInfoStat.index}==0">
+			 	<tr><td>
+			 	<img class="profileImg" th:src="@{'http://localhost:9091'+${ReviewerInfo.profileImg}}" alt="Img" height="10%" width="10%" />
+				<span class = "badge badge-success" th:text="'lvl.' + ${ReviewerInfo.lvl}"></span>
+				</td>
+				<td><span th:text="${ReviewerInfo.nickNm}"></span></td>
+				<td><span th:text="${Comment.regDate}"></span></td>
+				</tr>
+				<tr><td>
+				<span th:text="'댓글 내용 : ' + ${Comment.cnts}"></span><br/>
+				</td></tr>
+				</th:block>
 			</th:block>
 			</table>
 		</div>
@@ -145,9 +147,9 @@ $(document).ready(function(){
 							$('#commentTbl').append(data);
 					             var str = "<tr>";
 					            $.each(data , function(i){
-					                 str += "<TD>"+ data[i].reviewer.profileImg + "</TD><TD>" 
-					                			  + 'lvl.' + data[i].reviewer.lvl + "</TD><TD>" 
-					                			  + data[i].reviewer.nickNm + "</TD><TD>"
+					                 str += "<TD>"+ data[i].reviewer[0].profileImg + "</TD><TD>" 
+					                			  + 'lvl.' + data[i].reviewer[0].lvl + "</TD><TD>" 
+					                			  + data[i].reviewer[0].nickNm + "</TD><TD>"
 					                			  + data[i].regDate + '</TD><TR><TD>'
 					                			  + data[i].cnts+ '</TD></TR>';  		
 					                str += "</tr>";
