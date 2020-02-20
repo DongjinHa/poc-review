@@ -20,8 +20,6 @@ public interface ReviewService {
     public void delReview(String id);
 	public ReviewerDTO getReviewer(String id);
 
-	public List<ReviewDTO> lookupReviewer();
-
 	//public List<CommentDTO> getComments(String id);
 	public List<CommentDTO> getComments2(String id);
 	public List<CommentDTO> getMoreComments(String id, int PageNo);

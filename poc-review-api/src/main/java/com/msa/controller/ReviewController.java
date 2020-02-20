@@ -119,9 +119,4 @@ public class ReviewController {
     	return reviewService.getCommentsTotalCount(id);
     }
     
-    @GetMapping("/lookupReviewer")
-    public List<ReviewDTO> lookupReviewer() {
-    	return reviewService.lookupReviewer();
-    	
-    }
 }

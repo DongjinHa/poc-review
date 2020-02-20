@@ -203,24 +203,6 @@ public class ReviewServiceImpl implements ReviewService {
 		return result.getMappedResults();  
 	}
 	
-	// 룩업 테스트
-	public List<ReviewDTO> lookupReviewer() {
-		
-		LookupOperation lookUp = LookupOperation.newLookup()
-				.from("reviewers")  
-				.localField("reviewer_id")   
-				.foreignField("_id")  
-				.as("reviewer");  
-		
-		Aggregation agg = Aggregation.newAggregation(
-				Aggregation.match(Criteria.where("reviewCl").is("B")), // 조건
-				lookUp) ;
-			
-		 List<ReviewDTO> results = mongoTemplate.aggregate(agg, "reviews", ReviewDTO.class).getMappedResults();
-		 
-		 return results;  
-	}
-	
     public ReviewDTO getReview(String id) {
     	ReviewDTO review = mongoTemplate.findById(new ObjectId(id), ReviewDTO.class,"reviews");
     	return review;
