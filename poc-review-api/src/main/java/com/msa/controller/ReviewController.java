@@ -105,13 +105,13 @@ public class ReviewController {
     
     @GetMapping("/Comments/{id}")
     public List<CommentDTO> getComments(@PathVariable String id) {
-    	return reviewService.getComments(id);
+    	return reviewService.getComments2(id);
     	
     }
 
     @GetMapping("/Comments/{id}/{pageNo}")
-    public List<CommentDTO> getComments2(@PathVariable String id, @PathVariable int pageNo) {
-    	return reviewService.getComments2(id, pageNo);
+    public List<CommentDTO> getMoreComments(@PathVariable String id, @PathVariable int pageNo) {
+    	return reviewService.getMoreComments(id, pageNo);
     	
     }
     
