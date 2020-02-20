@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="http://localhost:8081/css/reviewDetail.css" />
+<link rel="stylesheet" href="http://localhost:8081/css/customBootstrap.css"/>
 
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<!--link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"-->
 <title>Review Detail</title>
 </head>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -15,15 +16,17 @@
 	</th:block>
 </h1>
 	<hr>
-	<span th:text="'작성일 : ' + ${ReviewData.regDate}"></span><br/>
-	<span th:text="'조회수 : ' + ${ReviewData.hit}"></span><br/>
-	<span th:text="'별점 : ' + ${ReviewData.evalScore}"></span>
+		<span th:text="'작성일 : ' + ${ReviewData.regDate}"></span><br/>
+		<span th:text="'조회수 : ' + ${ReviewData.hit}"></span><br/>
+		<span th:text="'별점 : ' + ${ReviewData.evalScore}"></span>
 	<hr>
-	<img class="profileImg" th:src="@{'http://localhost:9091'+${ReviewerData.profileImg}}" alt="Img"/>
-	<span class = "badge badge-success" th:text="'lvl.' + ${ReviewerData.lvl}"></span><br/>
-	<span th:text="'작성자 : ' + ${ReviewData.reviewer_id}"></span>
-	(<span th:text="${ReviewerData.nickNm}"></span>)<br/><br/>
-
+	<div class = "reviewer">
+		<img class="profileImg" th:src="@{'http://localhost:9091'+${ReviewerData.profileImg}}" alt="Img"/>
+		<div class="pofile">
+			<span class = "badge badge-success" th:text="'lvl.' + ${ReviewerData.lvl}"></span>
+			<span th:text="${ReviewerData.nickNm}"></span><br/>
+		</div>
+	</div>
 	<!-- 리뷰 이미지 슬라이드 -->
 	<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel"  data-interval="2000">
 	  	  <!-- 슬라이드 콘텐츠 -->

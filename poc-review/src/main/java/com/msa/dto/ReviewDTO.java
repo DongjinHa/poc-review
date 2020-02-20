@@ -2,6 +2,10 @@ package com.msa.dto;
 
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.Date;
+import java.util.List;
+
 import org.bson.types.ObjectId;
 
 @Data
@@ -21,8 +25,8 @@ public class ReviewDTO {
 //	private String tplRegCnt;
 //	private String prevImg;
 	private String[] tplList;
-	private String regDate;
-	private String updDate;
+	private Date regDate;
+	private Date updDate;
 	
 	//필터 변수
 	private int pageNo;
@@ -46,6 +50,8 @@ public class ReviewDTO {
 	private String skintonecd3;
 	private String skintonecdyn;
 	private String mode;
+	
+	private List<ReviewerDTO> reviewer;
 
 	//상품정보
 	private ProductDTO product;

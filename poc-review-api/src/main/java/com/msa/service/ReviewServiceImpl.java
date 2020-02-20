@@ -93,11 +93,33 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 	
 	public List<ReviewDTO> getReviewList1() {		//파워리뷰 출력을 위한 서비스
-		Query query = new Query()
+		/*Query query = new Query()
 				.addCriteria(Criteria.where("bestFl").is("Y"))
+				.addCriteria(Criteria.where("reviewCl").is("A"))
 				.with(Sort.by(Sort.Order.desc("hit")))
 				.limit(15);
-		return mongoTemplate.find(query, ReviewDTO.class);    
+		return mongoTemplate.find(query, ReviewDTO.class);    */
+		
+		//lookup 사용ver.
+		Criteria criteria = new Criteria();
+		criteria.andOperator(
+				Criteria.where("bestFl").is("Y"),
+				Criteria.where("reviewCl").is("A")	//포토리뷰만 출력하도록 임시조치
+		);
+		
+		MatchOperation match = Aggregation.match(criteria);
+		LimitOperation limit = Aggregation.limit(15);
+		
+		LookupOperation lookUp = LookupOperation.newLookup()
+				.from("reviewers").localField("reviewer_id")
+				.foreignField("_id").as("reviewer"); 
+		
+		
+		Aggregation aggregation = Aggregation.newAggregation(match, lookUp, limit);
+		AggregationResults<ReviewDTO> result = mongoTemplate.aggregate(aggregation, Review.class, ReviewDTO.class);
+		System.out.println(result.getMappedResults());
+	    
+		return result.getMappedResults();  
 	} 
 	
     public List<Review> getReviewList2() {

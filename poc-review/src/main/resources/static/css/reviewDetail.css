@@ -1,6 +1,6 @@
 @charset "utf-8";
 
-	*, ::after, ::before{
+	body{
 		margin : 10px 10px;
 	}
 	
@@ -16,4 +16,14 @@
 	.profileImg{
 		height: 10%;
 		width : 10% 
+	}
+
+	
+	.reviewer{
+   		padding-bottom: 10px;
+	}
+	
+	
+	.reviewer.pofile{
+		text-align : center;
 	}
