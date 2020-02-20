@@ -135,7 +135,7 @@ $(document).ready(function(){
  		if(imgArray == null){
 			$("#carouselExampleIndicators").hide(); //이미지가 없을 때는 슬라이드 div 자체를 hide
 		} 
-		if(totalPgNo == 1){ // 총 댓글이 3개 이하일 때는 첫 페이지부터 버튼 hide
+		if(totalPgNo <= 1){ // 총 댓글이 3개 이하일 때는 첫 페이지부터 버튼 hide
 			$("#moreCmtBtn").hide();
 		}
 		else{				// 총 댓글이 4개 이상일 때 버튼 이벤트
