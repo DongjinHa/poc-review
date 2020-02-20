@@ -6,7 +6,6 @@ import com.msa.document.Review;
 import com.msa.dto.CommentDTO;
 import com.msa.dto.ReviewDTO;
 import com.msa.dto.ReviewerDTO;
-import com.msa.dto.ReviewDetailDTO;
 
 public interface ReviewService {
 
@@ -24,8 +23,4 @@ public interface ReviewService {
 	public List<CommentDTO> getComments2(String id);
 	public List<CommentDTO> getMoreComments(String id, int PageNo);
 	public int getCommentsTotalCount(String id);
-    
-	//DBRef test용
-	public ReviewDetailDTO getReview1(String id);
-	//public List<CommentDTO> getComments1(ReviewDetailDTO Review);
 }

@@ -83,7 +83,6 @@ public class ReviewController {
         	powerReview.setProduct(product);
         }
         model.addAttribute("powerReview",powerReviews);
-        System.out.println(powerReviews);
 		return "powerReview";
 	}
 	

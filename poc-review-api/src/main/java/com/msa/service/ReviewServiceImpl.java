@@ -25,7 +25,6 @@ import com.msa.document.Comment;
 import com.msa.document.Review;
 import com.msa.dto.CommentDTO;
 import com.msa.dto.ReviewDTO;
-import com.msa.dto.ReviewDetailDTO;
 import com.msa.dto.ReviewerDTO;
 import com.msa.repository.ReviewRepository;
 
@@ -116,7 +115,6 @@ public class ReviewServiceImpl implements ReviewService {
 		
 		Aggregation aggregation = Aggregation.newAggregation(match, lookUp, limit);
 		AggregationResults<ReviewDTO> result = mongoTemplate.aggregate(aggregation, Review.class, ReviewDTO.class);
-		System.out.println(result.getMappedResults());
 	    
 		return result.getMappedResults();  
 	} 
@@ -264,40 +262,5 @@ public class ReviewServiceImpl implements ReviewService {
 		int count = mongoTemplate.find(query, CommentDTO.class).size();
 		return count;
 	}
-
-	
-	//DBRef test용
-	public ReviewDetailDTO getReview1(String id) {	//review+reviewer 정보
-		LookupOperation lookup = LookupOperation.newLookup()
-				.from("reviewers").localField("reviewer_id")
-				.foreignField("_id").as("reviewer");
-		Aggregation aggregation = Aggregation.newAggregation(
-				lookup,
-				Aggregation.match(
-						Criteria.where("_id").is(id)
-				)
-		);
-		AggregationResults<ReviewDetailDTO> groupResults = mongoTemplate.aggregate(aggregation,"reviews", ReviewDetailDTO.class);
-    	return groupResults.getUniqueMappedResult();
-	}
-	
-	/*
-	public List<CommentDTO> getComments1(ReviewDetailDTO Review){	//review에 대한 comment 정보
-		LookupOperation lookup = LookupOperation.newLookup()
-				.from("reviewers").localField("reviewer_id")
-				.foreignField(("_id")).as("commenter");
-		Aggregation aggregation = Aggregation.newAggregation(
-				Aggregation.match(
-						Criteria.where("review_id").is(Review.get_id())
-				)
-				,lookup
-		);
-		AggregationResults<CommentDTO> groupResults = mongoTemplate.aggregate(aggregation,"comments", CommentDTO.class);
-		System.out.println(groupResults.getMappedResults());
-    	return groupResults.getMappedResults();
-	}
-	*/
-    
-	
 	
 }

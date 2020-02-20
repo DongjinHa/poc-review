@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.msa.document.Review;
 import com.msa.dto.CommentDTO;
 import com.msa.dto.ReviewDTO;
-import com.msa.dto.ReviewDetailDTO;
 import com.msa.dto.ReviewerDTO;
 import com.msa.service.ReviewService;
  
@@ -120,14 +119,5 @@ public class ReviewController {
     	return reviewService.getCommentsTotalCount(id);
     }
     
-    /*
-    @GetMapping("/getReview1/{id}")
-    public ReviewDetailDTO getReview1(@PathVariable String id) {	
-        ReviewDetailDTO review = reviewService.getReview1(id);
-        List<CommentDTO> comments = reviewService.getComments1(review);
-        review.setComment(comments);
-        return review;
-    }
-    */
 
 }
