@@ -2,10 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" 
-integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<link rel="stylesheet" href="http://localhost:8081/css/reviewDetail.css" />
+<link rel="stylesheet" href="http://localhost:8081/css/customBootstrap.css"/>
+<!--link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"-->
+
 <title>Review Detail</title>
 </head>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <body>
 <h1>	
 	<th:block th:each="ProductData : ${Product}">
@@ -13,17 +16,19 @@ integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9If
 	</th:block>
 </h1>
 	<hr>
-	<span th:text="'작성일 : ' + ${ReviewData.regDate}"></span><br/>
-	<span th:text="'조회수 : ' + ${ReviewData.hit}"></span><br/>
-	<span th:text="'별점 : ' + ${ReviewData.evalScore}"></span>
+		<span th:text="'작성일 : ' + ${ReviewData.regDate}"></span><br/>
+		<span th:text="'조회수 : ' + ${ReviewData.hit}"></span><br/>
+		<span th:text="'별점 : ' + ${ReviewData.evalScore}"></span>
 	<hr>
-	<img class="profileImg" th:src="@{'http://localhost:9091'+${ReviewerData.profileImg}}" alt="Img" height="10%" width="10%" />
-	<span th:text="'lvl.' + ${ReviewerData.lvl}"></span><br/>
-	<span th:text="'작성자 : ' + ${ReviewData.reviewer_id}"></span>
-	(<span th:text="${ReviewerData.nickNm}"></span>)<br/><br/>
-
+	<div class = "reviewer">
+		<img class="profileImg" th:src="@{'http://localhost:9091'+${ReviewerData.profileImg}}" alt="Img"/>
+		<div class="pofile">
+			<span class = "badge badge-success" th:text="'lvl.' + ${ReviewerData.lvl}"></span>
+			<span th:text="${ReviewerData.nickNm}"></span><br/>
+		</div>
+	</div>
 	<!-- 리뷰 이미지 슬라이드 -->
-	<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+	<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel"  data-interval="2000">
 	  	  <!-- 슬라이드 콘텐츠 -->
  		  <div class="carousel-inner" style="width: auto; height: 300px; overflow: hidden">
  		  	<th:block th:each="ReviewImg : ${ReviewData.tplList}">
@@ -39,10 +44,11 @@ integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9If
 				      style="width: auto; height: 300px;">
 				    </div>
 				</th:block> 
+				</th:block>
 			</th:block>
 		  </div>
 		  <!-- 슬라이드 화살표, 이미지가 2개 이상일 때만 노출  -->	
-		  <div class = "carousel-control" >
+		  <div class = "carousel-control">
 			  <th:block th:each="ReviewImg :  ${ReviewData.tplList} " >
 				  <th:block th:if="${ReviewImgStat.count} >= 2">
 					<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -56,6 +62,16 @@ integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9If
 				  </th:block>
 			  </th:block>
 		  </div>
+		  <!-- 슬라이드 언더바 -->
+		    <ol class="carousel-indicators">
+			    <th:block th:each="ReviewImg :  ${ReviewData.tplList}">
+				    <li data-target="#carouselExampleIndicators" 
+				    	th:attr="data-slide-to=${ReviewImgStat.index}"></li>
+				    
+				    <!--  li data-target="#carouselExampleIndicators" data-slide-to="1" ></li>
+				    <li data-target="#carouselExampleIndicators" data-slide-to="2" ></li-->
+			    </th:block>
+  			</ol>
 	</div>
 
 	<!-- 리뷰 내용 -->
@@ -71,40 +87,108 @@ integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9If
 	
 	<!-- 리뷰 댓글 -->
 	<h3>Comments</h3>
-	<div class="comment">
+	<div class="commentForm">
             <div class="input-group">
                <input type="text" class="form-control" id="content" name="content" placeholder="내용을 입력하세요.">
                <span class="input-group-btn">
                		<button class="btn btn-success" type="button" name="commentInsertBtn">등록</button>
-               </span>
-              </div>
-	<th:block th:each="Comment : ${CommentData}">
-	 	<span th:text="'reviewer_id : ' + ${Comment.reviewer_id}"></span><br/>
-		<span th:text="'cnts : ' + ${Comment.cnts}"></span><br/>
-		<span th:text="'regDate : ' + ${Comment.regDate}"></span><br/>
-	</th:block>
+             </span>
+     </div>
+      <br>
+        
+       <!-- 코멘트 출력 -->
+       <div class="commentTblDiv">
+	        <table id = "commentTbl">      
+			<th:block th:each="Comment : ${CommentData}">
+				<th:block th:each="ReviewerInfo : ${Comment.reviewer}" th:if="${ReviewerInfoStat.index}==0">
+			 	<tr><td>
+			 	<img class="profileImg" th:src="@{'http://localhost:9091'+${ReviewerInfo.profileImg}}" alt="Img" height="10%" width="10%" />
+				<span class = "badge badge-success" th:text="'lvl.' + ${ReviewerInfo.lvl}"></span>
+				</td>
+				<td><span th:text="${ReviewerInfo.nickNm}"></span></td>
+				<td><span th:text="${Comment.regDate}"></span></td>
+				</tr>
+				<tr><td>
+				<span th:text="'댓글 내용 : ' + ${Comment.cnts}"></span><br/>
+				</td></tr>
+				</th:block>
+			</th:block>
+			</table>
+		</div>
+
+	<!-- 코멘트 더보기 페이징 -->
+	<button class="btn btn-secondary" id ="moreCmtBtn"> more </button>
 	</div>
 	
 	<hr>
 	<!-- 리뷰 상품 정보 -->
 	<h3>Product</h3>
 	<div class ="reviewPrd">
-	<th:block th:each = "ProductData : ${Product}">
-    <span th:text="'prdSeq: ' + ${ProductData.prdSeq}"></span><br/>
-    <span th:text="'prdNm: ' + ${ProductData.prdNm}"></span><br/>
-    <span th:text="'salPrc: ' + ${ProductData.salPrc}"></span>원<br/>
-	</th:block>
+    <span th:text="'prdSeq: ' + ${Product.prdSeq}"></span><br/>
+    <span th:text="'prdNm: ' + ${Product.prdNm}"></span><br/>
+    <span th:text="'salPrc: ' + ${Product.salPrc}"></span>원<br/>
 	</div>
 
 
 
 <th:block>
-	<script type="text/javascript">
+	<script th:inline="javascript" type="text/javascript">
+	
+$(document).ready(function(){	
+
+		//페이징
+		var id = [[${ReviewData._id}]] 
+		var pageNo = 2;
+		var url = document.location.href;
+		var totalCmtNo = [[${Count}]] 
+		var totalPgNo = Math.floor(totalCmtNo/3);
+		
+		//슬라이드  
+		var imgArray = [[${ReviewData.tplList}]]
+		
+ 		if(imgArray == null){
+			$("#carouselExampleIndicators").hide(); //이미지가 없을 때는 슬라이드 div 자체를 hide
+		} 
+		if(totalPgNo <= 1){ // 총 댓글이 3개 이하일 때는 첫 페이지부터 버튼 hide
+			$("#moreCmtBtn").hide();
+		}
+		else{				// 총 댓글이 4개 이상일 때 버튼 이벤트
+			$("#moreCmtBtn").click(function (){
+	  		 $.ajax({
+						type: 'GET',
+						url : url + '/getMoreComments/' + pageNo,
+						success: function (data) { 
+							$('#commentTbl').append(data);
+					             var str = "<tr>";
+					            $.each(data , function(i){
+					                 str += "<TD>"+ data[i].reviewer[0].profileImg + "</TD><TD>" 
+					                			  + 'lvl.' + data[i].reviewer[0].lvl + "</TD><TD>" 
+					                			  + data[i].reviewer[0].nickNm + "</TD><TD>"
+					                			  + data[i].regDate + '</TD><TR><TD>'
+					                			  + data[i].cnts+ '</TD></TR>';  		
+					                str += "</tr>";
+					           });
+					           $("#commentTbl").append(str);
+					           if(pageNo == totalPgNo){ //마지막페이지이면 버튼 hide
+					        	   $("#moreCmtBtn").hide();
+					           }
+					           else {
+					           pageNo += 1; //페이지 더 있으면 pageNo ++
+					           }
+			                  },			//ajax-success
+						error: function (e) {
+						console.log(e);
+						alert('댓글 읽기에 실패했습니다.');
+						} 					//ajax-error
+						});  				//ajax 
+	});										//Btn-Event
+		}									//else
+});											//document-ready
     </script>
 </th:block>
 
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 </body>
 </html>

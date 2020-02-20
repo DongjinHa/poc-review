@@ -15,6 +15,29 @@
 			alert("로그인 후 이용 가능한 서비스입니다.\n로그인 후 이용해 주세요.");		
 		}
     </script>
+    <script type="text/javascript">
+		$(document).ready(function () {
+			$.ajax({
+				url : '/review/getReviewList1',
+				type : 'GET',
+				success : function(data) {
+					$('#powerReviewList').html(data);
+				}
+			});
+		});
+		
+	
+		function openWin(url) {
+			ReviewDetailView = window
+					.open(
+							"about:blank",
+							"ReviewDetail",
+							"width=550,height=600,left=400,top=50,dependent=yes,menubar=no,status=no,resizable=yes,toolbar=no,scrollbars=yes");
+			ReviewDetailView.location.href = url;
+			ReviewDetailView.focus();
+			return false;
+		}
+	</script>
 </th:block>
 
 <div layout:fragment="contents">

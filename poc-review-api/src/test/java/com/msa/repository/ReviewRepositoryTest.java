@@ -23,17 +23,17 @@ public class ReviewRepositoryTest {
 	@Test
 	public void createRows() {
 		reviewRepository.deleteAll();
-		
+		/*
 		ReviewDTO dto = new ReviewDTO();
 //		dto.setHp("01049952222");
-		reviewRepository.save(dto);
+		//reviewRepository.save(dto);	//error로 인한 주석처리
 		
 		ReviewDTO dto2 = new ReviewDTO();
 //		dto2.setHp("01049951111");
-		reviewRepository.save(dto2);
+		//reviewRepository.save(dto2); //error로 인한 주석처리
 		
 		reviewRepository.findAll().forEach(System.out::println);
-		
+		*/
 		//reviewService.getReviewList().forEach(System.out::println);
 	}
 

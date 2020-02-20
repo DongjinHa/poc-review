@@ -81,3 +81,38 @@
 			border-radius: 0;
 			padding: 0;
 		}
+		
+		<!-- powerReview Css 추가 -->	
+		.box .powerReviewInner {
+			padding: 0.5em;
+			border: 1px solid #dcdcdc;
+		}
+
+			@media screen and (max-width: 480px) {
+
+				.box .powerReviewInner {
+					padding: 1em;
+				}
+
+			}
+		
+		/* goodCnts의 length가 max_lenght보다 작을 경우 박스가 틀어지는 현상으로 인해 추가
+			62px는 max_lenght일때의 크기*/
+		.slick-active .box .powerReviewInner p{
+			min-height:62px;
+			margin-bottom: 0;
+			
+		}
+		
+		.box .powerReviewOuter {
+			padding: 0.5em;
+			border-top: 1px solid #dcdcdc;
+		}
+
+			@media screen and (max-width: 480px) {
+
+				.box .powerReviewOuter {
+					padding: 1em;
+				}
+
+			}

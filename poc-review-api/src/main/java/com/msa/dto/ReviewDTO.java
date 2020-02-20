@@ -1,5 +1,6 @@
 package com.msa.dto;
 
+import java.util.Date;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -25,8 +26,8 @@ public class ReviewDTO {
 //	private String tplRegCnt;
 //	private String prevImg;
 	private String[] tplList;
-	private String regDate;
-	private String updDate;
+	private Date regDate;
+	private Date updDate;
 	
 	//필터 변수
 	private int pageNo;
@@ -53,4 +54,9 @@ public class ReviewDTO {
 	
 	private List<Object> ref;
 	
+	/*
+	 Lookup시 리턴타입으로 List로 하지 않을 경우 type error발생
+	 	Failed to convert from type [java.util.ArrayList<?>] to type [com.msa.dto.ReviewerDTO] 
+	 */
+	private List<ReviewerDTO> reviewer;	
 }

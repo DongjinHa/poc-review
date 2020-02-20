@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.msa.document.Review;
 import com.msa.dto.CommentDTO;
 import com.msa.dto.ReviewDTO;
-import com.msa.dto.ReviewDetailDTO;
 import com.msa.dto.ReviewerDTO;
 import com.msa.service.ReviewService;
  
@@ -25,9 +25,9 @@ public class ReviewController {
 	ReviewService reviewService;
     
     @PostMapping("/addReview")
-    public String addReview(@RequestBody ReviewDTO _reviewDTO) {
-    	ReviewDTO reviewDTO = reviewService.addReview(_reviewDTO);
-        return "added id:" + reviewDTO.get_id();
+    public String addReview(@RequestBody Review _review) {
+    	Review review = reviewService.addReview(_review);
+        return "added id:" + review.get_id();
     }
 
     @GetMapping("/getReviewList")
@@ -41,7 +41,7 @@ public class ReviewController {
     }   
     
     @GetMapping("/getReviewList2")
-    public List<ReviewDTO> getReviewList2() {
+    public List<Review> getReviewList2() {
         return reviewService.getReviewList2();
     }   
     
@@ -104,26 +104,19 @@ public class ReviewController {
     
     @GetMapping("/Comments/{id}")
     public List<CommentDTO> getComments(@PathVariable String id) {
-    	return reviewService.getComments(id);
+    	return reviewService.getComments2(id);
     	
-    }
-    
-    @GetMapping("/getReview1/{id}")
-    public ReviewDetailDTO getReview1(@PathVariable String id) {	
-    	
-        return reviewService.getReview1(id);
     }
 
-    @GetMapping("/Reviewer1/{id}")
-    public ReviewDetailDTO getReviewer1(@PathVariable String id) {
-    	return reviewService.getReviewer1(id);
+    @GetMapping("/Comments/{id}/{pageNo}")
+    public List<CommentDTO> getMoreComments(@PathVariable String id, @PathVariable int pageNo) {
+    	return reviewService.getMoreComments(id, pageNo);
     	
     }
     
-    @GetMapping("/Comments1/{id}")
-    public List<ReviewDetailDTO> getComments1(@PathVariable String id) {
-    	return reviewService.getComments1(id);
-    	
+    @GetMapping("/CommentsCount/{id}")
+    public int getCommentsTotalCount(@PathVariable String id) {
+    	return reviewService.getCommentsTotalCount(id);
     }
     
     @GetMapping("/lookupReviewer")

@@ -122,3 +122,36 @@
 .slick-arrow.slick-hidden {
     display: none;
 }
+
+.slick-slide img.profileImg{
+	margin-top : 5px;
+	width : 10%;
+	height : 10%;
+	display : inline-block;
+}
+.slick-slide .profile{
+	display:inline-block;
+	text-align : center;
+	margin-top : 20px;
+}
+
+.slick-slide .reviewer{
+	margin-bottom : 10px;
+}
+	
+.slick-slide .box .powerReviewInner {
+			padding: 0.5em;
+		}
+
+			@media screen and (max-width: 480px) {
+
+				.box .powerReviewInner {
+					padding: 1em;
+				}
+
+			}	
+
+.slick-initialized .slick-slide .regdate{
+	text-align : right;
+}			
+
