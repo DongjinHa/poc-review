@@ -13,6 +13,28 @@
 		width : 10% 
 	}
 	
+	
+
+	.commentDiv ul{
+	   list-style:none;
+	   padding-left:0px;
+	}
+	
+	.commentDiv .commentProfile{
+		margin-bottom:2px;
+	}
+	.commentDiv .commentRegdt{
+		position: absolute;
+	    right: 0;
+	    font: 14px/1 'roboR';
+	    color: #999;
+	}
+	
+	.commentDiv .commentProfile .profileImg{
+		height:8%;
+		width:8%;	
+	}
+		
 	.profileImg{
 		height: 10%;
 		width : 10% 

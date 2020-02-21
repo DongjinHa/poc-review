@@ -96,7 +96,7 @@
      </div>
       <br>
         
-       <!-- 코멘트 출력 -->
+       <!-- 코멘트 출력 
        <div class="commentTblDiv">
 	        <table id = "commentTbl">      
 			<th:block th:each="Comment : ${CommentData}">
@@ -114,7 +114,28 @@
 				</th:block>
 			</th:block>
 			</table>
-		</div>
+		</div>	-->
+		
+		<div class="commentDiv">
+				<th:block th:each="Comment : ${CommentData}">
+				<ul>
+					<li>
+					<th:block th:each="ReviewerInfo : ${Comment.reviewer}" th:if="${ReviewerInfoStat.index}==0">
+					 	<div class="commentProfile">
+							<img class="profileImg" th:src="@{'http://localhost:9091'+${ReviewerInfo.profileImg}}" alt="Img"/>
+							<span class = "badge badge-success" th:text="'lvl.' + ${ReviewerInfo.lvl}"></span>
+							<span th:text="${ReviewerInfo.nickNm}"></span>
+							<span class="commentRegdt" th:text="${Comment.regDate}"></span>
+						</div>	
+					
+						<div>
+							<span th:text="'댓글 내용 : ' + ${Comment.cnts}"></span><br/>
+						</div>
+					</th:block>
+					</li>
+				</ul>
+				</th:block>
+		</div>	
 
 	<!-- 코멘트 더보기 페이징 -->
 	<button class="btn btn-secondary" id ="moreCmtBtn"> more </button>
@@ -157,7 +178,7 @@ $(document).ready(function(){
 	  		 $.ajax({
 						type: 'GET',
 						url : url + '/getMoreComments/' + pageNo,
-						success: function (data) { 
+						/*success: function (data) { 
 							$('#commentTbl').append(data);
 					             var str = "<tr>";
 					            $.each(data , function(i){
@@ -175,7 +196,28 @@ $(document).ready(function(){
 					           else {
 					           pageNo += 1; //페이지 더 있으면 pageNo ++
 					           }
-			                  },			//ajax-success
+			                  },			//ajax-success*/
+			                  
+			                  
+			                  success: function (data) { 
+									$('#commentTbl').append(data);
+							             var str = "<tr>";
+							            $.each(data , function(i){
+							                 str += "<TD>"+ data[i].reviewer[0].profileImg + "</TD><TD>" 
+							                			  + 'lvl.' + data[i].reviewer[0].lvl + "</TD><TD>" 
+							                			  + data[i].reviewer[0].nickNm + "</TD><TD>"
+							                			  + data[i].regDate + '</TD><TR><TD>'
+							                			  + data[i].cnts+ '</TD></TR>';  		
+							                str += "</tr>";
+							           });
+							           $("#commentTbl").append(str);
+							           if(pageNo == totalPgNo){ //마지막페이지이면 버튼 hide
+							        	   $("#moreCmtBtn").hide();
+							           }
+							           else {
+							           pageNo += 1; //페이지 더 있으면 pageNo ++
+							           }
+					                  },			//ajax-success      
 						error: function (e) {
 						console.log(e);
 						alert('댓글 읽기에 실패했습니다.');
