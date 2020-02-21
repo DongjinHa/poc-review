@@ -14,6 +14,9 @@
 	}
 	
 	
+	.commentDiv{
+		margin :5px;
+	}
 
 	.commentDiv ul{
 	   list-style:none;
@@ -23,11 +26,13 @@
 	.commentDiv .commentProfile{
 		margin-bottom:2px;
 	}
+	
 	.commentDiv .commentRegdt{
 		position: absolute;
 	    right: 0;
 	    font: 14px/1 'roboR';
 	    color: #999;
+	    margin-right:15px;
 	}
 	
 	.commentDiv .commentProfile .profileImg{
