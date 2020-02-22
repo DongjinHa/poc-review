@@ -107,13 +107,12 @@ class ReviewerRepositoryTest {
 						, "88888"
 						, "99999"};
 				review.setPrdSeq(_prdSeq[ran.nextInt(9)]);
-				review.setBestFl((ran.nextInt(15)+1) > 10? "Y" : "N");
-				review.setEvalScore((ran.nextInt(5)+1)+"");
-				review.setHit((ran.nextInt(100)+1)+"");
-				review.setRecomCnt((ran.nextInt(15)+1)+"");
+				review.setBestFl((ran.nextInt(15)+1) > 10 && "A".equals(reviewCl)? "Y" : "N");
+				review.setEvalScore(Integer.valueOf(ran.nextInt(5)+1));
+				review.setHit(Integer.valueOf(ran.nextInt(100)+1));
+				review.setRecomCnt(Integer.valueOf(ran.nextInt(15)+1));
 	//			review.setCmtCnt("");
-				review.setRecbScore((ran.nextInt(10)+1)+"");
-				
+				review.setRecbScore(Integer.valueOf(ran.nextInt(10)+1));
 				
 				String[] _goodCnts = {"색이 많이 진하네요\n생각보다 별로에요"
 									, "가성비 좋네요\n많이파세요~~~"
