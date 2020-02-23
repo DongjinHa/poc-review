@@ -4,6 +4,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import javax.annotation.Resource;
+
+import org.apache.logging.log4j.util.Strings;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -136,7 +138,7 @@ public class ReviewServiceImpl implements ReviewService {
 	
 	public List<ReviewDTO> getReviewList4(ReviewDTO reviewDTO) {
 		
-		Query query = new Query();
+		//Query query = new Query();
 		
 		/* full text search 테스트*/
 		/*
@@ -185,55 +187,58 @@ public class ReviewServiceImpl implements ReviewService {
 		Criteria criteriaSkintype = new Criteria();
 		Criteria criteriaSkinetc = new Criteria();
 		Criteria criteriaSkintone = new Criteria();
+		Criteria criteriaKey = new Criteria();
 		
 		// A:포토리뷰, B:간단리뷰 
-		if(StringUtils.isEmpty(reviewDTO.getReviewCl())==true) {  
-			criteriaReviewCl = Criteria.where("reviewCl").is("A");
-		}else {
-			criteriaReviewCl = Criteria.where("reviewCl").is(reviewDTO.getReviewCl());
-		}
+		criteriaReviewCl = Criteria.where("reviewCl").is(reviewDTO.getReviewCl());
 		
 		// 연령  
         int currentYear  = Calendar.getInstance().get(Calendar.YEAR);
+        String uage = reviewDTO.getUage();
         
-		if(reviewDTO.getUage()=="all") {
-		}else if(reviewDTO.getUage().equals("10")) {
-			criteriaAge1 = Criteria.where("reviewer.birthDay").gte(Integer.toString(currentYear-18)+"0101");
+        switch(uage) {
+        case "all" :
+        	break;
+        case "10" :
+        	criteriaAge1 = Criteria.where("reviewer.birthDay").gte(Integer.toString(currentYear-18)+"0101");
 			criteriaAge2 = Criteria.where("reviewer.birthDay").lte(Integer.toString(currentYear-9)+"1231");
-		}else if(reviewDTO.getUage().equals("20")) {
-			criteriaAge1 = Criteria.where("reviewer.birthDay").gte(Integer.toString(currentYear-28)+"0101");
+			break;
+        case "20" :
+        	criteriaAge1 = Criteria.where("reviewer.birthDay").gte(Integer.toString(currentYear-28)+"0101");
 			criteriaAge2 = Criteria.where("reviewer.birthDay").lte(Integer.toString(currentYear-19)+"1231");
-		}else if(reviewDTO.getUage().equals("30")) {
-			criteriaAge1 = Criteria.where("reviewer.birthDay").gte(Integer.toString(currentYear-38)+"0101");
+			break;
+        case "30" :
+        	criteriaAge1 = Criteria.where("reviewer.birthDay").gte(Integer.toString(currentYear-38)+"0101");
 			criteriaAge2 = Criteria.where("reviewer.birthDay").lte(Integer.toString(currentYear-29)+"1231");
-		}else if(reviewDTO.getUage().equals("40")) {
-			criteriaAge1 = Criteria.where("reviewer.birthDay").gte(Integer.toString(currentYear-48)+"0101");
+			break;
+        case "40" :
+        	criteriaAge1 = Criteria.where("reviewer.birthDay").gte(Integer.toString(currentYear-48)+"0101");
 			criteriaAge2 = Criteria.where("reviewer.birthDay").lte(Integer.toString(currentYear-79)+"1231");
-		}
-		
+			break;
+        }
+        
 		// 피부타입
-		if(reviewDTO.getSkintypecdyn()==null || reviewDTO.getSkintypecdyn().equals("")) {
-		} else if(reviewDTO.getSkintypecdyn().equals("Y")) {
-			criteriaSkintype = Criteria.where("reviewer.skinTypeCd").in(reviewDTO.getSkintypecd1(),reviewDTO.getSkintypecd2()
-													,reviewDTO.getSkintypecd3(),reviewDTO.getSkintypecd4()
-													,reviewDTO.getSkintypecd5(),reviewDTO.getSkintypecd6(),reviewDTO.getSkintypecd7());
+		if(reviewDTO.getSkintypecdyn().equals("Y")) {
+			criteriaSkintype = Criteria.where("reviewer.skinTypeCd").in(reviewDTO.getSkintypecd1(),reviewDTO.getSkintypecd2(),reviewDTO.getSkintypecd3()
+					,reviewDTO.getSkintypecd4(),reviewDTO.getSkintypecd5(),reviewDTO.getSkintypecd6(),reviewDTO.getSkintypecd7());
 		}
 		
 		// 피부밝기
-		if(reviewDTO.getSkinetcinfoyn()==null || reviewDTO.getSkinetcinfoyn().equals("")) {
-		} else if(reviewDTO.getSkinetcinfoyn().equals("Y")) {
-			criteriaSkinetc = Criteria.where("reviewer.skinEtcInfo").in(reviewDTO.getSkinetcinfo1(),reviewDTO.getSkinetcinfo2()
-													,reviewDTO.getSkinetcinfo3());
+		if(reviewDTO.getSkinetcinfoyn().equals("Y")) {
+			criteriaSkinetc = Criteria.where("reviewer.skinEtcInfo").in(reviewDTO.getSkinetcinfo1(),reviewDTO.getSkinetcinfo2(),reviewDTO.getSkinetcinfo3());
 		}
 		
 		// 피부톤
-		if(reviewDTO.getSkintonecdyn()==null || reviewDTO.getSkintonecdyn().equals("")) {
-		} else if(reviewDTO.getSkintonecdyn().equals("Y")) {
-			criteriaSkintone = Criteria.where("reviewer.skinToneCd").in(reviewDTO.getSkintonecd1(),reviewDTO.getSkintonecd2()
-													,reviewDTO.getSkintonecd3());
+		if(reviewDTO.getSkintonecdyn().equals("Y")) {
+			criteriaSkintone = Criteria.where("reviewer.skinToneCd").in(reviewDTO.getSkintonecd1(),reviewDTO.getSkintonecd2(),reviewDTO.getSkintonecd3());
 		}
 		
-		Criteria criteria = new Criteria().andOperator(criteriaReviewCl, criteriaAge1, criteriaAge2, criteriaSkintype, criteriaSkinetc, criteriaSkintone);
+		// 검색어
+		if(Strings.isEmpty(reviewDTO.getKey())==false) {
+			criteriaKey = Criteria.where("goodCnts").regex(reviewDTO.getKey()); 
+		}
+		
+		Criteria criteria = new Criteria().andOperator(criteriaReviewCl, criteriaAge1, criteriaAge2, criteriaSkintype, criteriaSkinetc, criteriaSkintone, criteriaKey);
 		
 		MatchOperation match = Aggregation.match(criteria);
 		LookupOperation lookUp = LookupOperation.newLookup()
@@ -246,12 +251,9 @@ public class ReviewServiceImpl implements ReviewService {
 		SortOperation sort = Aggregation.sort(Sort.Direction.DESC, "regDate");
 		if(reviewDTO.getSort()==2) {
 			sort = Aggregation.sort(Sort.Direction.DESC, "hit");
-		}else {
-			sort = Aggregation.sort(Sort.Direction.DESC, "regDate");
 		}
 		
 		SkipOperation skip = Aggregation.skip((reviewDTO.getPageNo())*20);
-	//	SkipOperation skip = Aggregation.skip(1*20);
 		
 		LimitOperation limit = Aggregation.limit(20);
 
