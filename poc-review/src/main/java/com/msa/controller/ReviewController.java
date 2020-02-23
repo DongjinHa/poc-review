@@ -231,14 +231,15 @@ public class ReviewController {
     
     // 댓글 페이징 
     @GetMapping("reviewDetail/{id}/getMoreComments/{pageNo}")
-    public @ResponseBody List<CommentDTO> reviewDetail(Model model,@PathVariable("id") String _id, @PathVariable("pageNo") String pageNo) {	
+    public String reviewDetail(Model model,@PathVariable("id") String _id, @PathVariable("pageNo") String pageNo) {	
     	
     	ResponseEntity<List<CommentDTO>> commentsResponse = restTemplate.exchange("/Comments/"+ _id 
     								+"/" + pageNo
     								, HttpMethod.GET, null, new ParameterizedTypeReference<List<CommentDTO>>() {});
         List<CommentDTO> comments= commentsResponse.getBody();
+    	model.addAttribute("CommentData", comments);
 
-    	return comments;
+    	return "detailComment";
     }
     
 	/*

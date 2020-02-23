@@ -108,6 +108,7 @@ public class ReviewServiceImpl implements ReviewService {
 		);
 		
 		MatchOperation match = Aggregation.match(criteria);
+		SortOperation sort = Aggregation.sort(Sort.Direction.DESC, "regDate");
 		LimitOperation limit = Aggregation.limit(15);
 		
 		LookupOperation lookUp = LookupOperation.newLookup()
@@ -115,7 +116,7 @@ public class ReviewServiceImpl implements ReviewService {
 				.foreignField("_id").as("reviewer"); 
 		
 		
-		Aggregation aggregation = Aggregation.newAggregation(match, lookUp, limit);
+		Aggregation aggregation = Aggregation.newAggregation(match, lookUp, sort, limit);
 		AggregationResults<ReviewDTO> result = mongoTemplate.aggregate(aggregation, Review.class, ReviewDTO.class);
 	    
 		return result.getMappedResults();  

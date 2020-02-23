@@ -96,25 +96,27 @@
      </div>
       <br>
         
-       <!-- 코멘트 출력 -->
-       <div class="commentTblDiv">
-	        <table id = "commentTbl">      
-			<th:block th:each="Comment : ${CommentData}">
-				<th:block th:each="ReviewerInfo : ${Comment.reviewer}" th:if="${ReviewerInfoStat.index}==0">
-			 	<tr><td>
-			 	<img class="profileImg" th:src="@{'http://localhost:9091'+${ReviewerInfo.profileImg}}" alt="Img" height="10%" width="10%" />
-				<span class = "badge badge-success" th:text="'lvl.' + ${ReviewerInfo.lvl}"></span>
-				</td>
-				<td><span th:text="${ReviewerInfo.nickNm}"></span></td>
-				<td><span th:text="${Comment.regDate}"></span></td>
-				</tr>
-				<tr><td>
-				<span th:text="'댓글 내용 : ' + ${Comment.cnts}"></span><br/>
-				</td></tr>
+       <!-- 코멘트 출력  --> 
+		<div class="commentDiv">
+				<th:block th:each="Comment : ${CommentData}">
+				<ul>
+					<li>
+					<th:block th:each="ReviewerInfo : ${Comment.reviewer}" th:if="${ReviewerInfoStat.index}==0">
+					 	<div class="commentProfile">
+							<img class="profileImg" th:src="@{'http://localhost:9091'+${ReviewerInfo.profileImg}}" alt="Img"/>
+							<span class = "badge badge-success" th:text="'lv.' + ${ReviewerInfo.lvl}"></span>
+							<span th:text="${ReviewerInfo.nickNm}"></span>
+							<span class="commentRegdt" th:text="${Comment.regDate}"></span>
+						</div>	
+					
+						<div>
+							<span th:text="'댓글 내용 : ' + ${Comment.cnts}"></span><br/>
+						</div>
+					</th:block>
+					</li>
+				</ul>
 				</th:block>
-			</th:block>
-			</table>
-		</div>
+		</div>	
 
 	<!-- 코멘트 더보기 페이징 -->
 	<button class="btn btn-secondary" id ="moreCmtBtn"> more </button>
@@ -128,62 +130,49 @@
     <span th:text="'prdNm: ' + ${Product.prdNm}"></span><br/>
     <span th:text="'salPrc: ' + ${Product.salPrc}"></span>원<br/>
 	</div>
-
+</div>
 
 
 <th:block>
 	<script th:inline="javascript" type="text/javascript">
-	
-$(document).ready(function(){	
-
-		//페이징
-		var id = [[${ReviewData._id}]] 
-		var pageNo = 2;
-		var url = document.location.href;
-		var totalCmtNo = [[${Count}]] 
-		var totalPgNo = Math.floor(totalCmtNo/3);
-		
-		//슬라이드  
-		var imgArray = [[${ReviewData.tplList}]]
-		
- 		if(imgArray == null){
-			$("#carouselExampleIndicators").hide(); //이미지가 없을 때는 슬라이드 div 자체를 hide
-		} 
-		if(totalPgNo <= 1){ // 총 댓글이 3개 이하일 때는 첫 페이지부터 버튼 hide
-			$("#moreCmtBtn").hide();
-		}
-		else{				// 총 댓글이 4개 이상일 때 버튼 이벤트
-			$("#moreCmtBtn").click(function (){
-	  		 $.ajax({
-						type: 'GET',
-						url : url + '/getMoreComments/' + pageNo,
-						success: function (data) { 
-							$('#commentTbl').append(data);
-					             var str = "<tr>";
-					            $.each(data , function(i){
-					                 str += "<TD>"+ data[i].reviewer[0].profileImg + "</TD><TD>" 
-					                			  + 'lvl.' + data[i].reviewer[0].lvl + "</TD><TD>" 
-					                			  + data[i].reviewer[0].nickNm + "</TD><TD>"
-					                			  + data[i].regDate + '</TD><TR><TD>'
-					                			  + data[i].cnts+ '</TD></TR>';  		
-					                str += "</tr>";
-					           });
-					           $("#commentTbl").append(str);
-					           if(pageNo == totalPgNo){ //마지막페이지이면 버튼 hide
-					        	   $("#moreCmtBtn").hide();
-					           }
-					           else {
-					           pageNo += 1; //페이지 더 있으면 pageNo ++
-					           }
-			                  },			//ajax-success
-						error: function (e) {
-						console.log(e);
-						alert('댓글 읽기에 실패했습니다.');
-						} 					//ajax-error
-						});  				//ajax 
-	});										//Btn-Event
-		}									//else
-});											//document-ready
+		$(document).ready(function(){	
+				//페이징
+				var id = [[${ReviewData._id}]] 
+				var pageNo = 2;
+				var url = document.location.href;
+				var totalCmtNo = [[${Count}]] 
+				var totalPgNo = Math.floor(totalCmtNo/3);
+				//슬라이드  
+				var imgArray = [[${ReviewData.tplList}]]
+				
+		 		if(imgArray == null){
+					$("#carouselExampleIndicators").hide(); //이미지가 없을 때는 슬라이드 div 자체를 hide
+				} 
+				if(totalPgNo <= 1){ // 총 댓글이 3개 이하일 때는 첫 페이지부터 버튼 hide
+					$("#moreCmtBtn").hide();
+				}
+				else{				// 총 댓글이 4개 이상일 때 버튼 이벤트
+					$("#moreCmtBtn").click(function (){
+			  		 $.ajax({
+								type: 'GET',
+								url : url + '/getMoreComments/' + pageNo,
+					            success: function (data) { 
+					                $('.commentDiv').append(data);	//detailComment.html을 따로 따서 덧붙임.
+									if(pageNo == totalPgNo){ //마지막페이지이면 버튼 hide
+									   $("#moreCmtBtn").hide();
+									}
+									else {
+									   pageNo += 1; //페이지 더 있으면 pageNo ++
+									}
+							     },			//ajax-success      
+								error: function (e) {
+								console.log(e);
+								alert('댓글 읽기에 실패했습니다.');
+								} 					//ajax-error
+								});  				//ajax 
+			});										//Btn-Event
+				}									//else
+		});											//document-ready
     </script>
 </th:block>
 

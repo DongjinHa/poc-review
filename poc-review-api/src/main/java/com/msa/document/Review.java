@@ -16,11 +16,11 @@ public class Review {
 	private String reviewCl;
 	private String prdSeq;
 	private String bestFl;
-	private String evalScore;
-	private int hit;
-	private String recomCnt;
+	private Integer evalScore;
+	private Integer hit;
+	private Integer recomCnt;
 //	private String cmtCnt;
-	private String recbScore;
+	private Integer recbScore;
 	private String goodCnts;
 	private String etcCnts;
 //	private String tplRegCnt;
