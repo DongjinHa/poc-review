@@ -80,6 +80,22 @@ public class ReviewController {
     	reviewdto.setSort(sort);
     	reviewdto.setKey(key);
     	reviewdto.setUage(uage);
+    	reviewdto.setSkintypecd1(skintypecd1);
+    	reviewdto.setSkintypecd2(skintypecd2);
+    	reviewdto.setSkintypecd3(skintypecd3);
+    	reviewdto.setSkintypecd4(skintypecd4);
+    	reviewdto.setSkintypecd5(skintypecd5);
+    	reviewdto.setSkintypecd6(skintypecd6);
+    	reviewdto.setSkintypecd7(skintypecd7);
+    	reviewdto.setSkintypecdyn(skintypecdyn);
+    	reviewdto.setSkinetcinfo1(skinetcinfo1);
+    	reviewdto.setSkinetcinfo2(skinetcinfo2);
+    	reviewdto.setSkinetcinfo3(skinetcinfo3);
+    	reviewdto.setSkinetcinfoyn(skinetcinfoyn);
+    	reviewdto.setSkintonecd1(skintonecd1);
+    	reviewdto.setSkintonecd2(skintonecd2);
+    	reviewdto.setSkintonecd3(skintonecd3);
+    	reviewdto.setSkintonecdyn(skintonecdyn);
     	
         return reviewService.getReviewList4(reviewdto);
     }  

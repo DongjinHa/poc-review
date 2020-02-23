@@ -17,13 +17,13 @@
 	<h2>맞춤 필터</h2>
 	<div style="height: 200px;">
 		<form action="/review/reviewList" method="post" id="reviewSrchFrm" onsubmit="return false;">
-			<input type="hidden" name="pageNo" id="pageNo" value="1" /> 
+			<input type="hidden" name="pageNo" id="pageNo" value="0" /> 
 			<input type="hidden" name="mode" id="mode" value="0" /> 
 			<input type="hidden" name="reviewCl" id="reviewCl" value="${Review.reviewCl}" /> 
 			<input type="hidden" name="sort" id="sort" value="${Review.sort}" />
 
-		<div class="inputText"><input type="text" id="key" name="key" value="" data-value="검색어를 입력해주세요." onkeydown="if(event.keyCode == 13) goPage('1');"/>
-			<button type="button" class="btnSearch" onclick="goPage('1')" >검색</button>
+		<div class="inputText"><input type="text" id="key" name="key" value="" data-value="검색어를 입력해주세요." onkeydown="if(event.keyCode == 13) goPage('0');"/>
+			<button type="button" class="btnSearch" onclick="goPage('0')" >검색</button>
 		</div>
 
 			<dl style="float: left; width: 120px;">
@@ -96,7 +96,7 @@
 					</ul>
 				</dd>
 			</dl>
-			<input type="submit" onclick="goPage('1');" value="필터 적용" /> 
+			<input type="submit" onclick="goPage('0');" value="필터 적용" /> 
 			<br /><br />
 
 		</form>

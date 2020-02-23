@@ -182,6 +182,9 @@ public class ReviewServiceImpl implements ReviewService {
 		Criteria criteriaReviewCl = new Criteria();
 		Criteria criteriaAge1 = new Criteria();
 		Criteria criteriaAge2 = new Criteria();
+		Criteria criteriaSkintype = new Criteria();
+		Criteria criteriaSkinetc = new Criteria();
+		Criteria criteriaSkintone = new Criteria();
 		
 		// A:포토리뷰, B:간단리뷰 
 		if(StringUtils.isEmpty(reviewDTO.getReviewCl())==true) {  
@@ -208,7 +211,29 @@ public class ReviewServiceImpl implements ReviewService {
 			criteriaAge2 = Criteria.where("reviewer.birthDay").lte(Integer.toString(currentYear-79)+"1231");
 		}
 		
-		Criteria criteria = new Criteria().andOperator(criteriaReviewCl, criteriaAge1, criteriaAge2);
+		// 피부타입
+		if(reviewDTO.getSkintypecdyn()==null || reviewDTO.getSkintypecdyn().equals("")) {
+		} else if(reviewDTO.getSkintypecdyn().equals("Y")) {
+			criteriaSkintype = Criteria.where("reviewer.skinTypeCd").in(reviewDTO.getSkintypecd1(),reviewDTO.getSkintypecd2()
+													,reviewDTO.getSkintypecd3(),reviewDTO.getSkintypecd4()
+													,reviewDTO.getSkintypecd5(),reviewDTO.getSkintypecd6(),reviewDTO.getSkintypecd7());
+		}
+		
+		// 피부밝기
+		if(reviewDTO.getSkinetcinfoyn()==null || reviewDTO.getSkinetcinfoyn().equals("")) {
+		} else if(reviewDTO.getSkinetcinfoyn().equals("Y")) {
+			criteriaSkinetc = Criteria.where("reviewer.skinEtcInfo").in(reviewDTO.getSkinetcinfo1(),reviewDTO.getSkinetcinfo2()
+													,reviewDTO.getSkinetcinfo3());
+		}
+		
+		// 피부톤
+		if(reviewDTO.getSkintonecdyn()==null || reviewDTO.getSkintonecdyn().equals("")) {
+		} else if(reviewDTO.getSkintonecdyn().equals("Y")) {
+			criteriaSkintone = Criteria.where("reviewer.skinToneCd").in(reviewDTO.getSkintonecd1(),reviewDTO.getSkintonecd2()
+													,reviewDTO.getSkintonecd3());
+		}
+		
+		Criteria criteria = new Criteria().andOperator(criteriaReviewCl, criteriaAge1, criteriaAge2, criteriaSkintype, criteriaSkinetc, criteriaSkintone);
 		
 		MatchOperation match = Aggregation.match(criteria);
 		LookupOperation lookUp = LookupOperation.newLookup()
@@ -221,6 +246,8 @@ public class ReviewServiceImpl implements ReviewService {
 		SortOperation sort = Aggregation.sort(Sort.Direction.DESC, "regDate");
 		if(reviewDTO.getSort()==2) {
 			sort = Aggregation.sort(Sort.Direction.DESC, "hit");
+		}else {
+			sort = Aggregation.sort(Sort.Direction.DESC, "regDate");
 		}
 		
 		SkipOperation skip = Aggregation.skip((reviewDTO.getPageNo())*20);
