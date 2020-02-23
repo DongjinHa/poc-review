@@ -44,7 +44,7 @@ class ReviewerRepositoryTest {
 			Reviewer reviewer = new Reviewer();
 
 			reviewer.setNickNm("리뷰어"+(i+1));
-			reviewer.setLvl(ran.nextInt(10)+"");
+			reviewer.setLvl(ran.nextInt(10)+1+"");
 			
 			String[] _sex = {"F", "M"};
 			reviewer.setSex(_sex[ran.nextInt(2)]);
