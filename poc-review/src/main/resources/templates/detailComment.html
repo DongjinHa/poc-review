@@ -1,6 +1,8 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 			<th:block th:each="Comment : ${CommentData}">
 				<ul>
-					<li>
+					<li class="list-group-item list-group-item-action">
 					<th:block th:each="ReviewerInfo : ${Comment.reviewer}" th:if="${ReviewerInfoStat.index}==0">
 					 	<div class="commentProfile">
 							<img class="profileImg" th:src="@{'http://localhost:9091'+${ReviewerInfo.profileImg}}" alt="Img"/>
