@@ -1,8 +1,15 @@
 package com.msa.service;
 
+<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+=======
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import javax.annotation.Resource;
+>>>>>>> master
 
 import org.apache.logging.log4j.util.Strings;
 import org.bson.types.ObjectId;
