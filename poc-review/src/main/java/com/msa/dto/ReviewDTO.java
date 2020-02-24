@@ -12,11 +12,11 @@ import org.bson.types.ObjectId;
 public class ReviewDTO {
 	private String _id;	//ObjectId로 설정할 경우 DB상의 _id값과 차이 발생하여 변경
 	private String reviewer_id;
-	private String reviewCl = "A";
+	private String reviewCl;
 	private String prdSeq;
 	private String bestFl;
 	private String evalScore;
-	private int hit;
+	private String hit;
 	private String recomCnt;
 //	private String cmtCnt;
 	private String recbScore;
@@ -29,9 +29,9 @@ public class ReviewDTO {
 	private Date updDate;
 	
 	//필터 변수
-	private int pageNo = 0;
+	private int pageNo;
 	private String key;
-	private int sort = 1;
+	private int sort;
 	private String uage = "all";
 	private String skintypecd1;
 	private String skintypecd2;
@@ -40,16 +40,16 @@ public class ReviewDTO {
 	private String skintypecd5;
 	private String skintypecd6;
 	private String skintypecd7;
-	private String skintypecdyn = "N";
+	private String skintypecdyn;
 	private String skinetcinfo1;
 	private String skinetcinfo2;
 	private String skinetcinfo3;
-	private String skinetcinfoyn = "N";
+	private String skinetcinfoyn;
 	private String skintonecd1;
 	private String skintonecd2;
 	private String skintonecd3;
-	private String skintonecdyn = "N";
-	private String mode = "0";
+	private String skintonecdyn;
+	private String mode;
 	
 	private List<ReviewerDTO> reviewer;
 

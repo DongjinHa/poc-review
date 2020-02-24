@@ -177,7 +177,9 @@ public class ReviewController {
         
         model.addAttribute("Review", reviews);
         
-        if(reviewDTO.getMode().equals("0")) { // mode 0: 리뷰 리스트 조회, 1: 리뷰 필터 검색, 2: 페이징
+        String mode = reviewDTO.getMode();
+        
+        if(StringUtils.isEmpty(mode)) { // mode 0: 리뷰 리스트 조회, 1: 리뷰 필터 검색, 2: 페이징
         	return "apitest2";
         } else {
         	return "apitest";
