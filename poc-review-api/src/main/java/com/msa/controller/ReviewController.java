@@ -23,17 +23,24 @@ public class ReviewController {
 	
 	@Autowired
 	ReviewService reviewService;
-    
-    @PostMapping("/addReview")
-    public String addReview(@RequestBody Review _review) {
-    	Review review = reviewService.addReview(_review);
-        return "added id:" + review.get_id();
-    }
 
-    @GetMapping("/getReviewList")
-    public List<ReviewDTO> getReviewList() {
-        return reviewService.getReviewList();
-    }    
+    @PostMapping("/allreview")
+    public List<ReviewDTO> getReviewList(@RequestBody ReviewDTO reviewdto) {
+		return reviewService.getReviewList(reviewdto);
+    }
+    
+    @PostMapping("/allreview-totcnt")
+    public int getReviewTotCnt(@RequestBody ReviewDTO reviewdto) {
+		
+		int totCnt = 0;
+		reviewdto.setTotCntYn("Y");
+		List<ReviewDTO> list = reviewService.getReviewList(reviewdto);
+		if (list != null) {
+			totCnt = list.get(0).getTotCnt();
+		}
+
+		return totCnt; 
+    }
 
     @GetMapping("/getReviewList1")
     public List<ReviewDTO> getReviewList1() {
@@ -80,6 +87,22 @@ public class ReviewController {
     	reviewdto.setSort(sort);
     	reviewdto.setKey(key);
     	reviewdto.setUage(uage);
+    	reviewdto.setSkintypecd1(skintypecd1);
+    	reviewdto.setSkintypecd2(skintypecd2);
+    	reviewdto.setSkintypecd3(skintypecd3);
+    	reviewdto.setSkintypecd4(skintypecd4);
+    	reviewdto.setSkintypecd5(skintypecd5);
+    	reviewdto.setSkintypecd6(skintypecd6);
+    	reviewdto.setSkintypecd7(skintypecd7);
+    	reviewdto.setSkintypecdyn(skintypecdyn);
+    	reviewdto.setSkinetcinfo1(skinetcinfo1);
+    	reviewdto.setSkinetcinfo2(skinetcinfo2);
+    	reviewdto.setSkinetcinfo3(skinetcinfo3);
+    	reviewdto.setSkinetcinfoyn(skinetcinfoyn);
+    	reviewdto.setSkintonecd1(skintonecd1);
+    	reviewdto.setSkintonecd2(skintonecd2);
+    	reviewdto.setSkintonecd3(skintonecd3);
+    	reviewdto.setSkintonecdyn(skintonecdyn);
     	
         return reviewService.getReviewList4(reviewdto);
     }  
