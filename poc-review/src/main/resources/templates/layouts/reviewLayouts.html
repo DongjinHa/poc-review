@@ -24,6 +24,14 @@
 					$('#powerReviewList').html(data);
 				}
 			});
+
+			$.ajax({
+				url : '/review/allreview',
+				type : 'POST',
+				success : function(data) {
+					$('#reviewList').html(data);
+				}
+			});
 		});
 		
 	

@@ -1126,7 +1126,7 @@
 	top: 20px; right: 20px;
 	width: 19px; height: 18px;
 	font-size: 0;
-	background: url('../images/common/btn_layer_close2.png') no-repeat;
+	background: url('/img/btn_layer_close2.png') no-repeat;
 }
 
 .bestTab {
@@ -1398,7 +1398,7 @@
 	position: absolute;
 	top: 16px; right: 16px;
 	width: 17px; height: 17px;
-	background: url('../images/common/btn_layer_close2.png') no-repeat;
+	background: url('/img/btn_layer_close2.png') no-repeat;
 	font-size: 0;
 }
 .pdtViewTop .pdtViewCont {
@@ -2198,7 +2198,7 @@
 	position: absolute;
 	top: 16px; right: 16px;
 	width: 17px; height: 17px;
-	background: url('../images/common/btn_layer_close2.png') no-repeat;
+	background: url('/img/btn_layer_close2.png') no-repeat;
 	font-size: 0;
 }
 
@@ -6784,6 +6784,23 @@
 	vertical-align: -4px;
 }
 
+.moreReview {margin-top: 15px;}
+.moreReview a {
+	display: block;
+	line-height: 80px;
+	text-align: center;
+	background: #0e4035;
+	color: #fff;
+	font-size: 20px;
+}
+.moreReview a:before {
+	content: "";
+	display: inline-block;
+	width: 24px; height: 24px;
+	margin-right: 16px;
+	background: url('/img/btn_review_search.png') no-repeat;
+	vertical-align: -4px;
+}
 
 .reivewTab {
 	margin: 80px 0 0;
@@ -6963,7 +6980,7 @@
 	position: absolute;
 	top: 16px; right: 16px;
 	width: 17px; height: 17px;
-	background: url('../images/common/btn_layer_close2.png') no-repeat;
+	background: url('/img/btn_layer_close2.png') no-repeat;
 	font-size: 0;
 }
 
