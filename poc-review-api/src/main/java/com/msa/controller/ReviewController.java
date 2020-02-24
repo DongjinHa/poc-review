@@ -23,17 +23,24 @@ public class ReviewController {
 	
 	@Autowired
 	ReviewService reviewService;
-    
-    @PostMapping("/addReview")
-    public String addReview(@RequestBody Review _review) {
-    	Review review = reviewService.addReview(_review);
-        return "added id:" + review.get_id();
-    }
 
-    @GetMapping("/getReviewList")
-    public List<ReviewDTO> getReviewList() {
-        return reviewService.getReviewList();
-    }    
+    @PostMapping("/allreview")
+    public List<ReviewDTO> getReviewList(@RequestBody ReviewDTO reviewdto) {
+		return reviewService.getReviewList(reviewdto);
+    }
+    
+    @PostMapping("/allreview-totcnt")
+    public int getReviewTotCnt(@RequestBody ReviewDTO reviewdto) {
+		
+		int totCnt = 0;
+		reviewdto.setTotCntYn("Y");
+		List<ReviewDTO> list = reviewService.getReviewList(reviewdto);
+		if (list != null) {
+			totCnt = list.get(0).getTotCnt();
+		}
+
+		return totCnt; 
+    }
 
     @GetMapping("/getReviewList1")
     public List<ReviewDTO> getReviewList1() {

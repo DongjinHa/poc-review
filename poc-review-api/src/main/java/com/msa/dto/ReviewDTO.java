@@ -3,7 +3,6 @@ package com.msa.dto;
 import java.util.Date;
 import java.util.List;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Data;
@@ -30,6 +29,9 @@ public class ReviewDTO {
 	private Date updDate;
 	
 	//필터 변수
+	private List<String> prdSeqList;
+	private String totCntYn;
+	private int totCnt;
 	private int pageNo;
 	private String key;
 	private int sort;

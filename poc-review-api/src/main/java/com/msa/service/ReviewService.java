@@ -9,13 +9,12 @@ import com.msa.dto.ReviewerDTO;
 
 public interface ReviewService {
 
-    public Review addReview(Review review);
-	public List<ReviewDTO> getReviewList();
+	public List<ReviewDTO> getReviewList(ReviewDTO reviewDTO);
 	public List<ReviewDTO> getReviewList1();
 	public List<Review> getReviewList2();
 	public List<ReviewDTO> getReviewList3(String name);
     //public Optional<ReviewDTO> getReview(String id);
-	public List<ReviewDTO> getReviewList4(ReviewDTO reviewdto);
+	public List<ReviewDTO> getReviewList4(ReviewDTO reviewDTO);
 	public ReviewDTO getReview(String id);
     public void delReview(String id);
 	public ReviewerDTO getReviewer(String id);
