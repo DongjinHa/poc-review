@@ -67,9 +67,6 @@
 			    <th:block th:each="ReviewImg :  ${ReviewData.tplList}">
 				    <li data-target="#carouselExampleIndicators" 
 				    	th:attr="data-slide-to=${ReviewImgStat.index}"></li>
-				    
-				    <!--  li data-target="#carouselExampleIndicators" data-slide-to="1" ></li>
-				    <li data-target="#carouselExampleIndicators" data-slide-to="2" ></li-->
 			    </th:block>
   			</ol>
 	</div>
@@ -81,6 +78,7 @@
 	<h3>ETC</h3>
 	<span th:text="${ReviewData.etcCnts}"></span><br/>
 	<hr>
+	<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
 	<span th:text="'recomCnt : ' + ${ReviewData.recomCnt}"></span><br/>
 	<span th:text="'recbScore : ' + ${ReviewData.recbScore}"></span><br/>
 	<hr>
@@ -97,10 +95,10 @@
       <br>
         
        <!-- 코멘트 출력  --> 
-		<div class="commentDiv">
+		<div class="commentDiv"> 
 				<th:block th:each="Comment : ${CommentData}">
 				<ul>
-					<li>
+					<li class="list-group-item list-group-item-action">
 					<th:block th:each="ReviewerInfo : ${Comment.reviewer}" th:if="${ReviewerInfoStat.index}==0">
 					 	<div class="commentProfile">
 							<img class="profileImg" th:src="@{'http://localhost:9091'+${ReviewerInfo.profileImg}}" alt="Img"/>
@@ -108,7 +106,6 @@
 							<span th:text="${ReviewerInfo.nickNm}"></span>
 							<span class="commentRegdt" th:text="${Comment.regDate}"></span>
 						</div>	
-					
 						<div>
 							<span th:text="'댓글 내용 : ' + ${Comment.cnts}"></span><br/>
 						</div>
@@ -130,7 +127,6 @@
     <span th:text="'prdNm: ' + ${Product.prdNm}"></span><br/>
     <span th:text="'salPrc: ' + ${Product.salPrc}"></span>원<br/>
 	</div>
-</div>
 
 
 <th:block>
@@ -157,7 +153,7 @@
 								type: 'GET',
 								url : url + '/getMoreComments/' + pageNo,
 					            success: function (data) { 
-					                $('.commentDiv').append(data);	//detailComment.html을 따로 따서 덧붙임.
+					                $('.commentDiv').append(data);	//detailComment.html을 따로 따서 덧붙임
 									if(pageNo == totalPgNo){ //마지막페이지이면 버튼 hide
 									   $("#moreCmtBtn").hide();
 									}

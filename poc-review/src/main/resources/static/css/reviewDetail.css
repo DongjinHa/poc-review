@@ -39,7 +39,23 @@
 		height:8%;
 		width:8%;	
 	}
-		
+	
+	/*댓글 영역 block*/
+	.list-group {
+	  padding-left: 0;
+	  margin-bottom: 20px;
+	}
+	
+	.list-group-item {
+	  position: relative;
+	  display: block;
+	  padding: 10px 15px;
+	  margin-bottom: -1px;
+	  background-color: #fff;
+	  border: 1px solid #ddd;
+	}
+	/*댓글 영역 block*/
+
 	.profileImg{
 		height: 10%;
 		width : 10% 
