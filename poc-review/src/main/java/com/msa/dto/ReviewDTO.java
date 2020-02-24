@@ -1,22 +1,19 @@
 package com.msa.dto;
 
 import lombok.Data;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 import java.util.List;
-
-import org.bson.types.ObjectId;
 
 @Data
 public class ReviewDTO {
 	private String _id;	//ObjectId로 설정할 경우 DB상의 _id값과 차이 발생하여 변경
 	private String reviewer_id;
-	private String reviewCl;
+	private String reviewCl = "A";
 	private String prdSeq;
 	private String bestFl;
 	private String evalScore;
-	private String hit;
+	private int hit;
 	private String recomCnt;
 //	private String cmtCnt;
 	private String recbScore;
@@ -29,9 +26,10 @@ public class ReviewDTO {
 	private Date updDate;
 	
 	//필터 변수
-	private int pageNo;
+	private List<String> prdSeqList;
+	private int pageNo = 0;
 	private String key;
-	private int sort;
+	private int sort = 1;
 	private String uage = "all";
 	private String skintypecd1;
 	private String skintypecd2;
@@ -40,16 +38,16 @@ public class ReviewDTO {
 	private String skintypecd5;
 	private String skintypecd6;
 	private String skintypecd7;
-	private String skintypecdyn;
+	private String skintypecdyn = "N";
 	private String skinetcinfo1;
 	private String skinetcinfo2;
 	private String skinetcinfo3;
-	private String skinetcinfoyn;
+	private String skinetcinfoyn = "N";
 	private String skintonecd1;
 	private String skintonecd2;
 	private String skintonecd3;
-	private String skintonecdyn;
-	private String mode;
+	private String skintonecdyn = "N";
+	private String mode = "0";
 	
 	private List<ReviewerDTO> reviewer;
 

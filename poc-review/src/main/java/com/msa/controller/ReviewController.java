@@ -3,6 +3,7 @@ package com.msa.controller;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -18,6 +19,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
@@ -25,6 +27,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.msa.CommonUtils;
 import com.msa.dto.CommentDTO;
 import com.msa.dto.ReviewDTO;
 import com.msa.dto.ProductDTO;
@@ -47,11 +52,66 @@ public class ReviewController {
 	@Autowired 
 	WebClient.Builder builder;	//PocReviewApplication.java에서 Bean 등록 및 baseUrl 설정
 
-	
-    @GetMapping("/getReviewList")
-    public String getReviewList(Model model) {
-    	model.addAttribute("Review", null);
+    @GetMapping("/")
+    public String initMain(Model model) {
+    	
         return "/review/review";
+    }	
+	
+    @PostMapping("/allreview")
+    public String getReviewList(Model model, @ModelAttribute("reviewDTO") ReviewDTO reviewDTO) throws JsonProcessingException {
+
+    	// 검색조건이 있으면 상품정보 조회
+//    	String key = reviewDTO.getKey();
+    	String key = "화산";
+    	if (key != null && !"".equals(key)) {
+    		ProductDTO[] productArr = restTemplate.getForObject("http://localhost:9092/getProductListByPrdNm/"+key, ProductDTO[].class);
+    		
+    		if (productArr != null && productArr.length > 0) {
+    			List<String> prdSeqList = new ArrayList<>();
+        		for (int i=0; i<productArr.length; i++) {
+        			prdSeqList.add(productArr[i].getPrdSeq());
+        		}
+        		
+        		// 조회필요한 상품정보 세팅
+        		reviewDTO.setPrdSeqList(prdSeqList);
+    		}
+    		
+    	}
+    	
+    	ObjectMapper mapper = new ObjectMapper();
+    	String jsonStr = mapper.writeValueAsString(reviewDTO);
+    	HttpEntity<?> requestEntity = CommonUtils.apiClientHttpEntity(MediaType.APPLICATION_JSON_VALUE, jsonStr);
+    	
+    	ResponseEntity<List<ReviewDTO>> reviewResponse = restTemplate.exchange("/allreview", HttpMethod.POST, requestEntity, new ParameterizedTypeReference<List<ReviewDTO>>() {});
+        List<ReviewDTO> reviewList = reviewResponse.getBody();
+
+        String reviewTotCnt = "0";
+        if (reviewList != null && reviewList.size() > 0) {
+        	ResponseEntity<String> reviewCntResponse = restTemplate.exchange("/allreview-totcnt", HttpMethod.POST, requestEntity, new ParameterizedTypeReference<String>() {});
+        	reviewTotCnt = reviewCntResponse.getBody(); 
+        }
+
+        model.addAttribute("reviewTotCnt", reviewTotCnt);
+        
+        for(ReviewDTO review : reviewList) {
+        	ProductDTO product = restTemplate.getForObject("http://localhost:9092/getProductListByPrdSeq/"+review.getPrdSeq(), ProductDTO.class);
+        	review.setProduct(product);
+        	
+        	System.out.println(product);
+        }
+        model.addAttribute("reviewList", reviewList);
+
+        
+//        String mode = reviewDTO.getMode();
+       /* 
+        if(StringUtils.isEmpty(mode)) { // mode 0: 리뷰 리스트 조회, 1: 리뷰 필터 검색, 2: 페이징
+        	return "apitest2";
+        } else {
+        	return "apitest";
+        }
+        */
+        return "/review/allReviewList";
     }
 
 	@GetMapping("/productList") 
@@ -177,9 +237,7 @@ public class ReviewController {
         
         model.addAttribute("Review", reviews);
         
-        String mode = reviewDTO.getMode();
-        
-        if(StringUtils.isEmpty(mode)) { // mode 0: 리뷰 리스트 조회, 1: 리뷰 필터 검색, 2: 페이징
+        if(reviewDTO.getMode().equals("0")) { // mode 0: 리뷰 리스트 조회, 1: 리뷰 필터 검색, 2: 페이징
         	return "apitest2";
         } else {
         	return "apitest";
