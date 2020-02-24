@@ -138,6 +138,7 @@
 				var url = document.location.href;
 				var totalCmtNo = [[${Count}]] 
 				var totalPgNo = Math.floor(totalCmtNo/3);
+				
 				//슬라이드  
 				var imgArray = [[${ReviewData.tplList}]]
 				
@@ -149,11 +150,16 @@
 				}
 				else{				// 총 댓글이 4개 이상일 때 버튼 이벤트
 					$("#moreCmtBtn").click(function (){
+						//자동 스크롤
+						var offset = $("#moreCmtBtn").offset();
 			  		 $.ajax({
 								type: 'GET',
 								url : url + '/getMoreComments/' + pageNo,
 					            success: function (data) { 
+					            	
 					                $('.commentDiv').append(data);	//detailComment.html을 따로 따서 덧붙임
+					                //$(document).scrollTop($(document).height()); // 페이지 제일 아래로 자동 스크롤
+					                $('html').animate({scrollTop : offset.top}, 400); //더보기 버튼 위치로 0.4초 동안 자동 스크롤
 									if(pageNo == totalPgNo){ //마지막페이지이면 버튼 hide
 									   $("#moreCmtBtn").hide();
 									}
