@@ -11,14 +11,15 @@
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <body>
 <h1>	
-	<th:block th:each="ProductData : ${Product}">
-    <span th:text="${ProductData.prdNm}"></span>
-	</th:block>
+	<span th:text="${Product.prdNm}"></span>
 </h1>
+		<th:block th:each="num:${#numbers.sequence(1,ReviewData.evalScore)}">
+		<img class="evalScore" src="/img/star.png" width="20px"/>
+		</th:block>
+
 	<hr>
 		<span th:text="'작성일 : ' + ${ReviewData.regDate}"></span><br/>
 		<span th:text="'조회수 : ' + ${ReviewData.hit}"></span><br/>
-		<span th:text="'별점 : ' + ${ReviewData.evalScore}"></span>
 	<hr>
 	<div class = "reviewer">
 		<img class="profileImg" th:src="@{'http://localhost:9091'+${ReviewerData.profileImg}}" alt="Img"/>
@@ -79,8 +80,10 @@
 	<span th:text="${ReviewData.etcCnts}"></span><br/>
 	<hr>
 	<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-	<span th:text="'recomCnt : ' + ${ReviewData.recomCnt}"></span><br/>
-	<span th:text="'recbScore : ' + ${ReviewData.recbScore}"></span><br/>
+	<img class="recomCnt" src="/img/speech-balloon.png" width="20px"/>
+	<span th:text="${ReviewData.recomCnt}"></span>
+	<img class="recbScore" src="/img/trophy.png" width="20px"/>
+	<span th:text="${ReviewData.recbScore}"></span><br/>
 	<hr>
 	
 	<!-- 리뷰 댓글 -->
