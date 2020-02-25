@@ -63,7 +63,8 @@ public class ReviewController {
 
     	// 검색조건이 있으면 상품정보 조회
     	String key = reviewDTO.getKey();
-//    	String key = "화산";
+    	//String key = "화산";
+    	
     	if (key != null && !"".equals(key)) {
     		ProductDTO[] productArr = restTemplate.getForObject("http://localhost:9092/getProductListByPrdNm/"+key, ProductDTO[].class);
     		
