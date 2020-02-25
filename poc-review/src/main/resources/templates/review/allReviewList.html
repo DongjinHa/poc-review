@@ -214,6 +214,9 @@
 		  		 $.ajax({
 							type: 'POST',
 							url : '/review/allreview',
+							data : {
+								pageNo : pageNo
+							},
 				            success: function (data) { 
 				                $('.card-columns').append(data);	//detailComment.html을 따로 따서 덧붙임.
 								if(pageNo == totalPgNo){ //마지막페이지이면 버튼 hide
