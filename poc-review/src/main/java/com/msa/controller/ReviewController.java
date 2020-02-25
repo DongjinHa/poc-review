@@ -88,12 +88,13 @@ public class ReviewController {
         List<ReviewDTO> reviewList = reviewResponse.getBody();
 
         String reviewTotCnt = "0";
-        if (reviewList != null && reviewList.size() > 0) {
+        int pageno = reviewDTO.getPageNo();
+        if (reviewList != null && reviewList.size() > 0 && pageno == 1) {
         	ResponseEntity<String> reviewCntResponse = restTemplate.exchange("/allreview-totcnt", HttpMethod.POST, requestEntity, new ParameterizedTypeReference<String>() {});
         	reviewTotCnt = reviewCntResponse.getBody(); 
+        	model.addAttribute("reviewTotCnt", reviewTotCnt);
         }
-
-        model.addAttribute("reviewTotCnt", reviewTotCnt);
+        
         
         for(ReviewDTO review : reviewList) {
         	ProductDTO product = restTemplate.getForObject("http://localhost:9092/getProductListByPrdSeq/"+review.getPrdSeq(), ProductDTO.class);
