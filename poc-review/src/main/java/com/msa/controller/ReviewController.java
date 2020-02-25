@@ -62,8 +62,8 @@ public class ReviewController {
     public String getReviewList(Model model, @ModelAttribute("reviewDTO") ReviewDTO reviewDTO) throws JsonProcessingException {
 
     	// 검색조건이 있으면 상품정보 조회
-//    	String key = reviewDTO.getKey();
-    	String key = "화산";
+    	String key = reviewDTO.getKey();
+//    	String key = "화산";
     	if (key != null && !"".equals(key)) {
     		ProductDTO[] productArr = restTemplate.getForObject("http://localhost:9092/getProductListByPrdNm/"+key, ProductDTO[].class);
     		
@@ -98,7 +98,7 @@ public class ReviewController {
         	ProductDTO product = restTemplate.getForObject("http://localhost:9092/getProductListByPrdSeq/"+review.getPrdSeq(), ProductDTO.class);
         	review.setProduct(product);
         	
-        	System.out.println(product);
+//        	System.out.println(product);
         }
         model.addAttribute("reviewList", reviewList);
 

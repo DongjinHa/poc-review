@@ -125,8 +125,8 @@ public class ReviewServiceImpl implements ReviewService {
 			
 			ProjectionOperation project = Aggregation.project().andExclude("reviewer_id");
 			SortOperation sort = Aggregation.sort(Sort.Direction.DESC, "regDate");
-		//	SkipOperation skip = Aggregation.skip((reviewDTO.getPageNo()-1)*20);
-			SkipOperation skip = Aggregation.skip(1*20);
+			SkipOperation skip = Aggregation.skip((reviewDTO.getPageNo()-1)*20);
+		//	SkipOperation skip = Aggregation.skip(1*20);
 			LimitOperation limit = Aggregation.limit(20);
 			
 			aggregation = Aggregation.newAggregation(lookUp, match, project, sort, skip, limit);	

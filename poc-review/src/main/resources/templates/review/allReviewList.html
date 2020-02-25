@@ -10,7 +10,6 @@
 
 <title>리뷰</title>
 </head>
-
 <body>
 	<div class="reivewTab" id="reivewTab">
 		<ul>
@@ -201,11 +200,11 @@
 		
 	<script type="text/javascript">
 	
-		$(document).ready(function () {
+		$(document).ready(function(){
 			//페이징
 			var pageNo = 2;
 			var totalCmtNo = [[${reviewTotCnt}]] 
-			var totalPgNo = Math.floor(totalCmtNo/3);
+			var totalPgNo = Math.floor(totalCmtNo/20);
 			
 			if(totalPgNo <= 1){ // 총 댓글이 3개 이하일 때는 첫 페이지부터 버튼 hide
 				$("#moreReview").hide();
@@ -213,7 +212,7 @@
 			else{				// 총 댓글이 4개 이상일 때 버튼 이벤트
 				$("#moreReviewBtn").click(function (){
 		  		 $.ajax({
-							type: 'POST'',
+							type: 'POST',
 							url : '/review/allreview',
 				            success: function (data) { 
 				                $('.card-columns').append(data);	//detailComment.html을 따로 따서 덧붙임.
@@ -228,10 +227,10 @@
 								console.log(e);
 								alert('리뷰 읽기에 실패했습니다.');
 							} 					//ajax-error
-							});  				//ajax 
+						});  				//ajax 
 				});										//Btn-Event
 			}									//else
-		});
+		});									//document-ready
 
 		function openWin(url){
 			ReviewDetailView = window.open("about:blank", "ReviewDetail", "width=550,height=600,left=400,top=50,dependent=yes,menubar=no,status=no,resizable=yes,toolbar=no,scrollbars=yes");

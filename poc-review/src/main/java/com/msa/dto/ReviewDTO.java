@@ -27,7 +27,7 @@ public class ReviewDTO {
 	
 	//필터 변수
 	private List<String> prdSeqList;
-	private int pageNo = 0;
+	private int pageNo = 1;
 	private String key;
 	private int sort = 1;
 	private String uage = "all";
