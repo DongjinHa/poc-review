@@ -19,16 +19,18 @@
 <th:block th:each="ReviewData : ${powerReview}">
 
 	<div class="box">
-		  
-		<!--span th:text="'_id : ' + ${ReviewData._id}"></span-->
+		 
+		<!--span th:text="'_id : ' + ${ReviewData._id}"></span>
 		<button th:target="_blank"
 		  th:data-url="@{'/review/reviewDetail/'+${ReviewData._id}}"
 		  onclick="openWin(this.getAttribute('data-url'))">click here:)
-		</button><br/>
+		</button><br/--><!-- 클릭버튼 제거 및 ReviewImg에 클릭이벤트 추가 -->
 		
 		<div class = "image fit">
 		<th:block th:each="ReviewImg : ${ReviewData.tplList}" th:if="${ReviewImgStat.index} == 0">
-			<img class="ReviewImg" th:src="@{'http://localhost:9091'+${ReviewImg}}" alt="Img" />
+			<img class="ReviewImg" style="cursor:pointer"
+				 th:data-url="@{'/review/reviewDetail/'+${ReviewData._id}}"
+		  		 onclick="openWin(this.getAttribute('data-url'))" th:src="@{'http://localhost:9091'+${ReviewImg}}" alt="Img" />
 		</th:block>
 		</div>
 			
