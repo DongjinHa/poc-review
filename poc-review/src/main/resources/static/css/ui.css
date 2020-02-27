@@ -6821,14 +6821,25 @@
 	display: block;
 	line-height: 62px;
 	text-align: center;
-	font-size: 20px;
+	font-size: 21px;
+	font-weight: bold;
 	color: #222;
 }
-.reivewTab li.active a {
+.reivewTab li a input[type="radio"]{
+	position: absolute;
+	z-index: -1;
+	opacity: 0;
+}
+.reivewTab li a input[type="radio"]+label{
+	width: 100%;
+	height: 100%;
+}
+.reivewTab li a label {cursor: pointer;}
+.reivewTab li a input[type="radio"]:checked + label{
 	color: #0e4035;
 	font-family: 'notoM';
 }
-.reivewTab li.active a:after {
+.reivewTab li a input[type="radio"]:checked + label:after {
 	content: "";
 	position: absolute;
 	right:0; bottom: -1px; left: 0;
@@ -6898,8 +6909,8 @@
 	position: relative;
 	z-index: 2;
 	width: 112px; height: 41px;
-	padding-left: 20px;
-	background: #fff url('/img/icon_pdt_sort.png') no-repeat 19px 50%;
+	padding-left: 30px;
+	background: #fff url('/img/icon_pdt_sort.png') no-repeat 17px 50%;
 	border: 1px solid #222;
 	font-size: 14px;
 	color: #222;

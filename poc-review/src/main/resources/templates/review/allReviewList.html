@@ -13,8 +13,8 @@
 <body>
 	<div class="reivewTab" id="reivewTab">
 		<ul>
-			<li class="active"><a href="javascript:void(0);">포토 리뷰</a></li>
-			<li><a href="javascript:void(0);">간단 리뷰</a></li>
+			<li><a><input type="radio" id="photoReview" name="reviewCl" value="A" onclick="srchPhotoList('photo')" checked="checked"><label for="photoReview">포토 리뷰</label></a></li>
+			<li><a><input type="radio" id="textReview" name="reviewCl" value="B" onclick="srchPhotoList('photo')"><label for="textReview">간단 리뷰</label></a></li>
 		</ul>
 	</div>
 	<div class="reviewSort">
@@ -27,6 +27,7 @@
 			<input type="hidden" id="filterSkintypecd" value="">
 			<input type="hidden" id="filterSkinetcinfo" value="">
 			<input type="hidden" id="filterSkintonecd" value="">
+			<input type="hidden" id="pageNo" value="1">
 			<ul class="sel">
 				<li><input type="radio" id="photoSort1" name="sort" value="1" onclick="srchPhotoList('sort')" checked="checked"><label for="photoSort1">최신순</label></li>
 				<li><input type="radio" id="photoSort2" name="sort" value="2" onclick="srchPhotoList('sort')"><label for="photoSort2">조회순</label></li>
@@ -142,7 +143,7 @@
 					</div>
 					<div class="btnWrap">
 						<button type="button" class="btnType6m" onclick="filterReset();">초기화</button>
-						<button type="button" class="btnType3m" onclick="filterSet();">적용</button>
+						<button type="button" class="btnType3m" id="filterSetBtn" onclick="filterSet();">적용</button>
 					</div>
 					<button type="button" class="btnClose" onclick="reivewFilter('close');">닫기</button>
 				</div>
@@ -151,47 +152,9 @@
 	</div>
 	<div style="padding-top: 30px; padding-bottom: 15px;">
 		<div class="card-columns">
-			<th:block th:each="ReviewData : ${reviewList}">
-		
-				<div class="card">
-					<div class="image fit" style="maring-bottom: 10px;">
-					<th:block th:each="ReviewImg : ${ReviewData.tplList}" th:if="${ReviewImgStat.index} == 0">
-						<img th:src="@{'http://localhost:9091'+${ReviewImg}}" class="reviewWrapImg" alt="Img"
-							style="width: 100%; cursor: pointer;"
-							th:data-url="@{'/review/reviewDetail/'+${ReviewData._id}}"
-							onclick="openWin(this.getAttribute('data-url'));"/>
-					</th:block>
-					</div>
-					<div class="card-body" style="font-size:11pt; color: #777;">
-						<p class="card-title" style="font-weight: bold; color: black;" th:text="${ReviewData.product.prdNm}"></p>
-							
-						<!-- 평점을 별로.. -->
-						<th:block th:each="num:${#numbers.sequence(1,ReviewData.evalScore)}">
-							★
-						</th:block>
-						<div th:with="max_length=50">
-							<p class="card-text" th:if="${#strings.length(ReviewData.goodCnts)} gt ${max_length}" th:text="${#strings.substring(ReviewData.goodCnts,0,max_length) + '…'}"></p>
-							<p class="card-text" th:unless="${#strings.length(ReviewData.goodCnts)} gt ${max_length}" th:text="${ReviewData.goodCnts}"></p>
-						</div>
-						  		
-						<div style="vertical-align: middle; line-height: 43px; margin-top: 15px; margin-bottom: 15px;">
-							<th:block th:each="reviewerInfo : ${ReviewData.reviewer}" th:if="${reviewerInfoStat.index} == 0">
-								<img th:src="@{'http://localhost:9091'+${reviewerInfo.profileImg}}" style="height: 40px; width: 40px;" alt="Img" />
-							  	&nbsp;<span class = "badge badge-success" th:text="'lv.' + ${reviewerInfo.lvl}"></span>
-						  		&nbsp;<span th:text="${reviewerInfo.nickNm}" style="font-size: 11pt; color: black;"></span><br/>
-					  		</th:block>
-					  	</div>
-					  	<span style="position: absolute; bottom: 12px; left: 14px; line-height: 1; font-size: 14px; font-family: 'roboR';"
-					  		th:text="${#dates.format(ReviewData.regDate, 'yyyy-MM-dd')}"></span>
-					  	<button type="button" class="btnShow" 
-					  		style="position: absolute; bottom: 15px; right: 15px; width: 16px; height: 16px; background: url('/img/btn_show.png') no-repeat; font-size: 0;" 
-					  		th:data-url="@{'/review/reviewDetail/'+${ReviewData._id}}"
-					  		onclick="openWin(this.getAttribute('data-url'));">리뷰 상세 보기</button>
-					</div>
-				</div>
-		
-			</th:block>	
+			<th:block th:include="review/moreReviewList"></th:block>
 		</div>
+
 	</div>
 
 	<div class="moreReview" id="moreReview">
@@ -200,39 +163,49 @@
 		
 	<script type="text/javascript">
 	
-		$(document).ready(function(){
-			//페이징
-			var pageNo = 2;
-			var totalCmtNo = [[${reviewTotCnt}]] 
-			var totalPgNo = Math.floor(totalCmtNo/20);
+		$(document).ready(function(){ //더보기 버튼 hide,show 처리는  moreReviewList.html 에서 
+		
+			//var pageNo = 2;
+			//var totalCmtNo = [[${reviewTotCnt}]] 
+			//var totalPgNo = Math.floor(totalCmtNo/20);
 			
-			if(totalPgNo <= 1){ // 총 댓글이 3개 이하일 때는 첫 페이지부터 버튼 hide
-				$("#moreReview").hide();
-			}
-			else{				// 총 댓글이 4개 이상일 때 버튼 이벤트
+			//if(totalPgNo <= 1){ // 총 리뷰가 20개 이하일 때는 첫 페이지부터 버튼 hide
+			//	$("#moreReview").hide();
+			//}
+			//else{				// 총  리뷰가 20개 이상일 때 버튼 이벤트
 				$("#moreReviewBtn").click(function (){
-		  		 $.ajax({
-							type: 'POST',
-							url : '/review/allreview',
-							data : {
-								pageNo : pageNo
-							},
-				            success: function (data) { 
-				                $('.card-columns').append(data);	//detailComment.html을 따로 따서 덧붙임.
-								if(pageNo == totalPgNo){ //마지막페이지이면 버튼 hide
-								   $("#moreReview").hide();
-								}
-								else {
-								   pageNo += 1; //페이지 더 있으면 pageNo ++
-								}
-						     },			//ajax-success      
-							error: function (e) {
-								console.log(e);
-								alert('리뷰 읽기에 실패했습니다.');
-							} 					//ajax-error
-						});  				//ajax 
-				});										//Btn-Event
-			}									//else
+					
+					srchPhotoList('more'); 
+				
+	//			function (){ 
+	//				schType = "more";
+	//				var v_mode  = schType;
+	//				
+	//	  		 $.ajax({
+	//						type: 'POST',
+	//						url : '/review/allreview',
+	//						data : {
+	//							pageNo : pageNo,
+	//							mode   : v_mode
+	//						},
+	//			            success: function (data) { 
+	//			                $('.card-columns').append(data);	//moreReviewList.html을 따로 따서 덧붙임.
+	//							if(pageNo == totalPgNo){ //마지막페이지이면 버튼 hide
+	//							   $("#moreReview").hide();
+	//							}
+	//							else {
+	//							   pageNo += 1; //페이지 더 있으면 pageNo ++
+	//							}
+	//					     },			//ajax-success      
+	//						error: function (e) {
+	//							console.log(e);
+	//							alert('리뷰 읽기에 실패했습니다.');
+	//						} 				//ajax-error
+	//					});  				//ajax 
+				});							//Btn-Event
+				
+	//		}								//else
+				
 		});									//document-ready
 
 		function openWin(url){

@@ -105,7 +105,7 @@ public class ReviewController {
         model.addAttribute("reviewList", reviewList);
 
         
-//        String mode = reviewDTO.getMode();
+        String mode = reviewDTO.getMode();
        /* 
         if(StringUtils.isEmpty(mode)) { // mode 0: 리뷰 리스트 조회, 1: 리뷰 필터 검색, 2: 페이징
         	return "apitest2";
@@ -113,7 +113,12 @@ public class ReviewController {
         	return "apitest";
         }
         */
-        return "/review/allReviewList";
+        if ("main".equals(mode)) {
+        	return "/review/allReviewList";
+        }else {
+        	return "/review/moreReviewList";
+        }
+        
     }
 
 	@GetMapping("/productList") 

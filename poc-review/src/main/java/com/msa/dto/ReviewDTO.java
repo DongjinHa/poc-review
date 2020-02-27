@@ -47,7 +47,7 @@ public class ReviewDTO {
 	private String skintonecd2;
 	private String skintonecd3;
 	private String skintonecdyn = "N";
-	private String mode = "0";
+	private String mode = "main";
 	
 	private List<ReviewerDTO> reviewer;
 

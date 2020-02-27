@@ -1,27 +1,32 @@
 	
-
-	function goPage(page) {
-		//$('#pageNo').val(page);
-		reviewProductSearchGoPage(page);
-	}
-	
 	function srchPhotoList(schType) 
 	{
-		if(schType =="more"){
-			var v_pageNo       = checkPageReview();
+		// 페이징
+		var v_pageNo = $('#pageNo').val();
+		
+		if(schType == "more"){
+			v_pageNo *= 1;
+			$('#pageNo').val(v_pageNo+1);
+			v_pageNo = v_pageNo+1;
 		}else{
-			var v_pageNo = "1";
+			 v_pageNo = "1";
+			 $('#pageNo').val(v_pageNo);
 		}
-
-		var v_reviewCl     = $('#reviewCl').val();
+		
+		if(schType == "photo"){
+			filterReset();
+			$('#key').val("");
+		}
+		
+		var v_schType	   = schType;
+		var v_reviewCl     = $(':input:radio[name=reviewCl]:checked').val();
 		var v_catCd01      = $('#catCd01').val();
-		var v_mode         = $('#mode').val();
+		var v_mode         = schType;  //$('#mode').val();
 		var v_myReview     = $('#myReview').val();
 		var v_key          = $('#key').val();
 		var v_sort         = $(":input:radio[name=sort]:checked").val();
-		
 		var v_uage         = $(":input:radio[name=uAge]:checked").val();	//필터 연령
-		
+	
 		//필터 피부타입 시작
 		var v_skintypecd1  = '';
 		var v_skintypecd2  = '';
@@ -126,56 +131,17 @@
 		}
 		//필터 피부톤 끝
 		
-		//필터 동영상/이미지 시작
-		var v_filter5_1    = '';
-		var v_filter5_2    = '';
-		var v_filter5_3    = '';
-		var v_filter5_4    = '';
-		var v_filter5_5    = '';
-		var v_filter5_yn   = '';
 		
-		if($('input:checkbox[id="reViewFilter5_1"]').is(":checked"))
-		{
-			v_filter5_1 = $('input:checkbox[id="reViewFilter5_1"]').val();
-		}
-		if($('input:checkbox[id="reViewFilter5_2"]').is(":checked"))
-		{
-			v_filter5_2 = $('input:checkbox[id="reViewFilter5_2"]').val();
-		}
-		if($('input:checkbox[id="reViewFilter5_3"]').is(":checked"))
-		{
-			v_filter5_3 = $('input:checkbox[id="reViewFilter5_3"]').val();
-		}
-		if($('input:checkbox[id="reViewFilter5_4"]').is(":checked"))
-		{
-			v_filter5_4 = $('input:checkbox[id="reViewFilter5_4"]').val();
-		}
-		if($('input:checkbox[id="reViewFilter5_5"]').is(":checked"))
-		{
-			v_filter5_5 = $('input:checkbox[id="reViewFilter5_5"]').val();
-		}
-		if(v_filter5_1 + v_filter5_2 + v_filter5_3 + v_filter5_4 + v_filter5_5 == '')
-		{
-			v_filter5_yn = 'N';
-		}
-		else
-		{
-			v_filter5_yn = 'Y';
-		}
-		//필터 동영상/이미지 끝
-		
-		
-
 		$.ajax({
-			url:'/kr/ko/ProductReviewListMore.do',
+			url:'/review/allreview',
 			type:'post',
 			data:
 			{
 				pageNo : v_pageNo,
 				reviewCl : v_reviewCl,
-				catCd01 : v_catCd01,
+//				catCd01 : v_catCd01,
 				mode : v_mode,
-				myReview : v_myReview,
+//				myReview : v_myReview,
 				key : v_key,
 				sort : v_sort,
 				uage : v_uage,
@@ -194,29 +160,31 @@
 				skintonecd1 : v_skintonecd1,
 				skintonecd2 : v_skintonecd2,
 				skintonecd3 : v_skintonecd3,
-				skintonecdyn : v_skintonecdyn,
-				filter51 : v_filter5_1,
-				filter52 : v_filter5_2,
-				filter53 : v_filter5_3,
-				filter54 : v_filter5_4,
-				filter55 : v_filter5_5,
-				filter5yn : v_filter5_yn
+				skintonecdyn : v_skintonecdyn
 			},
 			success:function(data) { 
-				if(schType =="more"){
-					var htmlData = $($.parseHTML(data));
-					reviewList.append( htmlData ).isotope( 'appended', htmlData );
-					reviewList.find('.img img').load(function(){
-						reviewList.isotope();
-					});
-					setTimeout(function(){state = true;}, 1000);
+				
+				if(schType == "more"){
+					
+					//var htmlData = data;
+					//reviewList.append( htmlData ).isotope( 'appended', htmlData );
+					//reviewList.find('.img img').load(function(){
+					//	reviewList.isotope();
+					//});
+					//setTimeout(function(){state = true;}, 1000);
+					
+					$('.card-columns').append(data);
+					//setTimeout(function(){
+					//	isotopeFunc();
+					//},1000);
 				}else{
-					/* 검색 리스트 정렬 */
-					reviewList.isotope('destroy');
-					$('.reviewList').empty().append(data);
-					setTimeout(function(){
-						isotopeFunc();
-					},1000);
+					/* 검색 리스트 정렬 */ //  $('.card-columns').append(data);
+//					reviewList.isotope('destroy')
+					$('.card-columns').empty().append(data);
+//					$('#reviewList').html(data);
+					//setTimeout(function(){
+					//	isotopeFunc();
+					//},1000);
 					/*//검색 리스트 정렬 */
 				}
 			}
@@ -240,7 +208,8 @@
 	*/
 	function filterSet()
 	{
-		reivewFilter('close');			
+		reivewFilter('close');		
+		$('#pageNo').val("0");
 		srchPhotoList('sort');
 	}
 
@@ -283,7 +252,7 @@
 		var v_pageNo       = "1";
 		var v_reviewCl     = $('#reviewCl').val();
 		var v_catCd01      = $('#catCd01').val();
-		var v_mode         = $('#mode').val();
+		var v_mode         = "key";  //$('#mode').val();
 		var v_myReview     = $('#myReview').val();
 		var v_key          = $('#key').val();
 		var v_sort         = $(":input:radio[name=sort]:checked").val();
@@ -394,44 +363,8 @@
 		}
 		//필터 피부톤 끝
 		
-		//필터 동영상/이미지 시작
-		var v_filter5_1    = '';
-		var v_filter5_2    = '';
-		var v_filter5_3    = '';
-		var v_filter5_4    = '';
-		var v_filter5_5    = '';
-		var v_filter5_yn   = '';
-		
-		if($('input:checkbox[id="reViewFilter5_1"]').is(":checked"))
-		{
-			v_filter5_1 = $('input:checkbox[id="reViewFilter5_1"]').val();
-		}
-		if($('input:checkbox[id="reViewFilter5_2"]').is(":checked"))
-		{
-			v_filter5_2 = $('input:checkbox[id="reViewFilter5_2"]').val();
-		}
-		if($('input:checkbox[id="reViewFilter5_3"]').is(":checked"))
-		{
-			v_filter5_3 = $('input:checkbox[id="reViewFilter5_3"]').val();
-		}
-		if($('input:checkbox[id="reViewFilter5_4"]').is(":checked"))
-		{
-			v_filter5_4 = $('input:checkbox[id="reViewFilter5_4"]').val();
-		}
-		if($('input:checkbox[id="reViewFilter5_5"]').is(":checked"))
-		{
-			v_filter5_5 = $('input:checkbox[id="reViewFilter5_5"]').val();
-		}
-		if(v_filter5_1 + v_filter5_2 + v_filter5_3 + v_filter5_4 + v_filter5_5 == '')
-		{
-			v_filter5_yn = 'N';
-		}
-		else
-		{
-			v_filter5_yn = 'Y';
-		}
-		//필터 동영상/이미지 끝
 
+		
 		$.ajax({
 			url:'/review/allreview',
 			type:'post',
@@ -460,16 +393,10 @@
 				skintonecd1 : v_skintonecd1,
 				skintonecd2 : v_skintonecd2,
 				skintonecd3 : v_skintonecd3,
-				skintonecdyn : v_skintonecdyn,
-				filter51 : v_filter5_1,
-				filter52 : v_filter5_2,
-				filter53 : v_filter5_3,
-				filter54 : v_filter5_4,
-				filter55 : v_filter5_5,
-				filter5yn : v_filter5_yn
+				skintonecdyn : v_skintonecdyn
 			},
 			success:function(data) {
-				$('#reviewList').html(data);
+				$('.card-columns').empty().append(data);
 			}
 		});
 	}
