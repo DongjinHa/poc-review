@@ -149,7 +149,7 @@
 				var pageNo = 2;
 				var url = document.location.href;
 				var totalCmtNo = [[${Count}]] 
-				var totalPgNo = Math.floor(totalCmtNo/3);
+				var totalPgNo = Math.ceil(totalCmtNo/3);
 				
 				//슬라이드  
 				var imgArray = [[${ReviewData.tplList}]]
