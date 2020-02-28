@@ -40,6 +40,11 @@
 				}
 
 			}
+			
+		#PowerReview .box {	/*slick 쏠림현상으로 인해 margin제거*/
+			margin: 0;
+			width: 17%;
+		}
 
 	.box {
 		border-radius: 0px;
