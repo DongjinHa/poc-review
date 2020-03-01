@@ -2,6 +2,7 @@ package com.msa.repository;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -35,7 +36,8 @@ class ReviewerRepositoryTest {
 		reviewRepository.deleteAll();
 		commentRepository.deleteAll();
 
-		String pattern = "yyyyMMddHHmmss";
+//		String pattern = "yyyyMMddHHmmss";
+		String pattern = "yyyyMMdd";
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 		
 		Random ran = new Random();
@@ -43,13 +45,22 @@ class ReviewerRepositoryTest {
 			
 			Reviewer reviewer = new Reviewer();
 
-			reviewer.setNickNm("리뷰어"+(i+1));
+			// 생년월일
+			int birthYYYY = 2020-ran.nextInt(70)+14;
+			
+			Calendar birthDay = Calendar.getInstance();
+			birthDay.set(Calendar.YEAR, birthYYYY);
+			birthDay.add(Calendar.DATE, (ran.nextInt(365)+1)*-1);
+			String strBirthDay = simpleDateFormat.format(birthDay.getTime());
+			
+			reviewer.setBirthDay(strBirthDay);
+
+			reviewer.setNickNm("리뷰어"+(i+1)+"_"+strBirthDay);
 			reviewer.setLvl(ran.nextInt(10)+1+"");
 			
 			String[] _sex = {"F", "M"};
 			reviewer.setSex(_sex[ran.nextInt(2)]);
 			
-			reviewer.setBirthDay("19"+(ran.nextInt(7)+3)+(ran.nextInt(9)+1)+"0209");
 			reviewer.setSkinToneCd("SX0"+ran.nextInt(4));
 			reviewer.setSkinTypeCd("SZ0"+ran.nextInt(8));
 			
@@ -64,13 +75,11 @@ class ReviewerRepositoryTest {
 			reviewer.setProfileImg("/img/reviewer/reviewerPic"+(ran.nextInt(10)+1)+"_on.png");
 			
 			Calendar calendar = Calendar.getInstance();
-			//String nowDate = simpleDateFormat.format(calendar.getTime());
-			reviewer.setUpdDate(calendar.getTime());
 			
 			//등록일자는 무작위로
 			calendar.add(Calendar.DATE, (ran.nextInt(365)+1)*-1);
-			//String regDate = simpleDateFormat.format(calendar.getTime());
 			reviewer.setRegDate(calendar.getTime());
+			reviewer.setUpdDate(calendar.getTime());
 
 			reviewerRepository.save(reviewer);
 			
@@ -164,13 +173,11 @@ class ReviewerRepositoryTest {
 				review.setTplList(_tpList);
 			
 				Calendar calendar = Calendar.getInstance();
-				//String nowDate = simpleDateFormat.format(calendar.getTime());
-				review.setUpdDate(calendar.getTime());
 				
 				//등록일자는 무작위로
 				calendar.add(Calendar.DATE, (ran.nextInt(365)+1)*-1);
-				//String regDate = simpleDateFormat.format(calendar.getTime());
 				review.setRegDate(calendar.getTime());
+				review.setUpdDate(calendar.getTime());
 				
 				reviewRepository.save(review);
 
@@ -185,6 +192,12 @@ class ReviewerRepositoryTest {
 			i = 0;
 			int commentCnt = ran.nextInt(20)+1;
 			reviewer_id = review.getReviewer_id();
+			
+			Date regDate = review.getRegDate();
+			Calendar compareDate = Calendar.getInstance();
+			compareDate.setTime(regDate);
+			
+			Calendar today = Calendar.getInstance();
 			for (Reviewer reviewer : reviewerList) {
 				Comment comment = new Comment();
 				
@@ -194,19 +207,19 @@ class ReviewerRepositoryTest {
 
 				if ((ran.nextInt(3)+1)%3 == 0) {
 					i++;
-					
+
 					comment.setReview_id(review.get_id());
 					comment.setReviewer_id(reviewer.get_id());
 					comment.setCnts(i+"등");
 					
-					Calendar calendar = Calendar.getInstance();
-					//String nowDate = simpleDateFormat.format(calendar.getTime());
-					comment.setUpdDate(calendar.getTime());
+					compareDate.add(Calendar.MINUTE, (ran.nextInt(60)+1));
 					
-					//등록일자는 무작위로
-					calendar.add(Calendar.DATE, (ran.nextInt(365)+1)*-1);
-					//String regDate = simpleDateFormat.format(calendar.getTime());
-					comment.setRegDate(calendar.getTime());
+					// 미래날짜로 등록되지 않도록함
+					if (compareDate.compareTo(today) == 1) {
+						break;
+					}
+					comment.setRegDate(compareDate.getTime());
+					comment.setUpdDate(compareDate.getTime());
 					
 					commentRepository.save(comment);
 
