@@ -46,7 +46,7 @@ class ReviewerRepositoryTest {
 			Reviewer reviewer = new Reviewer();
 
 			// 생년월일
-			int birthYYYY = 2020-ran.nextInt(70)+14;
+			int birthYYYY = 2020-ran.nextInt(70)-13;
 			
 			Calendar birthDay = Calendar.getInstance();
 			birthDay.set(Calendar.YEAR, birthYYYY);
