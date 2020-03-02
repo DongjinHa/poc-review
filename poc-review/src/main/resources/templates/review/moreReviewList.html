@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 </head>
 <body>
-			<th:block th:each="ReviewData : ${reviewList}">
+		<th:block th:each="ReviewData : ${reviewList}">
+			<div class="col mb-4">
 				<div class="card">
 					<div class="image fit" style="maring-bottom: 10px;">
 					
@@ -52,6 +53,7 @@
 					  		onclick="openWin(this.getAttribute('data-url'));">리뷰 상세 보기</button>
 					</div>
 				</div>
+			</div>
 		</th:block>	
 
 		

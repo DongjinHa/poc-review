@@ -173,14 +173,14 @@
 					//});
 					//setTimeout(function(){state = true;}, 1000);
 					
-					$('.card-columns').append(data);
+					$('#cardData').append(data);
 					//setTimeout(function(){
 					//	isotopeFunc();
 					//},1000);
 				}else{
 					/* 검색 리스트 정렬 */ //  $('.card-columns').append(data);
 //					reviewList.isotope('destroy')
-					$('.card-columns').empty().append(data);
+					$('#cardData').empty().append(data);
 //					$('#reviewList').html(data);
 					//setTimeout(function(){
 					//	isotopeFunc();
@@ -396,7 +396,7 @@
 				skintonecdyn : v_skintonecdyn
 			},
 			success:function(data) {
-				$('.card-columns').empty().append(data);
+				$('#cardData').empty().append(data);
 			}
 		});
 	}
