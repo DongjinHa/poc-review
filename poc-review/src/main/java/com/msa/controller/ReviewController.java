@@ -4,6 +4,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -272,7 +273,10 @@ public class ReviewController {
     	ReviewerDTO reviewer = restTemplate.getForObject("/Reviewer/"+review.getReviewer_id(),ReviewerDTO.class);
     	model.addAttribute("ReviewerData",reviewer);
     	
-    	
+    	 int currentYear  = Calendar.getInstance().get(Calendar.YEAR);
+    	 int age = ((currentYear-(Integer.parseInt(reviewer.getBirthDay().substring(0,4))))/10)*10;
+    	 model.addAttribute("reviewerAge", age);	//연령대 구하기    	 
+    	 
     	ResponseEntity<List<CommentDTO>> commentsResponse = restTemplate.exchange("/Comments/"+review.get_id()
     								, HttpMethod.GET, null, new ParameterizedTypeReference<List<CommentDTO>>() {});
         List<CommentDTO> comments= commentsResponse.getBody();

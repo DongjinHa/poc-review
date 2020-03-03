@@ -22,13 +22,60 @@
 		<span th:text="${#dates.format(ReviewData.regDate, 'yyyy.MM.dd (E) HH:mm:ss')}"></span><br/>
 		<span th:text="'조회수 : ' + ${ReviewData.hit}"></span><br/>
 	<hr>
+						
 	<div class = "reviewer">
-		<img class="profileImg" th:src="@{'http://localhost:9091'+${ReviewerData.profileImg}}" alt="Img"/>
-		<div class="pofile">
-			<span class = "badge badge-success" th:text="'lvl.' + ${ReviewerData.lvl}"></span>
-			<span th:text="${ReviewerData.nickNm}"></span><br/>
-		</div>
-	</div>
+		<span class="profileImg">
+			<img th:src="@{'http://localhost:9091'+${ReviewerData.profileImg}}" alt="Img"/>
+		</span>
+		
+		<div class="profile">
+			<div class="info">
+				<span class = "badge badge-success reviewerLevel" th:text="'lv.' + ${ReviewerData.lvl}"></span>
+				<span class="reviewerNickname" th:text="${ReviewerData.nickNm}"></span>
+			</div>
+			
+			<div class="hashtag">
+				<span th:text="${ReviewerData.sex.equals('F')} ? '#여자' : '#남자'"></span> <!-- 성별 -->
+				<span th:text="'#'+${reviewerAge}+'대'"></span> <!-- 연령대 -->
+				<th:block th:switch="${ReviewerData.skinToneCd}" class="skinToneCd"> <!-- 피부톤코드 -->
+					<span th:case="'SX01'">#노랑</span>
+					<span th:case="'SX02'">#보통</span>
+					<span th:case="'SX03'">#붉은</span>
+				</th:block>
+				<th:block th:switch="${ReviewerData.skinEtcInfo}" class="skinEtcInfo"> <!-- 피부기타정보 -->
+					<span th:case="'SY13'">#13호</span>
+					<span th:case="'SY21'">#21호</span>
+					<span th:case="'SY23'">#23호</span>
+				</th:block>
+				<th:block th:switch="${ReviewerData.skinTypeCd}" class="skinTypeCd"> <!-- 피부타입 -->
+					<span th:case="'SZ01'">#건성</span>
+					<span th:case="'SZ02'">#중성</span>
+					<span th:case="'SZ03'">#지성</span>
+					<span th:case="'SZ04'">#민감성</span>
+					<span th:case="'SZ05'">#복합성</span>
+					<span th:case="'SZ06'">#약건성</span>
+					<span th:case="'SZ07'">#트러블성</span>
+				</th:block>			
+				<th:block th:each="skinTrublData : ${ReviewerData.skinTrublList}">	<!-- 피부고민 -->
+					<th:block th:switch="${skinTrublData}" class="skinTrublList">
+						<span th:case="'SW01'">#모공</span>
+						<span th:case="'SW02'">#주름</span>
+						<span th:case="'SW03'">#탄력</span>
+						<span th:case="'SW04'">#블랙헤드</span>
+						<span th:case="'SW05'">#트러블</span>
+						<span th:case="'SW06'">#각질</span>
+						<span th:case="'SW07'">#잡티</span>
+						<span th:case="'SW08'">#피지과다</span>
+						<span th:case="'SW09'">#건조함</span>
+						<span th:case="'SW10'">#민감성</span>
+						<span th:case="'SW11'">#색소침착</span>
+						<span th:case="'SW12'">#피부톤</span>
+					</th:block>
+				</th:block>
+			</div> <!-- hashtag -->
+		</div>	<!-- profile -->
+	</div>	<!-- reviewer -->
+	
 	<!-- 리뷰 이미지 슬라이드 -->
 	<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel"  data-interval="2000">
 	  	  <!-- 슬라이드 콘텐츠 -->
