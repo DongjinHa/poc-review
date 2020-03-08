@@ -5,151 +5,12 @@
 <link rel="stylesheet" href="../css/reviewlist.css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="../js/ui.js"></script>
-<script src="../js/review.js"></script>
 <link rel="stylesheet" href="http://localhost:8081/css/customBootstrap.css"/>
 
 <title>리뷰</title>
 </head>
 <body>
-	<div class="reivewTab" id="reivewTab">
-		<ul>
-			<li><a><input type="radio" id="photoReview" name="reviewCl" value="A" onclick="srchPhotoList('photo')" checked="checked"><label for="photoReview">포토 리뷰</label></a></li>
-			<li><a><input type="radio" id="textReview" name="reviewCl" value="B" onclick="srchPhotoList('photo')"><label for="textReview">간단 리뷰</label></a></li>
-		</ul>
-	</div>
-	<div class="reviewSort">
-		<div class="searchBox">
-			<input type="text" id="key" name="key" class="inputTxt" onkeypress="javascript:if(event.keyCode == 13){reviewProductSearch();return false;}" placeholder="검색어를 입력하세요.">
-			<button type="button" class="btnSearch" onclick="reviewProductSearch();">검색</button>
-		</div>
-		<div class="reviewSelFilter">
-			<input type="hidden" id="filterGnrt" value="">
-			<input type="hidden" id="filterSkintypecd" value="">
-			<input type="hidden" id="filterSkinetcinfo" value="">
-			<input type="hidden" id="filterSkintonecd" value="">
-			<input type="hidden" id="pageNo" value="1">
-			<ul class="sel">
-				<li><input type="radio" id="photoSort1" name="sort" value="1" onclick="srchPhotoList('sort')" checked="checked"><label for="photoSort1">최신순</label></li>
-				<li><input type="radio" id="photoSort2" name="sort" value="2" onclick="srchPhotoList('sort')"><label for="photoSort2">조회순</label></li>
-			</ul>
-			<div class="filter">
-				<button type="button" class="btn" onclick="reivewFilter('open');">맞춤 필터</button>
-				<div class="filterLayer">									
-						<p class="infoTxt">
-							나와 같은 연령, 피부 타입/고민을 가진 사람들이 작성한<br> 리뷰를 살펴보세요!<br>
-							
-						</p>									
-					<div class="checkArea">
-						<dl>
-							<dt>연령</dt>
-							<dd>
-								<ul>
-									<li>
-										<input type="radio" name="uAge" id="reViewFilter1_0" value="all" checked="checked">
-										<label for="reViewFilter1_0">전체</label>
-									</li>
-									<li>
-										<input type="radio" name="uAge" id="reViewFilter1_1" value="10">
-										<label for="reViewFilter1_1">10대</label>
-									</li>
-									<li>
-										<input type="radio" name="uAge" id="reViewFilter1_2" value="20">
-										<label for="reViewFilter1_2">20대</label>
-									</li>
-									<li>
-										<input type="radio" name="uAge" id="reViewFilter1_3" value="30">
-										<label for="reViewFilter1_3">30대</label>
-									</li>
-									<li>
-										<input type="radio" name="uAge" id="reViewFilter1_4" value="40">
-										<label for="reViewFilter1_4">40대 이상</label>
-									</li>
-								</ul>
-							</dd>
-						</dl>
-						<dl>
-							<dt>피부 타입</dt>
-							<dd>
-								<ul>
-									<li>
-										<input type="checkbox" name="skintypecd" id="reViewFilter2_1" value="SZ01">
-										<label for="reViewFilter2_1">건성</label>
-									</li>
-									<li>
-										<input type="checkbox" name="skintypecd" id="reViewFilter2_2" value="SZ02">
-										<label for="reViewFilter2_2">중성</label>
-									</li>
-									<li>
-										<input type="checkbox" name="skintypecd" id="reViewFilter2_3" value="SZ03">
-										<label for="reViewFilter2_3">지성</label>
-									</li>
-									<li>
-										<input type="checkbox" name="skintypecd" id="reViewFilter2_4" value="SZ04">
-										<label for="reViewFilter2_4">민감성</label>
-									</li>
-									<li>
-										<input type="checkbox" name="skintypecd" id="reViewFilter2_5" value="SZ05">
-										<label for="reViewFilter2_5">복합성</label>
-									</li>
-									<li>
-										<input type="checkbox" name="skintypecd" id="reViewFilter2_6" value="SZ06">
-										<label for="reViewFilter2_6">약건성</label>
-									</li>
-									<li>
-										<input type="checkbox" name="skintypecd" id="reViewFilter2_7" value="SZ07">
-										<label for="reViewFilter2_7">트러블성</label>
-									</li>
-								</ul>
-							</dd>
-						</dl>
-						<dl>
-							<dt>피부 밝기</dt>
-							<dd>
-								<ul>
-									<li>
-										<input type="checkbox" name="skinetcinfo" id="reViewFilter3_1" value="SY13">
-										<label for="reViewFilter3_1">13호</label>
-									</li>
-									<li>
-										<input type="checkbox" name="skinetcinfo" id="reViewFilter3_2" value="SY21">
-										<label for="reViewFilter3_2">21호</label>
-									</li>
-									<li>
-										<input type="checkbox" name="skinetcinfo" id="reViewFilter3_3" value="SY23">
-										<label for="reViewFilter3_3">23호</label>
-									</li>
-								</ul>
-							</dd>
-						</dl>
-						<dl>
-							<dt>피부 톤</dt>
-							<dd>
-								<ul>
-									<li>
-										<input type="checkbox" name="skintonecd" id="reViewFilter4_1" value="SX01">
-										<label for="reViewFilter4_1">노랑</label>
-									</li>
-									<li>
-										<input type="checkbox" name="skintonecd" id="reViewFilter4_2" value="SX02">
-										<label for="reViewFilter4_2">보통</label>
-									</li>
-									<li>
-										<input type="checkbox" name="skintonecd" id="reViewFilter4_3" value="SX03">
-										<label for="reViewFilter4_3">붉은</label>
-									</li>
-								</ul>
-							</dd>
-						</dl>
-					</div>
-					<div class="btnWrap">
-						<button type="button" class="btnType6m" onclick="filterReset();">초기화</button>
-						<button type="button" class="btnType3m" id="filterSetBtn" onclick="filterSet();">적용</button>
-					</div>
-					<button type="button" class="btnClose" onclick="reivewFilter('close');">닫기</button>
-				</div>
-			</div>
-		</div>
-	</div>
+
 	<div style="padding-top: 30px; padding-bottom: 15px;">
 		<div class="row row-cols-1 row-cols-md-5" id="cardData">
 			<th:block th:include="review/moreReviewList"></th:block>
@@ -161,59 +22,224 @@
 	</div>
 		
 	<script type="text/javascript">
-	
+		var totalPgNo;
 		$(document).ready(function(){ //더보기 버튼 hide,show 처리는  moreReviewList.html 에서 
 		
-			//var pageNo = 2;
-			//var totalCmtNo = [[${reviewTotCnt}]] 
-			//var totalPgNo = Math.floor(totalCmtNo/20);
+			var totalCmtNo = [[${reviewTotCnt}]] 
+			totalPgNo = Math.ceil(totalCmtNo/20);
 			
-			//if(totalPgNo <= 1){ // 총 리뷰가 20개 이하일 때는 첫 페이지부터 버튼 hide
-			//	$("#moreReview").hide();
-			//}
-			//else{				// 총  리뷰가 20개 이상일 때 버튼 이벤트
+			if(totalPgNo <= 1){ // 총 리뷰가 20개 이하일 때는 첫 페이지부터 버튼 hide
+				$("#moreReview").hide();
+			}
+			else{				// 총  리뷰가 20개 이상일 때 버튼 이벤트
 				$("#moreReviewBtn").click(function (){
-					
+					if($('#pageNo').val() == totalPgNo){ //마지막페이지이면 버튼 hide
+						$("#moreReview").hide();
+					}
 					srchPhotoList('more'); 
-				
-	//			function (){ 
-	//				schType = "more";
-	//				var v_mode  = schType;
-	//				
-	//	  		 $.ajax({
-	//						type: 'POST',
-	//						url : '/review/allreview',
-	//						data : {
-	//							pageNo : pageNo,
-	//							mode   : v_mode
-	//						},
-	//			            success: function (data) { 
-	//			                $('.card-columns').append(data);	//moreReviewList.html을 따로 따서 덧붙임.
-	//							if(pageNo == totalPgNo){ //마지막페이지이면 버튼 hide
-	//							   $("#moreReview").hide();
-	//							}
-	//							else {
-	//							   pageNo += 1; //페이지 더 있으면 pageNo ++
-	//							}
-	//					     },			//ajax-success      
-	//						error: function (e) {
-	//							console.log(e);
-	//							alert('리뷰 읽기에 실패했습니다.');
-	//						} 				//ajax-error
-	//					});  				//ajax 
 				});							//Btn-Event
-				
-	//		}								//else
+			}
 				
 		});									//document-ready
+		
+		function reviewProductSearch()
+		{
+			if (!$('#key').val()) {
+				alert("검색어를 입력해주세요.");
+				return;
+			}
+			
+			srchPhotoList("key");
+		}
 
-		function openWin(url){
-			ReviewDetailView = window.open("about:blank", "ReviewDetail", "width=550,height=600,left=400,top=50,dependent=yes,menubar=no,status=no,resizable=yes,toolbar=no,scrollbars=yes");
-			ReviewDetailView.location.href = url;
-			ReviewDetailView.focus();
-		    return false;	
+		function srchPhotoList(schType) 
+		{
+			// 페이징
+			var v_pageNo;
+			
+			if(schType == "more"){
+				v_pageNo = Number($('#pageNo').val());
+				v_pageNo += 1;
+				$('#pageNo').val(v_pageNo);
+
+				if(v_pageNo == totalPgNo){ //마지막페이지이면 버튼 hide
+					$("#moreReview").hide();
+				}
+			}else{
+				 v_pageNo = 1;
+				 $('#pageNo').val(v_pageNo);
+			}
+			
+			if(schType == "photo"){
+				filterReset();
+				$('#key').val("");
+			}
+			
+			var v_schType	   = schType;
+			var v_reviewCl     = $(':input:radio[name=reviewCl]:checked').val();
+			var v_catCd01      = $('#catCd01').val();
+			var v_mode         = schType;  //$('#mode').val();
+			var v_myReview     = $('#myReview').val();
+			var v_key          = $('#key').val();
+			var v_sort         = $(":input:radio[name=sort]:checked").val();
+			var v_uage         = $(":input:radio[name=uAge]:checked").val();	//필터 연령
+		
+			//필터 피부타입 시작
+			var v_skintypecd1  = '';
+			var v_skintypecd2  = '';
+			var v_skintypecd3  = '';
+			var v_skintypecd4  = '';
+			var v_skintypecd5  = '';
+			var v_skintypecd6  = '';
+			var v_skintypecd7  = '';
+			var v_skintypecdyn = '';
+			
+			if($('input:checkbox[id="reViewFilter2_1"]').is(":checked"))
+			{
+				v_skintypecd1 = $('input:checkbox[id="reViewFilter2_1"]').val();
+			}
+			if($('input:checkbox[id="reViewFilter2_2"]').is(":checked"))
+			{
+				v_skintypecd2 = $('input:checkbox[id="reViewFilter2_2"]').val();
+			}
+			if($('input:checkbox[id="reViewFilter2_3"]').is(":checked"))
+			{
+				v_skintypecd3 = $('input:checkbox[id="reViewFilter2_3"]').val();
+			}
+			if($('input:checkbox[id="reViewFilter2_4"]').is(":checked"))
+			{
+				v_skintypecd4 = $('input:checkbox[id="reViewFilter2_4"]').val();
+			}
+			if($('input:checkbox[id="reViewFilter2_5"]').is(":checked"))
+			{
+				v_skintypecd5 = $('input:checkbox[id="reViewFilter2_5"]').val();
+			}
+			if($('input:checkbox[id="reViewFilter2_6"]').is(":checked"))
+			{
+				v_skintypecd6 = $('input:checkbox[id="reViewFilter2_6"]').val();
+			}
+			if($('input:checkbox[id="reViewFilter2_7"]').is(":checked"))
+			{
+				v_skintypecd7 = $('input:checkbox[id="reViewFilter2_7"]').val();
+			}
+			if(v_skintypecd1 + v_skintypecd2 + v_skintypecd3 + v_skintypecd4 + v_skintypecd5 + v_skintypecd6 + v_skintypecd7 == '')
+			{
+				v_skintypecdyn = 'N';
+			}
+			else
+			{
+				v_skintypecdyn = 'Y';
+			}
+			//필터 피부타입 끝
+			
+			//필터 피부밝기 시작
+			var v_skinetcinfo1 = '';
+			var v_skinetcinfo2 = '';
+			var v_skinetcinfo3 = '';
+			var v_skinetcinfoyn= '';
+			
+			if($('input:checkbox[id="reViewFilter3_1"]').is(":checked"))
+			{
+				v_skinetcinfo1 = $('input:checkbox[id="reViewFilter3_1"]').val();
+			}
+			if($('input:checkbox[id="reViewFilter3_2"]').is(":checked"))
+			{
+				v_skinetcinfo2 = $('input:checkbox[id="reViewFilter3_2"]').val();
+			}
+			if($('input:checkbox[id="reViewFilter3_3"]').is(":checked"))
+			{
+				v_skinetcinfo3 = $('input:checkbox[id="reViewFilter3_3"]').val();
+			}
+			if(v_skinetcinfo1 + v_skinetcinfo2 + v_skinetcinfo3 == '')
+			{
+				v_skinetcinfoyn = 'N';
+			}
+			else
+			{
+				v_skinetcinfoyn = 'Y';
+			}
+			//필터 피부밝기 끝
+			
+			//필터 피부톤 시작
+			var v_skintonecd1  = '';
+			var v_skintonecd2  = '';
+			var v_skintonecd3  = '';
+			var v_skintonecdyn = '';
+				
+			if($('input:checkbox[id="reViewFilter4_1"]').is(":checked"))
+			{
+				v_skintonecd1 = $('input:checkbox[id="reViewFilter4_1"]').val();
+			}
+			if($('input:checkbox[id="reViewFilter4_2"]').is(":checked"))
+			{
+				v_skintonecd2 = $('input:checkbox[id="reViewFilter4_2"]').val();
+			}
+			if($('input:checkbox[id="reViewFilter4_3"]').is(":checked"))
+			{
+				v_skintonecd3 = $('input:checkbox[id="reViewFilter4_3"]').val();
+			}
+			if(v_skintonecd1 + v_skintonecd2 + v_skintonecd3 == '')
+			{
+				v_skintonecdyn = 'N';
+			}
+			else
+			{
+				v_skintonecdyn = 'Y';
+			}
+			//필터 피부톤 끝
+			
+			
+			$.ajax({
+				url:'/review/allreview',
+				type:'post',
+				data:
+				{
+					pageNo : v_pageNo,
+					reviewCl : v_reviewCl,
+					mode : v_mode,
+					key : v_key,
+					sort : v_sort,
+					uage : v_uage,
+					skintypecd1 : v_skintypecd1,
+					skintypecd2 : v_skintypecd2,
+					skintypecd3 : v_skintypecd3,
+					skintypecd4 : v_skintypecd4,
+					skintypecd5 : v_skintypecd5,
+					skintypecd6 : v_skintypecd6,
+					skintypecd7 : v_skintypecd7,
+					skintypecdyn : v_skintypecdyn,
+					skinetcinfo1 : v_skinetcinfo1,
+					skinetcinfo2 : v_skinetcinfo2,
+					skinetcinfo3 : v_skinetcinfo3,
+					skinetcinfoyn : v_skinetcinfoyn,
+					skintonecd1 : v_skintonecd1,
+					skintonecd2 : v_skintonecd2,
+					skintonecd3 : v_skintonecd3,
+					skintonecdyn : v_skintonecdyn
+				},
+				success:function(data) { 
+					
+					if(schType == "more"){
+						$('#cardData').append(data);
+					}else{
+						$('#reviewList').html(data);
+//						$('#cardData').empty().append(data);
+					}
+				}
+			});
 		}
 		
+		function filterSet()
+		{
+			reivewFilter('close');		
+			srchPhotoList('sort');
+		}
+
+		function filterReset()
+		{
+			$('input[name="uAge"]:radio[value="all"]').prop('checked',true);
+			$('.checkArea input[type=checkbox]').prop('checked', false);
+		}
     </script>
 </body>
 </html>

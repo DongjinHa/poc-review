@@ -78,7 +78,6 @@ public class ReviewController {
         		// 조회필요한 상품정보 세팅
         		reviewDTO.setPrdSeqList(prdSeqList);
     		}
-    		
     	}
     	
     	ObjectMapper mapper = new ObjectMapper();
@@ -93,31 +92,22 @@ public class ReviewController {
         if (reviewList != null && reviewList.size() > 0 && pageno == 1) {
         	ResponseEntity<String> reviewCntResponse = restTemplate.exchange("/allreview-totcnt", HttpMethod.POST, requestEntity, new ParameterizedTypeReference<String>() {});
         	reviewTotCnt = reviewCntResponse.getBody(); 
-        	model.addAttribute("reviewTotCnt", reviewTotCnt);
         }
-        
+        model.addAttribute("reviewTotCnt", reviewTotCnt);
         
         for(ReviewDTO review : reviewList) {
         	ProductDTO product = restTemplate.getForObject("http://localhost:9092/getProductListByPrdSeq/"+review.getPrdSeq(), ProductDTO.class);
         	review.setProduct(product);
-        	
-//        	System.out.println(product);
         }
         model.addAttribute("reviewList", reviewList);
 
         
         String mode = reviewDTO.getMode();
-       /* 
-        if(StringUtils.isEmpty(mode)) { // mode 0: 리뷰 리스트 조회, 1: 리뷰 필터 검색, 2: 페이징
-        	return "apitest2";
-        } else {
-        	return "apitest";
-        }
-        */
-        if ("main".equals(mode)) {
-        	return "/review/allReviewList";
-        }else {
+
+        if ("more".equals(mode)) {
         	return "/review/moreReviewList";
+        }else {
+        	return "/review/allReviewList";
         }
         
     }

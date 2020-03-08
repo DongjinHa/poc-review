@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 </head>
 <body>
+
+		<th:block th:if="${#lists.isEmpty(reviewList)}">
+			<div style="height: 400px;">
+			</div>
+		</th:block>
 		<th:block th:each="ReviewData : ${reviewList}">
 			<div class="col mb-4">
 				<div class="card">
@@ -55,34 +60,6 @@
 				</div>
 			</div>
 		</th:block>	
-
-		
-		<script type="text/javascript">
-	
-		$(document).ready(function(){
-			//페이징
-			
-			var totalCmtNo = [[${reviewTotCnt}]] 
-			var totalPgNo = Math.floor(totalCmtNo/20);
-			
-			if(totalPgNo <= 1){ // 총 리뷰가 20개 이하일 때는 첫 페이지부터 버튼 hide
-				$("#moreReview").hide();
-			}
-			else{				// 총  리뷰가 20개 이상일 때 버튼 이벤트
-				$("#moreReview").show();
-				$("#moreReviewBtn").click(function (){
-					srchPhotoList('more'); 
-					if($('#pageNo').val() == totalPgNo){ //마지막페이지이면 버튼 hide
-						$("#moreReview").hide();
-					}
-				});							//Btn-Event
-				
-			}								//else
-				
-		});									//document-ready
-
-		
-    </script>
    </body>
    </html>
     

@@ -12,6 +12,145 @@
 </div>
 
 <div layout:fragment="reviewList" class="contWrap">
+	<div class="reivewTab" id="reivewTab">
+		<ul>
+			<li><a><input type="radio" id="photoReview" name="reviewCl" value="A" onclick="srchPhotoList('photo')" checked="checked"><label for="photoReview">포토 리뷰</label></a></li>
+			<li><a><input type="radio" id="textReview" name="reviewCl" value="B" onclick="srchPhotoList('photo')"><label for="textReview">간단 리뷰</label></a></li>
+		</ul>
+	</div>
+	<div class="reviewSort">
+		<div class="searchBox">
+			<input type="text" id="key" name="key" class="inputTxt" onkeypress="javascript:if(event.keyCode == 13){reviewProductSearch();return false;}" placeholder="검색어를 입력하세요.">
+			<button type="button" class="btnSearch" onclick="reviewProductSearch();">검색</button>
+		</div>
+		<div class="reviewSelFilter">
+			<input type="hidden" id="filterGnrt" value="">
+			<input type="hidden" id="filterSkintypecd" value="">
+			<input type="hidden" id="filterSkinetcinfo" value="">
+			<input type="hidden" id="filterSkintonecd" value="">
+			<input type="hidden" id="pageNo" value="1">
+			<ul class="sel">
+				<li><input type="radio" id="photoSort1" name="sort" value="1" onclick="srchPhotoList('sort')" checked="checked"><label for="photoSort1">최신순</label></li>
+				<li><input type="radio" id="photoSort2" name="sort" value="2" onclick="srchPhotoList('sort')"><label for="photoSort2">조회순</label></li>
+			</ul>
+			<div class="filter">
+				<button type="button" class="btn" onclick="reivewFilter('open');">맞춤 필터</button>
+				<div class="filterLayer">									
+						<p class="infoTxt">
+							나와 같은 연령, 피부 타입/고민을 가진 사람들이 작성한<br> 리뷰를 살펴보세요!<br>
+							
+						</p>									
+					<div class="checkArea">
+						<dl>
+							<dt>연령</dt>
+							<dd>
+								<ul>
+									<li>
+										<input type="radio" name="uAge" id="reViewFilter1_0" value="all" checked="checked">
+										<label for="reViewFilter1_0">전체</label>
+									</li>
+									<li>
+										<input type="radio" name="uAge" id="reViewFilter1_1" value="10">
+										<label for="reViewFilter1_1">10대</label>
+									</li>
+									<li>
+										<input type="radio" name="uAge" id="reViewFilter1_2" value="20">
+										<label for="reViewFilter1_2">20대</label>
+									</li>
+									<li>
+										<input type="radio" name="uAge" id="reViewFilter1_3" value="30">
+										<label for="reViewFilter1_3">30대</label>
+									</li>
+									<li>
+										<input type="radio" name="uAge" id="reViewFilter1_4" value="40">
+										<label for="reViewFilter1_4">40대 이상</label>
+									</li>
+								</ul>
+							</dd>
+						</dl>
+						<dl>
+							<dt>피부 타입</dt>
+							<dd>
+								<ul>
+									<li>
+										<input type="checkbox" name="skintypecd" id="reViewFilter2_1" value="SZ01">
+										<label for="reViewFilter2_1">건성</label>
+									</li>
+									<li>
+										<input type="checkbox" name="skintypecd" id="reViewFilter2_2" value="SZ02">
+										<label for="reViewFilter2_2">중성</label>
+									</li>
+									<li>
+										<input type="checkbox" name="skintypecd" id="reViewFilter2_3" value="SZ03">
+										<label for="reViewFilter2_3">지성</label>
+									</li>
+									<li>
+										<input type="checkbox" name="skintypecd" id="reViewFilter2_4" value="SZ04">
+										<label for="reViewFilter2_4">민감성</label>
+									</li>
+									<li>
+										<input type="checkbox" name="skintypecd" id="reViewFilter2_5" value="SZ05">
+										<label for="reViewFilter2_5">복합성</label>
+									</li>
+									<li>
+										<input type="checkbox" name="skintypecd" id="reViewFilter2_6" value="SZ06">
+										<label for="reViewFilter2_6">약건성</label>
+									</li>
+									<li>
+										<input type="checkbox" name="skintypecd" id="reViewFilter2_7" value="SZ07">
+										<label for="reViewFilter2_7">트러블성</label>
+									</li>
+								</ul>
+							</dd>
+						</dl>
+						<dl>
+							<dt>피부 밝기</dt>
+							<dd>
+								<ul>
+									<li>
+										<input type="checkbox" name="skinetcinfo" id="reViewFilter3_1" value="SY13">
+										<label for="reViewFilter3_1">13호</label>
+									</li>
+									<li>
+										<input type="checkbox" name="skinetcinfo" id="reViewFilter3_2" value="SY21">
+										<label for="reViewFilter3_2">21호</label>
+									</li>
+									<li>
+										<input type="checkbox" name="skinetcinfo" id="reViewFilter3_3" value="SY23">
+										<label for="reViewFilter3_3">23호</label>
+									</li>
+								</ul>
+							</dd>
+						</dl>
+						<dl>
+							<dt>피부 톤</dt>
+							<dd>
+								<ul>
+									<li>
+										<input type="checkbox" name="skintonecd" id="reViewFilter4_1" value="SX01">
+										<label for="reViewFilter4_1">노랑</label>
+									</li>
+									<li>
+										<input type="checkbox" name="skintonecd" id="reViewFilter4_2" value="SX02">
+										<label for="reViewFilter4_2">보통</label>
+									</li>
+									<li>
+										<input type="checkbox" name="skintonecd" id="reViewFilter4_3" value="SX03">
+										<label for="reViewFilter4_3">붉은</label>
+									</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
+					<div class="btnWrap">
+						<button type="button" class="btnType6m" onclick="filterReset();">초기화</button>
+						<button type="button" class="btnType3m" id="filterSetBtn" onclick="filterSet();">적용</button>
+					</div>
+					<button type="button" class="btnClose" onclick="reivewFilter('close');">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div class="reviewList" id="reviewList">
 	</div>
 </div>
