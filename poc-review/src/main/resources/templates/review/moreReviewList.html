@@ -42,7 +42,7 @@
 							<p class="card-text" th:if="${#strings.length(ReviewData.goodCnts)} gt ${max_length}" th:text="${#strings.substring(ReviewData.goodCnts,0,max_length) + '…'}"></p>
 							<p class="card-text" th:unless="${#strings.length(ReviewData.goodCnts)} gt ${max_length}" th:text="${ReviewData.goodCnts}"></p>
 						</div>
-						  		
+						<span th:text="'hit: ' + ${ReviewData.hit} + ' (테스트)'" style="font-size: 11pt; color: black;"></span>  		
 						<div style="vertical-align: middle; line-height: 43px; margin-top: 15px; margin-bottom: 15px;">
 							<th:block th:each="reviewerInfo : ${ReviewData.reviewer}" th:if="${reviewerInfoStat.index} == 0">
 								<img th:src="@{'http://localhost:9091'+${reviewerInfo.profileImg}}" style="height: 40px; width: 40px;" alt="Img" />

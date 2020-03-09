@@ -2419,7 +2419,7 @@ textarea::placeholder {font-size: 16px;}
 .tabType li:first-child span:after {left: 0;}
 .tabType li.active button,
 .tabType li.active a {
-	background: #104138;
+	background: #305096;
 	color: #fff;
 }
 .tabType li.active button span:after,
