@@ -19,7 +19,10 @@ import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
 import org.springframework.data.mongodb.core.aggregation.SkipOperation;
 import org.springframework.data.mongodb.core.aggregation.SortOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.CriteriaDefinition;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.TextCriteria;
+import org.springframework.data.mongodb.core.query.TextQuery;
 import org.springframework.stereotype.Service;
 
 import com.msa.document.Comment;
@@ -43,8 +46,8 @@ public class ReviewServiceImpl implements ReviewService {
 	
 	public List<ReviewDTO> getReviewList(ReviewDTO reviewDTO) {
 		
-		List<Criteria> criteriaList = new ArrayList<>();
-		List<Criteria> criteriaTargetList = new ArrayList<>();
+		List<CriteriaDefinition> criteriaList = new ArrayList<>();
+		List<CriteriaDefinition> criteriaTargetList = new ArrayList<>();
 		Criteria criteriaTargetForKey = new Criteria();
 		
 		// A:포토리뷰, B:간단리뷰 
@@ -70,8 +73,8 @@ public class ReviewServiceImpl implements ReviewService {
         	criteriaList.add(Criteria.where("reviewer.birthDay").lte(Integer.toString(currentYear-29)+"1231"));
 			break;
         case "40" :
-        	criteriaList.add(Criteria.where("reviewer.birthDay").gte(Integer.toString(currentYear-48)+"0101"));
-        	criteriaList.add(Criteria.where("reviewer.birthDay").lte(Integer.toString(currentYear-79)+"1231"));
+//        	criteriaList.add(Criteria.where("reviewer.birthDay").gte(Integer.toString(currentYear-48)+"0101"));
+        	criteriaList.add(Criteria.where("reviewer.birthDay").lte(Integer.toString(currentYear-39)+"1231"));
 			break;
         }
         
@@ -95,12 +98,19 @@ public class ReviewServiceImpl implements ReviewService {
 		if(reviewDTO.getPrdSeqList() != null && reviewDTO.getPrdSeqList().size() > 0) {
 			criteriaTargetList.add(Criteria.where("prdSeq").in(reviewDTO.getPrdSeqList()));
 		}
-
+		
 		// 키워드 검색
+		MatchOperation matchByFTS = null;
 		if(Strings.isEmpty(reviewDTO.getKey())==false) {
-			criteriaTargetList.add(Criteria.where("goodCnts").regex(reviewDTO.getKey()));
+			//like 검색
+			//criteriaTargetList.add(Criteria.where("goodCnts").regex(reviewDTO.getKey()));
+			
+			//full text search 검색
+			//db.reviews.createIndex({"goodCnts":"text"}) -- 인덱스 생성필요
+			TextCriteria textCriteria = TextCriteria.forDefaultLanguage().matching(reviewDTO.getKey());
+			matchByFTS = Aggregation.match(textCriteria);
 		}
-	    
+
 		// 키워드 검색대상이 있으면 수행
         if(criteriaTargetList.size() > 0) {
         	criteriaList.add(criteriaTargetForKey.orOperator(criteriaTargetList.toArray(new Criteria[criteriaTargetList.size()])));	
@@ -119,8 +129,11 @@ public class ReviewServiceImpl implements ReviewService {
 			
 			CountOperation count = Aggregation.count().as("totCnt");
 
-			aggregation = Aggregation.newAggregation(lookUp, match, count);
-			
+			if(matchByFTS == null)
+				aggregation = Aggregation.newAggregation(lookUp, match, count);
+			else
+				aggregation = Aggregation.newAggregation(matchByFTS, lookUp, match, count);
+
 		}else {
 			
 			ProjectionOperation project = Aggregation.project().andExclude("reviewer_id");
@@ -130,10 +143,12 @@ public class ReviewServiceImpl implements ReviewService {
 				sort = Aggregation.sort(Sort.Direction.DESC, "hit");
 			}
 			SkipOperation skip = Aggregation.skip((reviewDTO.getPageNo()-1)*20);
-		//	SkipOperation skip = Aggregation.skip(1*20);
 			LimitOperation limit = Aggregation.limit(20);
 			
-			aggregation = Aggregation.newAggregation(lookUp, match, project, sort, skip, limit);	
+			if(matchByFTS == null)
+				aggregation = Aggregation.newAggregation(lookUp, match, project, sort, skip, limit);
+			else
+				aggregation = Aggregation.newAggregation(matchByFTS, lookUp, match, project, sort, skip, limit);
 		}
 		
 	    AggregationResults<ReviewDTO> result = mongoTemplate.aggregate(aggregation, Review.class, ReviewDTO.class);

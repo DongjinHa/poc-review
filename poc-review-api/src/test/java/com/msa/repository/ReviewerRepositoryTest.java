@@ -41,7 +41,7 @@ class ReviewerRepositoryTest {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 		
 		Random ran = new Random();
-		for (int i = 0; i < 500; i++) {
+		for (int i = 0; i < 1000; i++) {
 			
 			Reviewer reviewer = new Reviewer();
 
@@ -118,13 +118,13 @@ class ReviewerRepositoryTest {
 				review.setPrdSeq(_prdSeq[ran.nextInt(9)]);
 				review.setBestFl((ran.nextInt(15)+1) > 10 && "A".equals(reviewCl)? "Y" : "N");
 				review.setEvalScore(Integer.valueOf(ran.nextInt(5)+1));
-				review.setHit(Integer.valueOf(ran.nextInt(100)+1));
+				review.setHit(Integer.valueOf(ran.nextInt(1000)+1));
 				review.setRecomCnt(Integer.valueOf(ran.nextInt(15)+1));
 	//			review.setCmtCnt("");
 				review.setRecbScore(Integer.valueOf(ran.nextInt(10)+1));
 				
 				String[] _goodCnts = {"색이 많이 진하네요\n생각보다 별로에요"
-									, "가성비 좋네요\n많이파세요~~~"
+									, "가성비 좋네요\n많이파세요~~~ Good!"
 									, "간편해서 좋아요 예비용으로 하나씩 파우치에 넣고다니는걸 추천합니다"
 									, "저 이거 완전 좋아요!\n피부가 예민하구 해서 선크림 잘 못 고르는데 이게 완전 순하고 톤업기능듀 좋아서 요거 하나면 화장 끝이네요!!\n어느정도 커버 능력도 전 있는거 같았어요!\n좋네요! 원래 쓰던 제품도 유명한 톤업 선크림이었는데 성분도 더 좋고 발림감 뭐하나 떨어지는것도 없어요!\n가격차이는 많이 나는뎅 ㅎㅎ여기로 정착할렵니닽 할인이나 이벤트 많이 해주세요"};
 				
