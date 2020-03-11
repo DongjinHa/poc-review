@@ -22,7 +22,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.CriteriaDefinition;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.TextCriteria;
-import org.springframework.data.mongodb.core.query.TextQuery;
 import org.springframework.stereotype.Service;
 
 import com.msa.document.Comment;
@@ -142,7 +141,7 @@ public class ReviewServiceImpl implements ReviewService {
 			if(reviewDTO.getSort()==2) {
 				sort = Aggregation.sort(Sort.Direction.DESC, "hit");
 			}
-			SkipOperation skip = Aggregation.skip((reviewDTO.getPageNo()-1)*20);
+			SkipOperation skip = Aggregation.skip((long)(reviewDTO.getPageNo()-1)*20);
 			LimitOperation limit = Aggregation.limit(20);
 			
 			if(matchByFTS == null)
@@ -315,7 +314,7 @@ public class ReviewServiceImpl implements ReviewService {
 			sort = Aggregation.sort(Sort.Direction.DESC, "hit");
 		}
 		
-		SkipOperation skip = Aggregation.skip((reviewDTO.getPageNo())*20);
+		SkipOperation skip = Aggregation.skip((long)(reviewDTO.getPageNo())*20);
 		
 		LimitOperation limit = Aggregation.limit(20);
 
@@ -385,7 +384,7 @@ public class ReviewServiceImpl implements ReviewService {
 				.foreignField("_id").as("reviewer");  	
 
 		SortOperation sort = Aggregation.sort(Sort.Direction.ASC, "regDate");
-		SkipOperation skip = Aggregation.skip((pageNo - 1) * 3);
+		SkipOperation skip = Aggregation.skip((long)(pageNo - 1) * 3);
 		LimitOperation limit = Aggregation.limit(3);
 		Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(
 																	Criteria.where("review_id").is(new ObjectId(id))
