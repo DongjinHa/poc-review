@@ -5,7 +5,7 @@
 					<li class="list-group-item list-group-item-action">
 					<th:block th:each="ReviewerInfo : ${Comment.reviewer}" th:if="${ReviewerInfoStat.index}==0">
 					 	<div class="commentProfile">
-							<img class="profileImg" th:src="@{'http://localhost:9091'+${ReviewerInfo.profileImg}}" alt="Img"/>
+							<img class="profileImg" th:src="@{${@environment.getProperty('review-api.url')}+${ReviewerInfo.profileImg}}" alt="Img"/>
 							<span class = "badge badge-success" th:text="'lv.' + ${ReviewerInfo.lvl}"></span>
 							<span th:text="${ReviewerInfo.nickNm}"></span>
 							<span class="commentRegdt" th:text="${#dates.format(Comment.regDate, 'yyyy.MM.dd (E) HH:mm:ss')}"></span>

@@ -2,14 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="../css/reviewlist.css" />
+<link rel="stylesheet" href="/css/reviewlist.css" />
 <!-- Slick 슬라이더 사용을 위한 추가 -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<link rel="stylesheet" type="text/css" href="../css/slick/slick.css"/>
-<link rel="stylesheet" type="text/css" href="../css/slick/slick-theme.css"/>
+<link rel="stylesheet" type="text/css" href="/css/slick/slick.css"/>
+<link rel="stylesheet" type="text/css" href="/css/slick/slick-theme.css"/>
 <script src="../js/slick.js"></script>
 <!-- 뱃지 사용을 위한 추가 -->
-<link rel="stylesheet" href="http://localhost:8081/css/customBootstrap.css"/>
+<link rel="stylesheet" href="/css/customBootstrap.css"/>
 
 <title>리뷰</title>
 </head>
@@ -30,7 +30,7 @@
 		<th:block th:each="ReviewImg : ${ReviewData.tplList}" th:if="${ReviewImgStat.index} == 0">
 			<img class="ReviewImg" style="cursor:pointer"
 				 th:data-url="@{'/review/reviewDetail/'+${ReviewData._id}}"
-		  		 onclick="openWin(this.getAttribute('data-url'))" th:src="@{'http://localhost:9091'+${ReviewImg}}" alt="Img" />
+		  		 onclick="openWin(this.getAttribute('data-url'))" th:src="@{${@environment.getProperty('review-api.url')}+${ReviewImg}}" alt="Img" />
 		</th:block>
 		</div>
 			
@@ -41,7 +41,7 @@
 			</div>			
 			<th:block th:each="reviewerInfo : ${ReviewData.reviewer}" th:if="${reviewerInfoStat.index} == 0">
 				<div class="reviewer">
-					<img class="profileImg" th:src="@{'http://localhost:9091'+${reviewerInfo.profileImg}}" alt="Img"/>
+					<img class="profileImg" th:src="@{${@environment.getProperty('review-api.url')}+${reviewerInfo.profileImg}}" alt="Img"/>
 					<div class="profile">
 					<span class = "badge badge-success" th:text="'lv.' + ${reviewerInfo.lvl}"></span>
 					<span th:text="${reviewerInfo.nickNm}"></span>
@@ -76,7 +76,7 @@
 		<!-- 제품 정보 S -->
 		<div class="powerReviewOuter">
 			<div class="product">
-				<img class="productImg"  th:src="@{'http://localhost:9092'+${ReviewData.product.prdImg2Nd}}" alt="Img"/>
+				<img class="productImg"  th:src="@{${@environment.getProperty('product-api.url')}+${ReviewData.product.prdImg2Nd}}" alt="Img"/>
 				<div class="productDetail">
 					<span th:text="${ReviewData.product.prdNm}"></span><br/>
 					<span th:text="${ReviewData.product.salPrc}"></span>원<br/>
