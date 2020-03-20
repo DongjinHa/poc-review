@@ -120,9 +120,9 @@ public class ReviewController {
         
         String mode = reviewDTO.getMode();
         if ("more".equals(mode)) {
-        	return "/review/moreReviewList";
+        	return "./review/moreReviewList";
         }else {
-        	return "/review/allReviewList";
+        	return "./review/allReviewList";
         }
         
     }
@@ -134,7 +134,7 @@ public class ReviewController {
         List<ProductDTO> result= productList.getBody();
 		
         model.addAttribute("Product", result);
-		return "/product/productListMD";
+		return "./product/productListMD";
 	}
   
 	@GetMapping("/getReviewList1") //파워리뷰 - bestFL=Y & hit count desc로 15건 출력하도록 임시 api 사용
