@@ -51,7 +51,7 @@ public class ReviewController {
     @GetMapping("/")
     public String initMain(Model model) {
     	
-        return "/review/review";
+        return "./review/review";
     }	
 	
     @PostMapping("/allreview")
