@@ -25,7 +25,7 @@
 						
 	<div class = "reviewer">
 		<span class="profileImg">
-			<img th:src="@{${@environment.getProperty('review-api.url')}+${ReviewerData.profileImg}}" alt="Img"/>
+			<img th:src="@{${@environment.getProperty('ext.review-api.url')}+${ReviewerData.profileImg}}" alt="Img"/>
 		</span>
 		
 		<div class="profile">
@@ -83,13 +83,13 @@
  		  	<th:block th:each="ReviewImg : ${ReviewData.tplList}">
 			  	<th:block th:if="${ReviewImgStat.index} == 0">
 				    <div class="carousel-item active">
-				      <img th:src="@{${@environment.getProperty('review-api.url')}+${ReviewImg}}" class="d-block w-100" alt="Img"
+				      <img th:src="@{${@environment.getProperty('ext.review-api.url')}+${ReviewImg}}" class="d-block w-100" alt="Img"
 				      style="width: auto; height: 300px;">
 				    </div>
 			    </th:block>
  			    <th:block th:unless="${ReviewImgStat.index} == 0">
 				    <div class="carousel-item">
-				      <img class="d-block w-100" th:src="@{${@environment.getProperty('review-api.url')}+${ReviewImg}}" alt="Img"
+				      <img class="d-block w-100" th:src="@{${@environment.getProperty('ext.review-api.url')}+${ReviewImg}}" alt="Img"
 				      style="width: auto; height: 300px;">
 				    </div>
 				</th:block> 
@@ -153,7 +153,7 @@
 					<li class="list-group-item list-group-item-action">
 					<th:block th:each="ReviewerInfo : ${Comment.reviewer}" th:if="${ReviewerInfoStat.index}==0">
 					 	<div class="commentProfile">
-							<img class="profileImg" th:src="@{${@environment.getProperty('review-api.url')}+${ReviewerInfo.profileImg}}" alt="Img"/>
+							<img class="profileImg" th:src="@{${@environment.getProperty('ext.review-api.url')}+${ReviewerInfo.profileImg}}" alt="Img"/>
 							<span class = "badge badge-success" th:text="'lv.' + ${ReviewerInfo.lvl}"></span>
 							<span th:text="${ReviewerInfo.nickNm}"></span>
 							<span class="commentRegdt" th:text="${#dates.format(Comment.regDate, 'yyyy.MM.dd (E) HH:mm:ss')}"></span>
@@ -177,7 +177,7 @@
 	<hr>
 	<!-- 리뷰 상품 정보 -->
 	<div class ="reviewRelPdt">
-		<img class="pdtImg" th:src="@{${@environment.getProperty('product-api.url')}+${Product.prdImg2Nd}}" alt="Img"/>
+		<img class="pdtImg" th:src="@{${@environment.getProperty('ext.product-api.url')}+${Product.prdImg2Nd}}" alt="Img"/>
 		<div class="pdtCont">
 	    	<span class="txt" style="color:"></span>
 	    	<span class="name" th:text="${Product.prdNm}"></span> <br/>

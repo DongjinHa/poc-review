@@ -18,7 +18,7 @@
 		
 		<div class = "image fit">
 		<th:block th:each="ReviewImg : ${ReviewData.tplList}" th:if="${ReviewImgStat.index} == 0">
-			<img class="ReviewImg" th:src="@{${@environment.getProperty('review-api.url')}+${ReviewImg}}" alt="Img"  /><br/>
+			<img class="ReviewImg" th:src="@{${@environment.getProperty('ext.review-api.url')}+${ReviewImg}}" alt="Img"  /><br/>
 		</th:block>
 		</div>
 		<div class="inner">
@@ -42,7 +42,7 @@
 			<span th:text="'sex : ' + ${reviewerInfo.sex}"></span><br/>
 			<span th:text="'lvl : ' + ${reviewerInfo.lvl}"></span><br/>
 			<span th:text="'profileImg : ' + ${reviewerInfo.profileImg}"></span><br/>
-			<img class="profileImg" th:src="@{${@environment.getProperty('review-api.url')}+${reviewerInfo.profileImg}}" alt="Img" height="20%" width="20%" /><br/>
+			<img class="profileImg" th:src="@{${@environment.getProperty('ext.review-api.url')}+${reviewerInfo.profileImg}}" alt="Img" height="20%" width="20%" /><br/>
 			</th:block>
 			
 			<div>

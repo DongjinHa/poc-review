@@ -16,7 +16,7 @@ public class RestTemplateConfig {
 	private final RestTemplateBuilder restTemplateBuilder;
 
 	@Bean
-	public RestTemplate reviewTemplate(@Value("${review-api.url}") String reviewAPI) {
+	public RestTemplate reviewTemplate(@Value("${int.review-api.url}") String reviewAPI) {
 		return restTemplateBuilder.rootUri(reviewAPI)
 	        .additionalInterceptors(new RestTemplateClientHttpRequestInterceptor())
 	        .errorHandler(new RestTemplateErrorHandler())
@@ -25,7 +25,7 @@ public class RestTemplateConfig {
 	}
 
 	@Bean
-	public RestTemplate productTemplate(@Value("${product-api.url}") String productAPI) {
+	public RestTemplate productTemplate(@Value("${int.product-api.url}") String productAPI) {
 		return restTemplateBuilder.rootUri(productAPI)
 	        .additionalInterceptors(new RestTemplateClientHttpRequestInterceptor())
 	        .errorHandler(new RestTemplateErrorHandler())
