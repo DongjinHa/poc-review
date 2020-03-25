@@ -1,19 +1,16 @@
 package com.msa.controller;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +19,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -88,8 +84,12 @@ public class ReviewController {
         String reviewTotCnt = "0";
         int pageno = reviewDTO.getPageNo();
         if (reviewList != null && reviewList.size() > 0 && pageno == 1) {
-        	ResponseEntity<String> reviewCntResponse = reviewTemplate.exchange("/review/allreview-totcnt", HttpMethod.POST, reviewReqEntity, new ParameterizedTypeReference<String>() {});
-        	reviewTotCnt = reviewCntResponse.getBody(); 
+        	ResponseEntity<Map<String, String>> reviewCntResponse = reviewTemplate.exchange("/review/allreview-totcnt", HttpMethod.POST, reviewReqEntity, new ParameterizedTypeReference<Map<String, String>>() {});
+        	reviewCntResponse.getBody();
+        	Map<String, String> map = reviewCntResponse.getBody();
+        	
+        	if (map != null && map.get("TotCnt") != null)
+        		reviewTotCnt = map.get("TotCnt"); 
         }
         model.addAttribute("reviewTotCnt", reviewTotCnt);
 
