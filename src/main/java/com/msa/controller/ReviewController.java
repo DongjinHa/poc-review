@@ -126,16 +126,6 @@ public class ReviewController {
         }
         
     }
-
-	@GetMapping("/productList") 
-	public String productList(Model model){
-		
-		ResponseEntity<List<ProductDTO>> productList = reviewTemplate.exchange("/review/getProductList", HttpMethod.GET, null, new ParameterizedTypeReference<List<ProductDTO>>() {});
-        List<ProductDTO> result= productList.getBody();
-		
-        model.addAttribute("Product", result);
-		return "./product/productListMD";
-	}
   
 	@GetMapping("/getReviewList1") //파워리뷰 - bestFL=Y & hit count desc로 15건 출력하도록 임시 api 사용
 	public String getReviewList1(Model model) throws JsonProcessingException {
@@ -181,51 +171,6 @@ public class ReviewController {
 		return "powerReview";
 	}
 	
-	
-    @GetMapping("/getReviewList2")	//리뷰 전체 출력
-    public String getReviewList2(Model model) {
-    	/*	//WebClient ver.
-    	WebClient webClient = builder.build();
-		List<ReviewDTO> result = webClient.get().uri("/getReviewList2")
-				.retrieve() // 응답값을 가져옴 
-				.bodyToFlux(ReviewDTO.class)
-				.collectList().block();
-		
-	    model.addAttribute("Review",result);
-		return "apitest";	*/
-    	
-    		//RestTemplate ver.
-        ResponseEntity<List<ReviewDTO>> reviewResponse = reviewTemplate.exchange("/review/getReviewList2", HttpMethod.GET, null, new ParameterizedTypeReference<List<ReviewDTO>>() {});
-        List<ReviewDTO> result= reviewResponse.getBody();
-        
-        model.addAttribute("Review", result);
-        return "apitest";
-        		
-    }    
-    
-    @GetMapping("/getReviewList3")
-    public String getReviewList3(Model model) {
-    	/* PocReviewApplication.java에 rootUri 설정과 함께 Bean으로 등록하면서 주석 및 수정
-    	RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<List<ReviewDTO>> reviewResponse = restTemplate.exchange(BASE_URL+"/getReviewList3/yulimkang", HttpMethod.GET, null, new ParameterizedTypeReference<List<ReviewDTO>>() {});
-        */
-        ResponseEntity<List<ReviewDTO>> reviewResponse = reviewTemplate.exchange("/review/getReviewList3/yulimkang", HttpMethod.GET, null, new ParameterizedTypeReference<List<ReviewDTO>>() {});
-        List<ReviewDTO> result= reviewResponse.getBody();
-        
-        model.addAttribute("Review", result);
-        return "apitest";
-    }    
-    
-    //페이징테스트
-    @GetMapping("/reviewList/{page}")
-    public String reviewList(Model model,@PathVariable("page") int page) {
-        ResponseEntity<List<ReviewDTO>> reviewResponse = reviewTemplate.exchange("/review/getReviewList4/"+ page, HttpMethod.GET, null, new ParameterizedTypeReference<List<ReviewDTO>>() {});
-        List<ReviewDTO> result= reviewResponse.getBody();
-        
-        model.addAttribute("Review", result);
-        return "apitest";
-    }    
-    
     @GetMapping("/reviewDetail/{id}")	//1개 리뷰에 대한 출력
     public String reviewDetail(Model model,@PathVariable("id") String _id) throws Exception { 	
     	/* //WebClient ver.
