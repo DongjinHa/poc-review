@@ -84,7 +84,7 @@ public class ReviewController {
         String reviewTotCnt = "0";
         int pageno = reviewDTO.getPageNo();
         if (reviewList != null && reviewList.size() > 0 && pageno == 1) {
-        	ResponseEntity<Map<String, String>> reviewCntResponse = reviewTemplate.exchange("/review/allreview-totcnt", HttpMethod.POST, reviewReqEntity, new ParameterizedTypeReference<Map<String, String>>() {});
+        	ResponseEntity<Map<String, String>> reviewCntResponse = reviewTemplate.exchange("/review/allreview-info", HttpMethod.POST, reviewReqEntity, new ParameterizedTypeReference<Map<String, String>>() {});
         	reviewCntResponse.getBody();
         	Map<String, String> map = reviewCntResponse.getBody();
         	
@@ -127,11 +127,11 @@ public class ReviewController {
         
     }
   
-	@GetMapping("/getReviewList1") //파워리뷰 - bestFL=Y & hit count desc로 15건 출력하도록 임시 api 사용
-	public String getReviewList1(Model model) throws JsonProcessingException {
+	@GetMapping("/powerreview") //파워리뷰 - bestFL=Y & hit count desc로 15건 출력하도록 임시 api 사용
+	public String getPowerReview(Model model) throws JsonProcessingException {
 		/*	//WebClient ver.
 		WebClient webClient = builder.build();
-	    List<ReviewDTO> result = webClient.get().uri("/getReviewList1")
+	    List<ReviewDTO> result = webClient.get().uri("/powerreview")
 				.retrieve() // 응답값을 가져옴 
 				.bodyToFlux(ReviewDTO.class)
 				.collectList().block();
@@ -139,7 +139,7 @@ public class ReviewController {
 		return "apitest";	*/
 		
 			//RestTemplate ver.
-		ResponseEntity<List<ReviewDTO>> PowerReviewResponse = reviewTemplate.exchange("/review/getReviewList1", HttpMethod.GET, null, new ParameterizedTypeReference<List<ReviewDTO>>() {});
+		ResponseEntity<List<ReviewDTO>> PowerReviewResponse = reviewTemplate.exchange("/review/powerreview", HttpMethod.GET, null, new ParameterizedTypeReference<List<ReviewDTO>>() {});
         List<ReviewDTO> powerReviews= PowerReviewResponse.getBody();
         
         // 상품 API 호출을 위한 상품코드 재추출

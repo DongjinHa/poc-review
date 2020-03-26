@@ -21,8 +21,8 @@ public class RestTemplateClientHttpRequestInterceptor implements ClientHttpReque
 										@NonNull final ClientHttpRequestExecution execution) throws IOException {
 		final ClientHttpResponse response = execution.execute(request, body);
 
-		loggingResponse(response);
 		loggingRequest(request, body);
+		loggingResponse(response);
 		return execution.execute(request, body);
 	}
   
